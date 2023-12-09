@@ -30,6 +30,6 @@ BIOSCAN workflow v0.1b [December 2023]
 
 Draft of this workflow documentaion
 
-
+____________________________________
 
 |eufund| |chfund| |ukrifund|
