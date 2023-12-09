@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bacteria/16S &mdash; BIOSCAN biomonitoring workflow 0.1b documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interpretations" href="7interpret.html" />
+    <link rel="prev" title="Fungi/ITS" href="6bioinfo_ITS.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BIOSCAN biomonitoring workflow
+          </a>
+              <div class="version">
+                0.1b
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1sampling.html">Sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2sample_prep.html">Sample prep. for DNA extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3DNA_extraction.html">DNA extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4amplicon_lib.html">Ampolicon lib. prep.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5sequencing.html">Sequencing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="6bioinfo.html">Bioinformatics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="6bioinfo_COI.html">Arthropods/COI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6bioinfo_ITS.html">Fungi/ITS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Bacteria/16S</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#starting-point">Starting point</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-primers">Remove primers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quality-filtering">Quality filtering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#denoise-and-merge-paired-end-reads">Denoise and merge paired-end reads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-chimeras">Remove chimeras</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-tag-jumps">Remove tag-jumps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#merge-sequencing-runs">Merge sequencing runs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#taxonomy-assignment">Taxonomy assignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clustering">Clustering</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="7interpret.html">Interpretations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8additional_resources.html">Additional resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog history</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BIOSCAN biomonitoring workflow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="6bioinfo.html">Bioinformatics</a></li>
+      <li class="breadcrumb-item active">Bacteria/16S</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/6bioinfo_16S.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style> .red {color:#ff0000; font-weight:bold; font-size:16px} </style><p><a class="reference external" href="https://biodiversitygenomics.eu/"><img alt="Alternative text" src="_images/logo_BGE_alpha.png" style="width: 400px;" /></a></p>
+<section id="bacteria-16s">
+<h1>Bacteria/16S<a class="headerlink" href="#bacteria-16s" title="Permalink to this heading"></a></h1>
+<p>The below <strong>full bioinformatics workflow can be run through XXX</strong> (coming soon),
+but see also subsections below for step-by-setp scripts.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Process</p></th>
+<th class="head"><p>Software</p></th>
+<th class="head"><p>Version</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#remove-primers16s"><span class="std std-ref">Remove primers</span></a></p></td>
+<td><p>cutadapt</p></td>
+<td><p>4.4</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#quality-filtering16s"><span class="std std-ref">Quality filtering</span></a></p></td>
+<td><p>DADA2</p></td>
+<td><p>2.28</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#denoise16s"><span class="std std-ref">Denoise</span></a></p></td>
+<td><p>DADA2</p></td>
+<td><p>2.28</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#denoise16s"><span class="std std-ref">Merge paired-end reads</span></a></p></td>
+<td><p>DADA2</p></td>
+<td><p>2.28</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#remove-chimeras16s"><span class="std std-ref">Remove chimeras</span></a></p></td>
+<td><p>DADA2</p></td>
+<td><p>2.28</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tagjumps16s"><span class="std std-ref">Remove tag-jumps</span></a></p></td>
+<td><p>UNCROSS2</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mergeruns16s"><span class="std std-ref">Merge sequencing runs*</span></a></p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#taxassign16s"><span class="std std-ref">Taxonomy assignment</span></a></p></td>
+<td><p>naive Bayesian classifier</p></td>
+<td><p>as in DADA2 v2.28</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#clustering16s"><span class="std std-ref">Clustering</span></a></p></td>
+<td><p>vsearch</p></td>
+<td><p>2.26.0</p></td>
+</tr>
+</tbody>
+</table>
+<p>*only applicable when there are multiople sequencing runs per study.</p>
+<p>The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as
+operational taxonomic units (OTUs).</p>
+<section id="starting-point">
+<h2>Starting point<a class="headerlink" href="#starting-point" title="Permalink to this heading"></a></h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>When aiming to combine samples from multiple sequencing runs, then follow the below directory structure</p>
+</div>
+<p><strong>Directory structure</strong></p>
+<div class="line-block">
+<div class="line"><strong>/my_working_folder</strong></div>
+<div class="line">├── <strong>/sequencing_set01</strong></div>
+<div class="line">│   ├── <em>sample1.R1.fastq</em></div>
+<div class="line">│   ├── <em>sample1.R2.fastq</em></div>
+<div class="line">│   ├── <em>sample2.R1.fastq</em></div>
+<div class="line">│   ├── <em>sample2.R2.fastq</em></div>
+<div class="line">│   ├── …</div>
+<div class="line">├── <strong>/sequencing_set02</strong></div>
+<div class="line">│   ├── <em>sampleA.R1.fastq</em></div>
+<div class="line">│   ├── <em>sampleA.R2.fastq</em></div>
+<div class="line">│   ├── <em>sampleB.R1.fastq</em></div>
+<div class="line">│   ├── <em>sampleB.R2.fastq</em></div>
+<div class="line">│   ├── …</div>
+<div class="line">└── <strong>/sequencing_set03</strong></div>
+<div class="line-block">
+<div class="line">├── <em>sample11.R1.fastq</em></div>
+<div class="line">├── <em>sample11.R2.fastq</em></div>
+<div class="line">├── <em>sample12.R1.fastq</em></div>
+<div class="line">├── <em>sample12.R2.fastq</em></div>
+<div class="line">├── …</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Files with the <strong>same name</strong> will be considered as the same sample and will be merged in the “Merge sequencing runs” step.</p>
+</div>
+</section>
+<section id="remove-primers">
+<span id="remove-primers16s"></span><h2>Remove primers<a class="headerlink" href="#remove-primers" title="Permalink to this heading"></a></h2>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">using cutadapt to remove primers</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#Specify primers</span>
+<span class="nv">fwd_primer</span><span class="o">=</span><span class="s2">$&quot;GTGYCAGCMGCCGCGGTAA&quot;</span>
+<span class="nv">rev_primer</span><span class="o">=</span><span class="s2">$&quot;GGCCGYCAATTYMTTTRAGTTT&quot;</span>
+
+<span class="c1">#remove primers across all files (samples)</span>
+cutadapt<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="nv">$mismatches</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="nv">$min_length</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="nv">$overlap</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="nv">$indels</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="nv">$cores</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="nv">$untrimmed_output</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="nv">$untrimmed_paired_output</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--pair-filter<span class="o">=</span><span class="nv">$pair_filter</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-G<span class="w"> </span><span class="nv">$fwd_primer</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-g<span class="w"> </span><span class="nv">$rev_primer</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-o<span class="w"> </span><span class="nv">$output_dir</span>/<span class="nv">$inputR1</span>.<span class="nv">$extension</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-p<span class="w"> </span><span class="nv">$output_dir</span>/<span class="nv">$inputR2</span>.<span class="nv">$extension</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span><span class="nv">$inputR1</span>.<span class="nv">$extension</span><span class="w"> </span><span class="nv">$inputR2</span>.<span class="nv">$extension</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="quality-filtering">
+<span id="quality-filtering16s"></span><h2>Quality filtering<a class="headerlink" href="#quality-filtering" title="Permalink to this heading"></a></h2>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">quality filtering in DADA2</span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="c1">#in R, load dada2 library</span>
+<span class="nf">library</span><span class="p">(</span><span class="s">&#39;dada2&#39;</span><span class="p">)</span>
+
+<span class="c1">#perfrom quality filtering</span>
+<span class="n">qfilt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">filterAndTrim</span><span class="p">(</span><span class="n">fnFs</span><span class="p">,</span><span class="w"> </span><span class="n">filtFs</span><span class="p">,</span><span class="w"> </span><span class="n">fnRs</span><span class="p">,</span><span class="w"> </span><span class="n">filtRs</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">maxN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxN</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">maxEE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">maxEE</span><span class="p">,</span><span class="w"> </span><span class="n">maxEE</span><span class="p">),</span>
+<span class="w">                 </span><span class="n">truncQ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">truncQ</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">truncLen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">truncLen_R1</span><span class="p">,</span><span class="w"> </span><span class="n">truncLen_R2</span><span class="p">),</span>
+<span class="w">                 </span><span class="n">maxLen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxLen</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">minLen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">minLen</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">minQ</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">minQ</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">rm.phix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">matchIDs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">compress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">multithread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="denoise-and-merge-paired-end-reads">
+<span id="denoise16s"></span><h2>Denoise and merge paired-end reads<a class="headerlink" href="#denoise-and-merge-paired-end-reads" title="Permalink to this heading"></a></h2>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">denoising in DADA2</span><a class="headerlink" href="#id3" title="Permalink to this code"></a></div>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="c1">#Learn the error rates</span>
+<span class="w"> </span><span class="n">errF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">learnErrors</span><span class="p">(</span><span class="n">filtFs</span><span class="p">,</span><span class="w"> </span><span class="n">multithread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="w"> </span><span class="n">errR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">learnErrors</span><span class="p">(</span><span class="n">filtRs</span><span class="p">,</span><span class="w"> </span><span class="n">multithread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="w"> </span><span class="c1">#dereplicate</span>
+<span class="w"> </span><span class="n">derepFs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">derepFastq</span><span class="p">(</span><span class="n">filtFs</span><span class="p">,</span><span class="w"> </span><span class="n">qualityType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qualityType</span><span class="p">)</span>
+<span class="w"> </span><span class="n">derepRs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">derepFastq</span><span class="p">(</span><span class="n">filtRs</span><span class="p">,</span><span class="w"> </span><span class="n">qualityType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qualityType</span><span class="p">)</span>
+<span class="w"> </span><span class="nf">saveRDS</span><span class="p">(</span><span class="n">derepFs</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nf">file.path</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;derepFs.rds&quot;</span><span class="p">)))</span>
+<span class="w"> </span><span class="nf">saveRDS</span><span class="p">(</span><span class="n">derepRs</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nf">file.path</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;derepRs.rds&quot;</span><span class="p">)))</span>
+
+<span class="w"> </span><span class="c1">#denoise</span>
+<span class="w"> </span><span class="n">dadaFs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">dada</span><span class="p">(</span><span class="n">derepFs</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">errF</span><span class="p">,</span><span class="w"> </span><span class="n">pool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pool</span><span class="p">,</span><span class="w"> </span><span class="n">selfConsist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">selfConsist</span><span class="p">,</span><span class="w"> </span><span class="n">multithread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="w"> </span><span class="n">dadaRs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">dada</span><span class="p">(</span><span class="n">derepRs</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">errR</span><span class="p">,</span><span class="w"> </span><span class="n">pool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pool</span><span class="p">,</span><span class="w"> </span><span class="n">selfConsist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">selfConsist</span><span class="p">,</span><span class="w"> </span><span class="n">multithread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="w"> </span><span class="nf">saveRDS</span><span class="p">(</span><span class="n">dadaFs</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nf">file.path</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dadaFs.rds&quot;</span><span class="p">)))</span>
+<span class="w"> </span><span class="nf">saveRDS</span><span class="p">(</span><span class="n">dadaRs</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nf">file.path</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dadaRs.rds&quot;</span><span class="p">)))</span>
+
+<span class="w"> </span><span class="c1">#merge paired-end reads</span>
+<span class="w"> </span><span class="n">merge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">mergePairs</span><span class="p">(</span><span class="n">dadaFs</span><span class="p">,</span><span class="w"> </span><span class="n">derepFs</span><span class="p">,</span><span class="w"> </span><span class="n">dadaRs</span><span class="p">,</span><span class="w"> </span><span class="n">derepRs</span><span class="p">,</span>
+<span class="w">                         </span><span class="n">maxMismatch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maxMismatch</span><span class="p">,</span>
+<span class="w">                         </span><span class="n">minOverlap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">minOverlap</span><span class="p">,</span>
+<span class="w">                         </span><span class="n">justConcatenate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">justConcatenate</span><span class="p">,</span>
+<span class="w">                         </span><span class="n">trimOverhang</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">trimOverhang</span><span class="p">)</span>
+
+<span class="w"> </span><span class="c1">#write RDS object</span>
+<span class="w"> </span><span class="nf">saveRDS</span><span class="p">(</span><span class="n">ASV_tab</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nf">file.path</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ASVs_table.denoised-merged.rds&quot;</span><span class="p">)))</span>
+
+<span class="w"> </span><span class="c1">#seq count summary</span>
+<span class="w"> </span><span class="n">getN</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="nf">getUniques</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="w">     </span><span class="c1">#remove 0 seqs samples from qfilt statistics</span>
+<span class="w">     </span><span class="n">row_sub</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="n">qfilt</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">row</span><span class="p">)</span><span class="w"> </span><span class="nf">all</span><span class="p">(</span><span class="n">row</span><span class="w"> </span><span class="o">!=</span><span class="m">0</span><span class="w"> </span><span class="p">))</span>
+<span class="w">     </span><span class="n">qfilt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qfilt</span><span class="p">[</span><span class="n">row_sub</span><span class="p">,</span><span class="w"> </span><span class="p">]</span>
+
+<span class="w"> </span><span class="n">seq_count</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">cbind</span><span class="p">(</span><span class="n">qfilt</span><span class="p">,</span><span class="w"> </span><span class="nf">sapply</span><span class="p">(</span><span class="n">dadaFs</span><span class="p">,</span><span class="w"> </span><span class="n">getN</span><span class="p">),</span><span class="w"> </span><span class="nf">sapply</span><span class="p">(</span><span class="n">dadaRs</span><span class="p">,</span><span class="w"> </span><span class="n">getN</span><span class="p">),</span><span class="w"> </span><span class="nf">sapply</span><span class="p">(</span><span class="n">merge</span><span class="p">,</span><span class="w"> </span><span class="n">getN</span><span class="p">))</span>
+<span class="w"> </span><span class="nf">colnames</span><span class="p">(</span><span class="n">seq_count</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;input&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;qualFiltered&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;denoised_R1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;denoised_R2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;merged&quot;</span><span class="p">)</span>
+<span class="w"> </span><span class="nf">rownames</span><span class="p">(</span><span class="n">seq_count</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sample_names</span>
+<span class="w"> </span><span class="nf">write.table</span><span class="p">(</span><span class="n">seq_count</span><span class="p">,</span><span class="w"> </span><span class="nf">file.path</span><span class="p">(</span><span class="n">path_results</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;seq_count_summary.txt&quot;</span><span class="p">),</span>
+<span class="w">                         </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;\t&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">col.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">,</span>
+<span class="w">                         </span><span class="n">row.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">quote</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="remove-chimeras">
+<span id="remove-chimeras16s"></span><h2>Remove chimeras<a class="headerlink" href="#remove-chimeras" title="Permalink to this heading"></a></h2>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">remove chimeras in DADA2</span><a class="headerlink" href="#id4" title="Permalink to this code"></a></div>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="c1"># Remove chimeras</span>
+<span class="w"> </span><span class="n">ASV_tab.nochim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">removeBimeraDenovo</span><span class="p">(</span><span class="n">ASV_table</span><span class="p">,</span><span class="w"> </span><span class="n">method</span><span class="o">=</span><span class="s">&quot;consensus&quot;</span><span class="p">,</span>
+<span class="w">                                               </span><span class="n">multithread</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="w"> </span><span class="nf">saveRDS</span><span class="p">(</span><span class="n">ASV_tab.nochim</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ASV_table/ASV_tab.nochim.rds&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="remove-tag-jumps">
+<span id="tagjumps16s"></span><h2>Remove tag-jumps<a class="headerlink" href="#remove-tag-jumps" title="Permalink to this heading"></a></h2>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">removing putative tag-jumps with UNCROSS2 method</span><a class="headerlink" href="#id5" title="Permalink to this code"></a></div>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="n">set_f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.05</span>
+<span class="w"> </span><span class="n">set_p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
+
+<span class="w"> </span><span class="nf">library</span><span class="p">(</span><span class="n">data.table</span><span class="p">)</span>
+
+<span class="w"> </span><span class="c1">## Load OTU table</span>
+<span class="w"> </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;..Loading ASV table\n&quot;</span><span class="p">)</span>
+
+<span class="w"> </span><span class="nf">if </span><span class="p">(</span><span class="nf">file.exists</span><span class="p">(</span><span class="s">&quot;ASV_table/ASV_tab_len_filt.rds&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="n">tab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">readRDS</span><span class="p">(</span><span class="s">&quot;ASV_table/ASV_tab_len_filt.rds&quot;</span><span class="p">)</span>
+<span class="w">     </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;input table = ASV_table/ASV_tab_len_filt.rds\n&quot;</span><span class="p">)</span>
+<span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">tab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">readRDS</span><span class="p">(</span><span class="s">&quot;ASV_table/raw_ASV_tab.rds&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;input table = ASV_table/raw_ASV_tab.rds\n&quot;</span><span class="p">)</span>
+<span class="w"> </span><span class="p">}</span>
+
+<span class="w"> </span><span class="n">OTUTABW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.data.table</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="n">tab</span><span class="p">),</span><span class="w"> </span><span class="n">keep.rownames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="w">   </span><span class="nf">colnames</span><span class="p">(</span><span class="n">OTUTABW</span><span class="p">)[</span><span class="m">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">&quot;ASV&quot;</span>
+<span class="w">   </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;...Number of ASVs: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">nrow</span><span class="p">(</span><span class="n">OTUTABW</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;...Number of samples: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">ncol</span><span class="p">(</span><span class="n">OTUTABW</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
+
+<span class="w"> </span><span class="c1">## Convert to long format</span>
+<span class="w"> </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;..Converting OTU table to long format\n&quot;</span><span class="p">)</span>
+<span class="w"> </span><span class="n">OTUTAB</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">melt</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OTUTABW</span><span class="p">,</span><span class="w"> </span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ASV&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">variable.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SampleID&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Abundance&quot;</span><span class="p">)</span>
+
+<span class="w"> </span><span class="c1">## Remove zero-OTUs</span>
+<span class="w"> </span><span class="n">OTUTAB</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">OTUTAB</span><span class="p">[</span><span class="w"> </span><span class="n">Abundance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="p">]</span>
+<span class="w"> </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;...Number of non-zero records: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">nrow</span><span class="p">(</span><span class="n">OTUTAB</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
+
+<span class="w"> </span><span class="c1">## Estimate total abundance of sequence per plate</span>
+<span class="w"> </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;..Estimating total OTU abundance\n&quot;</span><span class="p">)</span>
+<span class="w"> </span><span class="n">OTUTAB</span><span class="p">[</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="n">Total</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">Abundance</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ASV&quot;</span><span class="w"> </span><span class="p">]</span>
+
+<span class="w"> </span><span class="c1">## UNCROSS score</span>
+<span class="w"> </span><span class="c1">## (with original parameter - take a root from the exp in denominator, to make curves more steep)</span>
+<span class="w"> </span><span class="n">uncross_score</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.01</span><span class="p">,</span><span class="w"> </span><span class="n">tmin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.1</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">){</span>
+<span class="w">   </span><span class="c1"># x = OTU abundance in a sample</span>
+<span class="w">   </span><span class="c1"># N = total OTU abundance</span>
+<span class="w">   </span><span class="c1"># n = number of samples</span>
+<span class="w">   </span><span class="c1"># f = expected cross-talk rate, e.g. 0.01</span>
+<span class="w">   </span><span class="c1"># tmin = min score to be considered as cross-talk</span>
+<span class="w">   </span><span class="c1"># p = power to rise the exponent (default, 1; use 1/2 or 1/3 to make cureves more stepp)</span>
+
+<span class="w">   </span><span class="n">z</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">n</span><span class="w">               </span><span class="c1"># Expected treshold</span>
+<span class="w">   </span><span class="n">sc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">exp</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="n">z</span><span class="p">)</span><span class="o">^</span><span class="n">p</span><span class="p">)</span><span class="w">   </span><span class="c1"># t-score</span>
+<span class="w">   </span><span class="n">res</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.table</span><span class="p">(</span><span class="n">Score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc</span><span class="p">,</span><span class="w"> </span><span class="n">TagJump</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">tmin</span><span class="p">)</span>
+<span class="w">   </span><span class="nf">return</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="w"> </span><span class="p">}</span>
+
+<span class="w"> </span><span class="c1">## Esimate UNCROSS score</span>
+<span class="w"> </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;..Estimating UNCROSS score\n&quot;</span><span class="p">)</span>
+<span class="w"> </span><span class="n">OTUTAB</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">cbind</span><span class="p">(</span>
+<span class="w">   </span><span class="n">OTUTAB</span><span class="p">,</span>
+<span class="w">   </span><span class="nf">uncross_score</span><span class="p">(</span>
+<span class="w">     </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OTUTAB</span><span class="o">$</span><span class="n">Abundance</span><span class="p">,</span>
+<span class="w">     </span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OTUTAB</span><span class="o">$</span><span class="n">Total</span><span class="p">,</span>
+<span class="w">     </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">OTUTAB</span><span class="o">$</span><span class="n">SampleID</span><span class="p">)),</span>
+<span class="w">     </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">set_f</span><span class="p">),</span>
+<span class="w">     </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">set_p</span><span class="p">)</span>
+<span class="w">     </span><span class="p">)</span>
+<span class="w">   </span><span class="p">)</span>
+
+<span class="w"> </span><span class="c1">## Truncate singletons with total OTU abundance &gt; 99 reads</span>
+<span class="w"> </span><span class="c1"># OTUTAB[ Abundance == 1 &amp; Total &gt; 99  , TagJump := TRUE ]</span>
+<span class="w"> </span><span class="c1"># OTUTAB[ Abundance == 2 &amp; Total &gt; 999 , TagJump := TRUE ]</span>
+
+<span class="w"> </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;...Number of tag-jumps: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">OTUTAB</span><span class="o">$</span><span class="n">TagJump</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
+
+<span class="w"> </span><span class="c1">## Plot</span>
+<span class="w"> </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;..Making a plot\n&quot;</span><span class="p">)</span>
+<span class="w"> </span><span class="n">PP</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OTUTAB</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Total</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Abundance</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TagJump</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">     </span><span class="nf">geom_point</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">scale_x_log10</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">scale_y_log10</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
+<span class="w">     </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;#0C7C59&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;#D64933&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">     </span><span class="nf">labs</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Total abundance of ASV, reads&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Abundance of ASV in a sample, reads&quot;</span><span class="p">)</span>
+
+<span class="w"> </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;..Exporting a plot\n&quot;</span><span class="p">)</span>
+<span class="w"> </span><span class="nf">pdf</span><span class="p">(</span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ASV_table/TagJump_plot.pdf&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">9.5</span><span class="p">,</span><span class="w"> </span><span class="n">useDingbats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="w">   </span><span class="n">PP</span>
+<span class="w"> </span><span class="nf">dev.off</span><span class="p">()</span>
+
+<span class="w"> </span><span class="c1">## TJ stats</span>
+<span class="w"> </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;..Calculating tag-jump summary\n&quot;</span><span class="p">)</span>
+<span class="w"> </span><span class="n">TJ</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.table</span><span class="p">(</span>
+<span class="w">     </span><span class="n">Total_reads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">OTUTAB</span><span class="o">$</span><span class="n">Abundance</span><span class="p">),</span>
+<span class="w">     </span><span class="n">Number_of_TagJump_Events</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">OTUTAB</span><span class="o">$</span><span class="n">TagJump</span><span class="p">),</span>
+<span class="w">     </span><span class="n">TagJump_reads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">OTUTAB</span><span class="p">[</span><span class="w"> </span><span class="n">TagJump</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">TRUE</span><span class="w"> </span><span class="p">]</span><span class="o">$</span><span class="n">Abundance</span><span class="p">,</span><span class="w"> </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">T</span><span class="p">)</span>
+<span class="w">     </span><span class="p">)</span>
+
+<span class="w"> </span><span class="n">TJ</span><span class="o">$</span><span class="n">ReadPercent_removed</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">with</span><span class="p">(</span><span class="n">TJ</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">TagJump_reads</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Total_reads</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">100</span><span class="p">))</span>
+
+<span class="w"> </span><span class="nf">fwrite</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TJ</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ASV_table/TagJump_stats.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;\t&quot;</span><span class="p">)</span>
+
+<span class="w"> </span><span class="c1">## Exporting tag-jump data</span>
+<span class="w"> </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;..Exporting tag-jump data\n&quot;</span><span class="p">)</span>
+<span class="w"> </span><span class="n">JMPS</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">OTUTAB</span><span class="p">[</span><span class="w"> </span><span class="n">TagJump</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="nf">.</span><span class="p">(</span><span class="n">ASV</span><span class="p">,</span><span class="w"> </span><span class="n">SampleID</span><span class="p">)</span><span class="w"> </span><span class="p">]</span>
+
+<span class="w"> </span><span class="nf">saveRDS</span><span class="p">(</span><span class="n">object</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JMPS</span><span class="p">,</span>
+<span class="w">   </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ASV_table/TagJump_OTUs.RData&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="n">compress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;xz&quot;</span><span class="p">)</span>
+
+<span class="w"> </span><span class="c1">## Prepare OTU tables, remove tag-jumps</span>
+<span class="w"> </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;..Removing tag-jumps\n&quot;</span><span class="p">)</span>
+
+<span class="w"> </span><span class="n">OTUTAB</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">OTUTAB</span><span class="p">[</span><span class="w"> </span><span class="n">TagJump</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">FALSE</span><span class="w"> </span><span class="p">]</span>
+
+<span class="w"> </span><span class="c1">## Convert to wide format</span>
+<span class="w"> </span><span class="n">RES</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">dcast</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OTUTAB</span><span class="p">,</span>
+<span class="w">   </span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ASV</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">SampleID</span><span class="p">,</span>
+<span class="w">   </span><span class="n">value.var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Abundance&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">)</span>
+
+<span class="w"> </span><span class="c1">## Sort rows (by total abundance)</span>
+<span class="w"> </span><span class="n">clz</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">colnames</span><span class="p">(</span><span class="n">RES</span><span class="p">)[</span><span class="m">-1</span><span class="p">]</span>
+<span class="w"> </span><span class="n">otu_sums</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rowSums</span><span class="p">(</span><span class="n">RES</span><span class="p">[,</span><span class="w"> </span><span class="n">..clz</span><span class="p">],</span><span class="w"> </span><span class="n">na.rm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="w"> </span><span class="n">RES</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">RES</span><span class="p">[</span><span class="w"> </span><span class="nf">order</span><span class="p">(</span><span class="n">otu_sums</span><span class="p">,</span><span class="w"> </span><span class="n">decreasing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span><span class="w"> </span><span class="p">]</span>
+
+<span class="w"> </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;..Exporting tag-jump filtered table\n&quot;</span><span class="p">)</span>
+
+<span class="w"> </span><span class="c1">## Output table that is compadible with dada2</span>
+<span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.matrix</span><span class="p">(</span><span class="n">RES</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;\t&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">rownames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">,</span>
+<span class="w">                         </span><span class="n">check.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">quote</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">t</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+<span class="w"> </span><span class="nf">saveRDS</span><span class="p">(</span><span class="n">output</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;ASV_table/ASV_tab_TagJumpFiltered.rds&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="merge-sequencing-runs">
+<span id="mergeruns16s"></span><h2>Merge sequencing runs<a class="headerlink" href="#merge-sequencing-runs" title="Permalink to this heading"></a></h2>
+</section>
+<section id="taxonomy-assignment">
+<span id="taxassign16s"></span><h2>Taxonomy assignment<a class="headerlink" href="#taxonomy-assignment" title="Permalink to this heading"></a></h2>
+</section>
+<section id="clustering">
+<span id="clustering16s"></span><h2>Clustering<a class="headerlink" href="#clustering" title="Permalink to this heading"></a></h2>
+<p>A</p>
+<hr class="docutils" />
+<p><a class="reference internal" href="_images/eu_co-funded.png"><img alt="Alternative text" src="_images/eu_co-funded.png" style="width: 220px;" /></a> <a class="reference internal" href="_images/ch-logo-200x50.png"><img alt="Alternative text" src="_images/ch-logo-200x50.png" style="width: 210px;" /></a> <a class="reference internal" href="_images/ukri-logo-200x59.png"><img alt="Alternative text" src="_images/ukri-logo-200x59.png" style="width: 150px;" /></a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="6bioinfo_ITS.html" class="btn btn-neutral float-left" title="Fungi/ITS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="7interpret.html" class="btn btn-neutral float-right" title="Interpretations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Sten Anslan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
