@@ -16,9 +16,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'BIOSCAN biomonitoring workflow'
+project = 'bioscanflow'
 copyright = '2023, Sten Anslan'
-author = 'Sten Anslan et al...'
+author = 'Sten Anslan et al.'
 
 # The full version, including alpha/beta/rc tags
 version = '0.1b'
@@ -36,15 +36,13 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'SOPs']
+exclude_patterns = ['_build', '_local_docs']
 
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = 'sphinx_rtd_theme'
-#renku
-#sphinx_rtd_theme
 
 html_theme_options = {
     'sidebarwidth': 300,
