@@ -1,3 +1,3 @@
 # BGE_biomonitoring_wf
 
-Repo for developing documentation for DNA-based biomonitoring workflows.
+Repository for developing documentation for DNA-based biomonitoring workflows in the framework of BGE.
