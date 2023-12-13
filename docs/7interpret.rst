@@ -19,11 +19,6 @@
   :width: 550
   :alt: Alternative text
 
-.. |biomonitoR| image:: _static/biomonitoR.png
-  :width: 700
-  :alt: Alternative text
-  :target: https://peerj.com/articles/14183/
-
 .. raw:: html
 
     <style> .red {color:#ff0000; font-weight:bold; font-size:16px} </style>
@@ -40,10 +35,6 @@ Interpretations
 The documentation for the development of BIOSCAN biomonitorig workflow.
 
 |hmsc1|
-
-____________________________________________________
-
-|biomonitoR|
 
 ____________________________________________________
 

@@ -25,10 +25,10 @@
 |logo_BGE_alpha|
 
 
-BIOSCAN workflow v0.1b [December 2023]
-**************************************
+v0.1b [2023_12_31]
+******************
 
-Draft of this workflow documentaion
+First draft of this document, demonstrationg the overall appearance: 2023_12_31_biomonWF_Version_0.1b_SA
 
 ____________________________________
 

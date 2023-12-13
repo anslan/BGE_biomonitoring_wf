@@ -42,7 +42,7 @@ but see also subsections below for step-by-setp scripts.
 +-------------------------------------------------+--------------+---------+
 | :ref:`Merge paired-end reads <denoiseCOI>`      | DADA2        | 2.28    |
 +-------------------------------------------------+--------------+---------+
-| :ref:`Remove chimeras <remove_chimerasCOI>`     | DADA2        | 2.28    |
+| :ref:`Chimera filtering <remove_chimerasCOI>`   | DADA2        | 2.28    |
 +-------------------------------------------------+--------------+---------+
 | :ref:`Remove tag-jumps <tagjumpsCOI>`           | UNCROSS2     | x       |
 +-------------------------------------------------+--------------+---------+
@@ -54,7 +54,7 @@ but see also subsections below for step-by-setp scripts.
 +-------------------------------------------------+--------------+---------+
 | :ref:`Remove non-Metazoa <nonMetazoaCOI>`       | bash         | x       |
 +-------------------------------------------------+--------------+---------+
-| :ref:`Clustering <clusteringCOI>`               | optimOTU     | x       |
+| :ref:`Clustering ASVs to OTUs <clusteringCOI>`  | optimOTU     | x       |
 +-------------------------------------------------+--------------+---------+
 
 \*only applicable when there are multiople sequencing runs per study. 
@@ -80,8 +80,8 @@ Denoise and merge paired-end reads
 
 .. _remove_chimerasCOI:
 
-Remove chimeras 
-~~~~~~~~~~~~~~~
+Chimera filtering 
+~~~~~~~~~~~~~~~~~
 
 .. _tagjumpsCOI:
 
@@ -111,8 +111,8 @@ Remove non-Metazoa
 
 .. _clusteringCOI:
 
-Clustering
-~~~~~~~~~~
+Clustering ASVs to OTUs
+~~~~~~~~~~~~~~~~~~~~~~~
 
 A
 

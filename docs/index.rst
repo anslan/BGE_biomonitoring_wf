@@ -35,18 +35,12 @@ BIOSCAN biomonitoring workflow
 |mbwf|
 *Draft workflow illustration*
 
-:red:`The documentation for the development of BIOSCAN biomonitorig workflow.`
-
-The `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ (BGE) Consortium has the overriding 
-aim of accelerating the use of genomic science to enhance understanding of 
-biodiversity, monitor biodiversity change, and guide interventions to address its decline. 
-The objective is to establish functioning biodiversity genomics networks, data generation and 
-pipelines to characterize biodiversity, and to improve management intervention and 
-biomonitoring programs by practical application of genomic tools. 
-
+| :red:`The documentation for the development of BIOSCAN biomonitorig workflow` 
+| withing the framework of `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ (BGE). 
+| :red:`This is work in progress...`
 
 .. |under_construction| image:: _static/under_construction.png
-  :width: 450
+  :width: 250
   :alt: Alternative text
 
 |under_construction|

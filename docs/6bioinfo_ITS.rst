@@ -41,7 +41,7 @@ but see also subsections below for step-by-setp scripts.
 +----------------------------------------------+--------------+---------+
 | :ref:`Merge paired-end reads <denoise>`      | DADA2        | 2.28    |
 +----------------------------------------------+--------------+---------+
-| :ref:`Remove chimeras <remove_chimeras>`     | DADA2        | 2.28    |
+| :ref:`Chimera filtering <remove_chimeras>`   | DADA2        | 2.28    |
 +----------------------------------------------+--------------+---------+
 | :ref:`Remove tag-jumps <tagjumps>`           | UNCROSS2     | x       |
 +----------------------------------------------+--------------+---------+
@@ -51,7 +51,7 @@ but see also subsections below for step-by-setp scripts.
 +----------------------------------------------+--------------+---------+
 | :ref:`Taxonomy assignment <taxAssign>`       | PROTAX/BLAST | x       |
 +----------------------------------------------+--------------+---------+
-| :ref:`Clustering <clustering>`               | optimOTU     | x       |
+| :ref:`Clustering ASVs to OTUs <clustering>`  | optimOTU     | x       |
 +----------------------------------------------+--------------+---------+
 
 \*only applicable when there are multiople sequencing runs per study. 
@@ -77,8 +77,8 @@ Denoise and merge paired-end reads
 
 .. _remove_chimeras:
 
-Remove chimeras 
-~~~~~~~~~~~~~~~
+Chimera filtering 
+~~~~~~~~~~~~~~~~~
 
 .. _tagjumps:
 
@@ -103,8 +103,8 @@ Taxonomy assignment
 
 .. _clustering:
 
-Clustering
-~~~~~~~~~~
+Clustering ASVs to OTUs
+~~~~~~~~~~~~~~~~~~~~~~~
 
 A
 

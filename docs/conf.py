@@ -48,6 +48,7 @@ html_theme = 'sphinx_rtd_theme'
 
 html_theme_options = {
     'sidebarwidth': 300,
+    'collapse_navigation': True
 }
 
 sphinx_tabs_disable_tab_closing = True
