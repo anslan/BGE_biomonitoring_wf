@@ -81,7 +81,7 @@ rinse well with distilled water before going to the field,
 tie a small inert weight (e.g. plastic coated fishing sinker) 
 to near the intake end of each hose with some fishing twine etc.
 
-On the field
+In the field
 ~~~~~~~~~~~~
 
 At the first sampling site:

@@ -21,6 +21,19 @@
 
 .. role:: red
 
+.. raw:: html
+
+    <style>
+        .yellow-background {
+            background-color: #feffd0;
+            color: #000000;  /* text color */
+            font-size: 22px; /* text size */
+            padding: 5px;   /* add  padding */
+        }
+    </style>
+
+.. role:: yellow-background
+
 
 |logo_BGE_alpha|
 
@@ -28,9 +41,12 @@
 Bacteria/16S
 ************
 
-The below **full bioinformatics workflow be automatically run through PipeCraft2** (coming soon), 
-but see also subsections below for step-by-setp scripts.
-[workflow follows the implementations as in PipeCraft2 (https://github.com/pipecraft2/pipecraft), cite if using ...]
+| This is executable step-by-step pipeline for **rRNA 16S** amplicon data analyses.
+|  
+| The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://plutof.ut.ee/go>`_ (v1.1.0; releasing this soon, with a tutorial),
+| which implemets also various error handling processes and sequence summary statistics (lacking here in step-by-step code). 
+| 
+| The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
 
 +-------------------------------------------------+---------------------------+-------------------+
 | Process                                         | Software                  | Version           |
@@ -56,22 +72,25 @@ but see also subsections below for step-by-setp scripts.
 | :ref:`Post-clustering <postclustering16S>`      | LULU, BLAST               | 0.1.0; 2.15.0     |
 +-------------------------------------------------+---------------------------+-------------------+
 
-\*only applicable when there are multiople sequencing runs per study. 
-
-The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as 
-operational taxonomic units (OTUs). 
+\*only applicable when there are multiple sequencing runs per study. 
 
 
-Starting point
+
+Data structure
 ~~~~~~~~~~~~~~
+
+.. _multiRunDir16S:
+
+Multiple sequencing runs
+------------------------
 
 .. important:: 
 
   When aiming to combine samples from multiple sequencing runs, then follow the below directory structure 
 
-**Directory structure**
+**Directory structure:**
 
-| **/my_working_folder**
+| **/multiRunDir** *(directory names can be changed)*
 | ├── **/sequencing_set01**
 | │   ├── *sample1.R1.fastq*
 | │   ├── *sample1.R2.fastq*
@@ -93,13 +112,16 @@ Starting point
 
 .. note:: 
   
-  Files with the **same name** will be considered as the same sample and will be merged in the "Merge sequencing runs" step.
+  Fastq files with the **same name** will be considered as the same sample and will be merged in the "Merge sequencing runs" step.
 
+Single sequencing run
+---------------------
 
-| #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-| When working with a **single directory** that hosts your fastq 
-| files, then use the code inside these lines [see below]
-| #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+| When working with a **single directory** that hosts your fastq files, then
+| :yellow-background:`ignore (do not execute) the script lines in yellow.`
+| 
+
+____________________________________________________
 
 .. _remove_primers16S:
 
@@ -124,9 +146,10 @@ Remove primer strings from paired-end data.
     #!/bin/bash
     ## workflow to remove primers via cutadapt [Sten Anslan]
 
-    # Working folder = /my_working_folder
+    # My working folder = /multiRunDir (see dir structure above)
+
     # specify the identifier string for the R1 files
-    read_R1=".R1"
+    read_R1="_R1"
 
     # specify primers 
     fwd_primer=$"GTGYCAGCMGCCGCGGTAA"    #this is primer 515F
@@ -170,23 +193,25 @@ Remove primer strings from paired-end data.
 Quality filtering 
 ~~~~~~~~~~~~~~~~~
 
+Quality filtering of the fastq files based on the allowed maximum error rate per sequence (as in DADA2).
+
 .. code-block:: R
    :caption: quality filtering in DADA2 (in R)
 
     #!/usr/bin/Rscript
-    ## workflow to perform quality filtering within DADA2 [Sten Anslan]
+    ## workflow to perform quality filtering within DADA2
 
     #load dada2 library 
     library('dada2')
 
-    # the identifier string for the R1/R2 files
+    # specify the identifier string for the R1 files
     read_R1 = ".R1"
-    read_R2 = ".R2"
-    # the delimiter for sample name (e.g. in that case the 
-        #string before the first . is the sample name in a file sample1.R1.fastq)    samp_ID = "\\."
+    
+    # get the identifier string for the R2 files
+    read_R2 = gsub("R1", "R2", read_R1)
 
     # capturing the directory structure when working with multiple runs
-    wd = getwd() # -> wd is "~/my_working_folder"
+    wd = getwd() # -> wd is "~/multiRunDir"
     dirs = list.dirs(recursive = FALSE)
     for (i in 1:length(dirs)) {
         if(length(dirs) > 1) {
@@ -199,8 +224,9 @@ Quality filtering
             R1s = sort(list.files("primersCut_out", pattern = read_R1, full.names = TRUE))
             R2s = sort(list.files("primersCut_out", pattern = read_R2, full.names = TRUE))
             #sample names
-            sample_names = sapply(strsplit(basename(R1s), samp_ID), `[`, 1)
-            #filtered files path
+            sample_names = sapply(strsplit(basename(R1s), read_R1), `[`, 1)
+
+            # filtered files path
             filtR1 = file.path(path_results, paste0(sample_names, ".R1.", "fastq.gz"))
             filtR2 = file.path(path_results, paste0(sample_names, ".R2.", "fastq.gz"))
             names(filtR1) = sample_names
@@ -224,9 +250,12 @@ Quality filtering
             # make sequence count report
             seq_count = cbind(qfilt)
             colnames(seq_count) = c("input", "qualFiltered")
-            rownames(seq_count) = sample_names
+            seq_count = as.data.frame(seq_count)
+            seq_count$sample = sample_names
+            # reorder columns
+            seq_count = seq_count[, c("sample", "input", "qualFiltered")]
             write.csv(seq_count, file.path(path_results, "seq_count_summary.csv"), 
-                                row.names = TRUE, quote = FALSE)
+                                row.names = FALSE, quote = FALSE)
 
             #save filtered R objects for denoising and merging (below)
             filtR1 = sort(list.files(path_results, pattern = ".R1.fastq.gz", full.names = TRUE))
@@ -236,7 +265,7 @@ Quality filtering
             saveRDS(filtR2, file.path(path_results, "filtR2.rds"))
             saveRDS(sample_names, file.path(path_results, "sample_names.rds"))
             #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-            #set working directory back to "/my_working_folder"
+            #set working directory back to "/multiRunDir"
             setwd(wd)
         i = i + 1
         }
@@ -247,17 +276,20 @@ Quality filtering
 Denoise and merge paired-end reads
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Denoise and merge paired-end Illumina reads as in DADA2.
+
+
 .. code-block:: R
    :caption: denoise and merge paired-end reads in DADA2
 
     #!/usr/bin/Rscript
-    ## workflow to perform DADA2 denoising and merging [Sten Anslan]
+    ## workflow to perform DADA2 denoising and merging
 
     #load dada2 library 
     library('dada2')
 
     # capturing the directory structure when working with multiple runs
-    wd = getwd() # -> wd is "~/my_working_folder"
+    wd = getwd() # -> wd is "~/multiRunDir"
     dirs = list.dirs(recursive = FALSE)
     for (i in 1:length(dirs)) {
         if(length(dirs) > 1) {
@@ -313,14 +345,14 @@ Denoise and merge paired-end reads
             saveRDS(ASV_tab, (file.path(path_results, "rawASV_table.rds")))
 
             # make sequence count report
-            getN <- function(x) sum(getUniques(x))
+            getN = function(x) sum(getUniques(x))
             #remove 0 seqs samples from qfilt statistics
             row_sub = apply(qfilt, 1, function(row) all(row !=0 ))
             qfilt = qfilt[row_sub, ]
-            seq_count <- cbind(qfilt, sapply(dadaR1, getN), 
+            seq_count = cbind(qfilt, sapply(dadaR1, getN), 
                                 sapply(dadaR2, getN), sapply(merge, getN))
-            colnames(seq_count) <- c("input", "qualFiltered", "denoised_R1", "denoised_R2", "merged")
-            rownames(seq_count) <- sample_names
+            colnames(seq_count) = c("input", "qualFiltered", "denoised_R1", "denoised_R2", "merged")
+            rownames(seq_count) = sample_names
             write.csv(seq_count, file.path(path_results, "seq_count_summary.csv"), 
                                     row.names = TRUE, quote = FALSE)
             #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
@@ -353,7 +385,7 @@ Chimera filtering
     collapseNoMismatch = "true"  #true/false 
 
     # capturing the directory structure when working with multiple runs
-    wd = getwd() # -> wd is "~/my_working_folder"
+    wd = getwd() # -> wd is "~/multiRunDir"
     dirs = list.dirs(recursive = FALSE)
     for (i in 1:length(dirs)) {
         if(length(dirs) > 1) {
@@ -385,7 +417,7 @@ Chimera filtering
             # row names as sequence headers
             row.names(tchim_filt) = asv_headers
             # write ASVs.fasta to path_results
-            asv_fasta <- c(rbind(paste(">", asv_headers, sep=""), asv_seqs))
+            asv_fasta = c(rbind(paste(">", asv_headers, sep=""), asv_seqs))
             write(asv_fasta, file.path(path_results, "ASVs.fasta"))
             # write ASVs table to path_results
             write.table(tchim_filt, file.path(path_results, "ASV_table.txt"), 
@@ -400,7 +432,7 @@ Chimera filtering
                                     minOverlap = 20, orderBy = "abundance", 
                                     identicalOnly = FALSE, vec = TRUE, 
                                     band = -1, verbose = TRUE)
-                saveRDS(ASV_tab_collapsed, file.path(path_results, "ASV_tab_collapsed.rds"))
+                saveRDS(ASV_tab_collapsed, file.path(path_results, "ASV_table_collapsed.rds"))
 
                 ### format and save ASV table and ASVs.fasta files
                 # sequence headers
@@ -414,7 +446,7 @@ Chimera filtering
                 #row names as sequence headers
                 row.names(tASV_tab_collapsed) = asv_headers
                 # write ASVs.fasta to path_results
-                asv_fasta <- c(rbind(paste(">", asv_headers, sep=""), asv_seqs))
+                asv_fasta = c(rbind(paste(">", asv_headers, sep=""), asv_seqs))
                 write(asv_fasta, file.path(path_results, "ASVs_collapsed.fasta"))
                 # write ASVs table to path_results
                 write.table(tASV_tab_collapsed, file.path(path_results, "ASVs_table_collapsed.txt"), 
@@ -461,7 +493,7 @@ Remove tag-jumps
     set_p = 1    # p-parameter (e.g., 1.0)
 
     # capturing the directory structure when working with multiple runs
-    wd = getwd() # -> wd is "~/my_working_folder"
+    wd = getwd() # -> wd is "~/multiRunDir"
     dirs = list.dirs(recursive = FALSE)
     for (i in 1:length(dirs)) {
         if(length(dirs) > 1) {
@@ -479,26 +511,26 @@ Remove tag-jumps
             }
 
             ASVTABW = as.data.table(t(tab), keep.rownames = TRUE)
-            colnames(ASVTABW)[1] <- "ASV"
+            colnames(ASVTABW)[1] = "ASV"
             # convert to long format
-            ASVTAB <- melt(data = ASVTABW, id.vars = "ASV",
+            ASVTAB = melt(data = ASVTABW, id.vars = "ASV",
             variable.name = "SampleID", value.name = "Abundance")
             ## Remove zero-OTUs
-            ASVTAB <- ASVTAB[ Abundance > 0 ]
+            ASVTAB = ASVTAB[ Abundance > 0 ]
             # estimate total abundance of sequence per plate
             ASVTAB[ , Total := sum(Abundance, na.rm = TRUE), by = "ASV" ]
 
             ## UNCROSS score
-            uncross_score <- function(x, N, n, f = 0.01, tmin = 0.1, p = 1){
-              z <- f * N / n               # Expected treshold
-              sc <- 2 / (1 + exp(x/z)^p)   # t-score
-              res <- data.table(Score = sc, TagJump = sc >= tmin)
+            uncross_score = function(x, N, n, f = 0.01, tmin = 0.1, p = 1){
+              z = f * N / n               # Expected treshold
+              sc = 2 / (1 + exp(x/z)^p)   # t-score
+              res = data.table(Score = sc, TagJump = sc >= tmin)
               return(res)
             }
 
             # esimate UNCROSS score
             cat(" estimating UNCROSS score\n")
-            ASVTAB <- cbind(
+            ASVTAB = cbind(
               ASVTAB,
               uncross_score(
                 x = ASVTAB$Abundance,
@@ -512,25 +544,25 @@ Remove tag-jumps
             cat(" number of tag-jumps: ", sum(ASVTAB$TagJump, na.rm = TRUE), "\n")
           
             # TJ stats
-            TJ <- data.table(
+            TJ = data.table(
                 Total_reads = sum(ASVTAB$Abundance),
                 Number_of_TagJump_Events = sum(ASVTAB$TagJump),
                 TagJump_reads = sum(ASVTAB[ TagJump == TRUE ]$Abundance, na.rm = T)
                 )
 
-            TJ$ReadPercent_removed <- with(TJ, (TagJump_reads / Total_reads * 100))
+            TJ$ReadPercent_removed = with(TJ, (TagJump_reads / Total_reads * 100))
             fwrite(x = TJ, file = "ASV_table/TagJump_stats.txt", sep = "\t")
 
             # prepare ASV tables, remove tag-jumps
-            ASVTAB <- ASVTAB[ TagJump == FALSE ]
+            ASVTAB = ASVTAB[ TagJump == FALSE ]
             # convert to wide format
-            RES <- dcast(data = ASVTAB,
+            RES = dcast(data = ASVTAB,
               formula = ASV ~ SampleID,
               value.var = "Abundance", fill = 0)
             # sort rows (by total abundance)
-            clz <- colnames(RES)[-1]
-            otu_sums <- rowSums(RES[, ..clz], na.rm = TRUE)
-            RES <- RES[ order(otu_sums, decreasing = TRUE) ]
+            clz = colnames(RES)[-1]
+            otu_sums = rowSums(RES[, ..clz], na.rm = TRUE)
+            RES = RES[ order(otu_sums, decreasing = TRUE) ]
 
             # output table that is compadible with dada2
             output = as.matrix(RES, sep = "\t", header = TRUE, rownames = 1, 
@@ -550,7 +582,7 @@ Remove tag-jumps
             #row names as sequence headers
             row.names(toutput) = asv_headers
             # write ASVs.fasta to path_results
-            asv_fasta <- c(rbind(paste(">", asv_headers, sep=""), asv_seqs))
+            asv_fasta = c(rbind(paste(">", asv_headers, sep=""), asv_seqs))
             write(asv_fasta, file.path(path_results, "ASV_table_TagJumpFiltered.fasta"))
             # write ASVs table to path_results
             write.table(toutput, file.path(path_results, "ASV_table_TagJumpFiltered.txt"), 
@@ -573,6 +605,9 @@ Remove tag-jumps
 Merge sequencing runs
 ~~~~~~~~~~~~~~~~~~~~~
 
+| If previous processing was applied on :ref:`multiple sequencing runs <multiRunDir16S>` , then here, 
+| merge those sequenceing runs to form a single, unified ASV table. 
+
 .. code-block:: R
    :caption: merge ASV tables from multiple sequencing runs
 
@@ -587,7 +622,7 @@ Merge sequencing runs
     collapseNoMismatch = "true"  #true/false 
 
     # capturing the directory structure when working with multiple runs
-    wd = getwd() # -> wd is "~/my_working_folder"
+    wd = getwd() # -> wd is "~/multiRunDir"
     dirs = list.dirs(recursive = FALSE)
     tables = c()
     # load tables from multiple sequencing runs (dirs)
@@ -603,7 +638,7 @@ Merge sequencing runs
 
     # Merge multiple ASV tables
     print("# Merging multiple ASV tables ...")
-    ASV_tables <- lapply(tables, readRDS)
+    ASV_tables = lapply(tables, readRDS)
     merged_table = mergeSequenceTables(tables = ASV_tables, repeats = "sum", tryRC = FALSE)
 
     ### collapse ASVs that have no mismatshes or internal indels 
@@ -627,7 +662,7 @@ Merge sequencing runs
         #row names as sequence headers
         row.names(tmerged_table_collapsed) = asv_headers
         # write ASVs.fasta
-        asv_fasta <- c(rbind(paste(">", asv_headers, sep=""), asv_seqs))
+        asv_fasta = c(rbind(paste(">", asv_headers, sep=""), asv_seqs))
         write(asv_fasta, "ASVs.merged_collapsed.fasta")
         # write ASVs table
         write.table(tmerged_table_collapsed, "ASV_table.merged_collapsed.txt", 
@@ -652,7 +687,7 @@ Merge sequencing runs
         #row names as sequence headers
         row.names(tmerged_table) = asv_headers
         # write ASVs.fasta to path_results
-        asv_fasta <- c(rbind(paste(">", asv_headers, sep=""), asv_seqs))
+        asv_fasta = c(rbind(paste(">", asv_headers, sep=""), asv_seqs))
         write(asv_fasta, "ASVs.merged.fasta")
         # write ASVs table to path_results
         write.table(tmerged_table, "ASV_table.merged.txt", 
@@ -720,9 +755,9 @@ Clustering ASVs to OTUs
                                       # NO SIZE ANNOTATION of ASV headers
     ## Load input data - ASV table
     cat("\n ASV_table to OTU_table: input = ", inp_ASVTAB, "\n")
-    ASVTAB <- fread(file = inp_ASVTAB, header = TRUE, sep = "\t")
+    ASVTAB = fread(file = inp_ASVTAB, header = TRUE, sep = "\t")
     #drop 2nd col which has seqs
-    ASVTAB[[2]] <- NULL
+    ASVTAB[[2]] = NULL
 
     ## Load input data - UC mapping file
     UC = fread(file = "OTUs.uc", header = FALSE, sep = "\t")

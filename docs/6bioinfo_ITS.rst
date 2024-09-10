@@ -54,7 +54,7 @@ but see also subsections below for step-by-setp scripts.
 | :ref:`Clustering ASVs to OTUs <clustering>`  | optimOTU     | x       |
 +----------------------------------------------+--------------+---------+
 
-\*only applicable when there are multiople sequencing runs per study. 
+\*only applicable when there are multiple sequencing runs per study. 
 
 The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as 
 operational taxonomic units (OTUs). 
