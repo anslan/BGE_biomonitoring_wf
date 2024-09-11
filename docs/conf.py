@@ -9,11 +9,11 @@
 # -- Project information -----------------------------------------------------
 
 project = 'bioscanflow'
-copyright = '2023, Sten Anslan'
+copyright = '2024, Sten Anslan'
 author = 'Sten Anslan et al.'
 
 # The full version, including alpha/beta/rc tags
-version = '0.1b'
+version = '0.2b'
 release = version
 
 # -- General configuration ---------------------------------------------------
@@ -47,3 +47,11 @@ sphinx_tabs_disable_tab_closing = True
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# custom css
+def setup(app):
+    app.add_css_file('text-backgrounds.css')
+# usage:
+#.. raw:: html
+
+#  <span class="highlight-blue">This text has blue background</span>

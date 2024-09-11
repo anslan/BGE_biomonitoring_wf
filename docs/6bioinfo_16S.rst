@@ -43,7 +43,7 @@ Bacteria/16S
 
 | This is executable step-by-step pipeline for **rRNA 16S** amplicon data analyses.
 |  
-| The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://plutof.ut.ee/go>`_ (v1.1.0; releasing this soon, with a tutorial),
+| The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/>`_ (v1.1.0; releasing this soon, with a tutorial),
 | which implemets also various error handling processes and sequence summary statistics (lacking here in step-by-step code). 
 | 
 | The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
