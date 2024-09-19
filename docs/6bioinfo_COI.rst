@@ -1429,9 +1429,8 @@ Clustering ASVs to OTUs
 .. note:: 
 
     The final OTUs data is ``OTU_table_LULU.txt`` and ``OTUs_LULU.fasta`` in the ``OTU_table`` directory.
-    The filtered RDP-classifier results (matching the ASVs in the latter files) is ``RDP.taxonomy.metaMATE.filt.txt`` in the ``metamate_out`` dir.
-    
 
+    The matching RDP and BLAST taxonomy files are ``RDP.taxonomy.txt`` and ``BLAST_1st_hit.txt`` in the ``OTU_table`` directory.
 
 ____________________________________________________
 
