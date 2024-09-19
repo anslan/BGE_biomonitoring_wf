@@ -48,29 +48,31 @@ Arthropods/COI
 | 
 | The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
 
-+-------------------------------------------------+--------------+---------+
-| Process                                         | Software     | Version |
-+=================================================+==============+=========+
-| :ref:`Remove primers <remove_primersCOI>`       | cutadapt     | 4.4     |
-+-------------------------------------------------+--------------+---------+
-| :ref:`Quality filtering <quality_filteringCOI>` | DADA2        | 2.28    |
-+-------------------------------------------------+--------------+---------+
-| :ref:`Denoise <denoiseCOI>`                     | DADA2        | 2.28    |
-+-------------------------------------------------+--------------+---------+
-| :ref:`Merge paired-end reads <denoiseCOI>`      | DADA2        | 2.28    |
-+-------------------------------------------------+--------------+---------+
-| :ref:`Chimera filtering <remove_chimerasCOI>`   | DADA2        | 2.28    |
-+-------------------------------------------------+--------------+---------+
-| :ref:`Remove tag-jumps <tagjumpsCOI>`           | UNCROSS2     | x       |
-+-------------------------------------------------+--------------+---------+
-| :ref:`Merge sequencing runs* <mergeRunsCOI>`    | DADA2        |   2.28  |
-+-------------------------------------------------+--------------+---------+
-| :ref:`Remove NUMTs <numtsCOI>`                  | metaMATE     |  0.4.3  |
-+-------------------------------------------------+--------------+---------+
-| :ref:`Taxonomy assignment <taxAssignCOI>`       | RDP/BLAST    | x       | 
-+-------------------------------------------------+--------------+---------+
-| :ref:`Clustering ASVs to OTUs <clusteringCOI>`  | vsearch, LULU| x       |
-+-------------------------------------------------+--------------+---------+
++-------------------------------------------------+---------------+-------------+
+| Process                                         | Software      | Version     |
++=================================================+===============+=============+
+| :ref:`Remove primers <remove_primersCOI>`       | cutadapt      | 4.4         |
++-------------------------------------------------+---------------+-------------+
+| :ref:`Quality filtering <quality_filteringCOI>` | DADA2         | 1.26        |
++-------------------------------------------------+---------------+-------------+
+| :ref:`Denoise <denoiseCOI>`                     | DADA2         | 1.26        |
++-------------------------------------------------+---------------+-------------+
+| :ref:`Merge paired-end reads <denoiseCOI>`      | DADA2         | 1.26        |
++-------------------------------------------------+---------------+-------------+
+| :ref:`Chimera filtering <remove_chimerasCOI>`   | DADA2         | 1.26        |
++-------------------------------------------------+---------------+-------------+
+| :ref:`Remove tag-jumps <tagjumpsCOI>`           | UNCROSS2      |             |
++-------------------------------------------------+---------------+-------------+
+| :ref:`Merge sequencing runs* <mergeRunsCOI>`    | DADA2         | 1.26        |
++-------------------------------------------------+---------------+-------------+
+| :ref:`Pre-select target taxa <sorttaxaCOI>`     | RDP, R        | 2.13        |
++-------------------------------------------------+---------------+-------------+
+| :ref:`Remove NUMTs <numtsCOI>`                  | metaMATE      | 0.4.3       |
++-------------------------------------------------+---------------+-------------+
+| :ref:`Taxonomy assignment <taxAssignCOI>`       | BLAST         | 2.15.0      |
++-------------------------------------------------+---------------+-------------+
+| :ref:`Clustering ASVs to OTUs <clusteringCOI>`  | vsearch, LULU | 2.23, 0.1.0 |
++-------------------------------------------------+---------------+-------------+
 
 \*only applicable when there are multiple sequencing runs per study. 
 
@@ -213,7 +215,7 @@ Quality filtering
 
 .. code-block:: R
    :caption: quality filtering in DADA2 (in R)
-   :emphasize-lines: 13-19, 64-68
+   :emphasize-lines: 13-19, 67-71
    :linenos:
 
     #!/usr/bin/Rscript
@@ -743,8 +745,186 @@ Merge sequencing runs
                         " sequences."))
     }
 
+.. _sorttaxaCOI:
 
+Pre-select target taxa
+~~~~~~~~~~~~~~~~~~~~~~
 
+| This part filters the ASV dataset to include only target taxonomic group for the following analyses. 
+| For example, if you are interested in Hymenoptera, then discard all ASVs that do not match to the target taxon based on the user defined threshold. 
+| Here, the taxonomy is assigned with the RDP-classifier against `CO1Classifier v5.1.0 database. <https://github.com/terrimporter/CO1Classifier>`_ 
+| --- `Download the CO1Classifier v5.1.0 for RDP here (click) <https://github.com/terrimporter/CO1Classifier/releases/download/RDP-COI-v5.1.0/RDP_COIv5.1.0.zip>`_ ---
+
+.. code-block:: bash
+   :caption: assign taxonomy with RDP-classifier
+   :linenos:
+
+    #!/bin/bash
+
+    # download the CO1Classifier reference databse
+    wget \
+      "https://github.com/terrimporter/CO1Classifier/releases/download/RDP-COI-v5.1.0/RDP_COIv5.1.0.zip"
+    # unzip the database and edit name
+    unzip RDP_COIv5.1.0.zip && mv mydata CO1Classifier_v5.1.0_RDP
+    
+    # specify reference database for RDP
+    reference_database="CO1Classifier_v5.1.0_RDP/rRNAClassifier.properties"
+    reference_database=$(realpath $reference_database) # get database names with full path
+
+    # specify input fasta file
+    ASV_fasta="ASVs.fasta"
+
+    # Run RDP-classifier
+    time rdp_classifier \
+            -Xmx12g \
+            classify \
+            -t $reference_database \
+            -f allrank \
+            -o RDP.taxonomy.txt \
+            -q $ASV_fasta
+
+When RDP-classifier is finished, then get the target taxon, based on the user specified bootstrap threshold (default = 0.8).
+
+.. code-block:: R
+   :caption: get only target taxon annotations
+   :linenos:
+
+    #!/usr/bin/env Rscript
+
+    ### Filter dataset based on RDP classifier results to include target taxa 
+
+    # specify taxon and threshold
+    taxon="Hymenoptera, Lepidoptera, Diptera, Coleoptera" # target taxonomic group(s); 
+                         # multiple groups should be from the same taxonomic level
+                         # separator is ","
+    tax_level="order"    # allowed levels: kingdom | phylum | class | order | family | genus
+    threshold="0.8"      # threshold for considering an ASV as a target taxon
+
+    # specify the ASV table and ASVs.fasta file that would be filtered to include only target taxa 
+    ASV_fasta = "ASVs.fasta"
+    ASV_table = "ASV_table.txt"
+
+    # specify the RDP-classifier output file (taxonomy file)
+    taxtab="RDP.taxonomy.txt"
+    
+    #--------------------------------------#
+    library(stringr)
+    library(dplyr)
+
+    # read ASV table
+    table = read.table(ASV_table, sep = "\t", check.names = F, header = T, row.names = 1)
+    
+    # read taxonomy table
+    tax = read.table(taxtab, sep = "\t", check.names = F, row.names = 1)
+    cat("\n Input =", nrow(tax), "features.\n")
+    # remove not needed columns from tax dataframe
+    tax = tax[, -c(1, 2, 3, 4, 6, 9, 12, 15, 18, 21, 24, 27)]
+    # assign colnames for tax
+    colnames(tax) = c("superkingdom", "superkingdom_BootS",
+                    "kingdom", "kingdom_BootS",
+                    "phylum","phylum_BootS",
+                    "class", "class_BootS",
+                    "order", "order_BootS",
+                    "family", "family_BootS",
+                    "genus", "genus_BootS",
+                    "species", "species_BootS")
+
+    # taxon list
+    taxon_list = strsplit(taxon, ", ")[[1]]
+ 
+    ### extract only target-taxon ASVs from the 'raw' RDP results
+    tax_filtered = tax %>%
+        filter(.data[[tax_level]] %in% taxon_list)
+
+    ### change all tax ranks to "unclassified_*" when 
+        # the bootstrap values is less than the specified threshold
+    #phylum
+    tax_filtered = tax_filtered %>% mutate(phylum = ifelse(phylum_BootS < 
+        threshold, paste0("unclassified_", kingdom), as.character(phylum)))
+    #class
+    tax_filtered = tax_filtered %>% mutate(class = ifelse(class_BootS < 
+        threshold, paste0("unclassified_", phylum), as.character(class)))
+    #replace "unclassified_unclassified_" with "unclassified_" that just happened in class col
+    tax_filtered$class = stringr::str_replace(tax_filtered$class, "unclassified_unclassified_", 
+                                                                            "unclassified_")
+    #order
+    tax_filtered = tax_filtered %>% mutate(order = ifelse(order_BootS < 
+        threshold, paste0("unclassified_", class), as.character(order)))
+    #replace "unclassified_unclassified_" with "unclassified_" that just happened in order col
+    tax_filtered$order = stringr::str_replace(tax_filtered$order, "unclassified_unclassified_", 
+                                                                            "unclassified_")
+    #family
+    tax_filtered = tax_filtered %>% mutate(family = ifelse(family_BootS < 
+        threshold, paste0("unclassified_", order), as.character(family)))
+    #replace "unclassified_unclassified_" with "unclassified_" that just happened in family col
+    tax_filtered$family = stringr::str_replace(tax_filtered$family, "unclassified_unclassified_", 
+                                                                            "unclassified_")
+    #genus
+    tax_filtered = tax_filtered %>% mutate(genus = ifelse(genus_BootS < 
+        threshold, paste0("unclassified_", family), as.character(genus)))
+    #replace "unclassified_unclassified_" with "unclassified_" that just happened in genus col
+    tax_filtered$genus = stringr::str_replace(tax_filtered$genus, "unclassified_unclassified_", 
+                                                                            "unclassified_")
+
+    # species to genus_sp when the bootstrap values is < 0.9
+    tax_filtered = tax_filtered %>% mutate(species = ifelse(species_BootS < 0.9, paste0(genus, "_sp"), species))
+   
+    ### count occurrences of each taxon in df (RDP results)
+    count_taxa = function(df, taxa) {
+    sapply(taxa, function(taxon) sum(apply(df, 1, function(row) any(row == taxon))))
+    }
+    taxon_counts = count_taxa(tax_filtered, taxon_list)
+
+    # Check the counts
+    if (all(taxon_counts == 0)) {
+        print("ERROR: None of the specified taxa are present in the RDP results.")
+    } else {
+        if (any(taxon_counts == 0)) {
+        warning("One or more of the specified taxa are not present in the RDP results.")
+        }
+        print(taxon_counts)
+    }
+
+    ### extract only target-taxon ASVs from the 'threshold filtered' RDP results
+    tax_filtered_thresh = tax_filtered %>%
+        filter(.data[[tax_level]] %in% taxon_list)
+    # write filtered RDP taxonomy table
+    tax_filtered_thresh = cbind(ASV = rownames(tax_filtered_thresh), tax_filtered_thresh)
+    write.table(tax_filtered_thresh, 
+                file = "RDP.taxonomy.filt.txt",  
+                quote = F, 
+    	        row.names = F,
+                sep = "\t")
+    
+    ### filter the ASV table to match ASVs that were kept in the tax_filtered table
+    table_filt = table[rownames(table) %in% rownames(tax_filtered_thresh), ]
+
+    ### check ASV table; if 1st col is sequence, then remove it for metaMATE
+    if (colnames(table_filt)[1] == "Sequence") {
+        cat(";; 2nd column was 'Sequence', removing this ... \n")
+        table_filt = table_filt[, -1]
+    }
+
+    # write filtered table
+    table_filt = cbind(ASV = rownames(table_filt), table_filt)
+    write.table(table_filt, 
+                file = paste0(sub("\\.[^.]*$", "_tax_filt.txt", ASV_table)),  
+                quote = F, 
+    	        row.names = F,
+                sep = "\t")
+
+    # filter ASV_fasta
+    library(Biostrings)
+    fasta = readDNAStringSet(ASV_fasta)
+    fasta.tax_filt = fasta[names(fasta) %in% rownames(table_filt)]
+    # write filtered ASV_fasta
+    writeXStringSet(fasta.tax_filt, 
+                    paste0(sub("\\.[^.]*$", "_tax_filt.fasta", ASV_fasta)), 
+                    width = max(width(fasta.tax_filt)))
+
+    
+
+    
 .. _numtsCOI:
 
 Remove NUMTs
@@ -775,8 +955,9 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     # download the default specifications file, 
       # using this in metaMATE-find
     wget "https://raw.githubusercontent.com/tjcreedy/metamate/main/specifications.txt"
-    # specify specifications file for metaMATE (with full directory path)
-    specifications=$(realpath specifications.txt)
+    # specify specifications file for metaMATE
+    specifications="specifications.txt"
+    specifications=$(realpath $specifications) # get full directory path
 
 
     # download the CO1Classifier reference databse
@@ -785,8 +966,9 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     unzip SINTAX_COIv5.1.0_ref.zip && mv training CO1Classifier_v5.1.0 
     mv CO1Classifier_v5.1.0/sintax.fasta CO1Classifier_v5.1.0/CO1Classifier_v5.1.0.fasta
     
-    # specify reference database for metaMATE (with full directory path)
-    reference_database=$(realpath CO1Classifier_v5.1.0/CO1Classifier_v5.1.0.fasta)
+    # specify reference database for metaMATE
+    reference_database="CO1Classifier_v5.1.0/CO1Classifier_v5.1.0.fasta"
+    reference_database=$(realpath $reference_database) # get full directory path
 
 
 .. code-block:: bash
@@ -797,16 +979,14 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     ## remove NUMTs with metaMATE
   
     ## go to the directory that hosts your ASVs.fasta and ASV table files.
-    cd ASV_table # for example
-    
+  
     # specify input ASVs table and fasta
-    ASV_table="ASVs_table_collapsed.txt"   # specify ASV table file 
-    ASV_fasta="ASVs_collapsed.fasta"       # specify ASVs fasta file 
+    ASV_table="ASV_table_tax_filt.txt"   # specify ASV table file 
+    ASV_fasta="ASVs_tax_filt.fasta"      # specify ASVs fasta file 
 
     # specify variables
     genetic_code="5"        # the standard genetic code. 5 is invertebrate mitochondrial code
     length="313"            # the expected length of an amplicon
-    NA_abund_thresh="0.05"  # nonauthentic_retained_estimate_p threshold 
     basesvariation="3"      # allowed length variation (bp) from the expected length of an amplicon
     taxgroups="undefined"   # (optional); if sequence binning is to be performed on 
                                # a per-taxon basis (as in specifications file) 
@@ -823,6 +1003,11 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     #output dir
     output_dir=$"metamate_out"
     echo "output_dir = $output_dir"
+    export output_dir # for R scripe below
+    # remove old $output_dir if exists
+    if [[ -d $output_dir ]]; then
+        rm -rf $output_dir
+    fi
 
     # if perfoming clade binning, then WARNING when processing more than 65,536 ASVs
     ASVcount=$(grep -c "^>" $ASV_fasta)
@@ -838,11 +1023,6 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
          Does not contain any of the terms (library, total, clade, taxon)."
     fi
 
-    # remove old $output_dir if exists
-    if [[ -d $output_dir ]]; then
-        rm -rf $output_dir
-    fi
-
     ### metaMATE-find
     printf "# Running metaMATE-find\n"
     metamate find \
@@ -852,7 +1032,6 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
         --references $reference_database \
         --expectedlength $length \
         --basesvariation $basesvariation \
-        --onlyvarybycodon \
         --table $genetic_code \
         --threads 8 \
         --output $output_dir \
@@ -862,6 +1041,7 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     if [[ -d $output_dir ]] && [[ -e $output_dir/resultcache ]] && [[ -e $output_dir/results.csv ]]; then
         printf '%s\n' "metaMATE-find finished"
         # export variables for below script (Rscript)
+        printf '%s\n' "exporting NA_abund_thresh of $NA_abund_thresh for metaMATE-dump"
         export NA_abund_thresh
         export output_dir
     else 
@@ -878,9 +1058,10 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
 
     # NA_abund_thresh is the allowed abundance threshold of 
        # non-validated (putative artefactual) OTUs/ASVs in the filtered dataset.
+
+    NA_abund_thresh = as.numeric(Sys.getenv('NA_abund_thresh')) # as specified above
     ## read results.csv
-    NA_abund_thresh = as.numeric(Sys.getenv('NA_abund_thresh'))
-    output_dir = Sys.getenv('output_dir')
+    output_dir = Sys.getenv('output_dir') # = "metamate_out" as specified above
     find_results = read.csv(file.path(output_dir, "results.csv"))
 
     ## filter results based on NA_abund_thresh 
@@ -924,30 +1105,43 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
    :linenos:
 
     ## metaMATE-dump 
-    dump_seqs=$(basename $ASV_fasta) # output file name
-    # check for the presence of "metamate_out" dir and "resultcache" file (did metaMATE-find finish)
-    printf "# Running metaMATE-dump\n"
-
+    ASV_fasta=$(basename $ASV_fasta)
+    
     # read result_index
     read -r result_index < $output_dir/selected_result_index.txt
-    printf " - selcted result_index = $result_index\n"
+    printf '%s\n' " - selected result_index = $result_index"
 
     # run metaMATE-dump
+    printf '%s\n' "# Running metaMATE-dump"
     metamate dump \
     --asvs $ASV_fasta \
     --resultcache $output_dir/resultcache \
-    --output $output_dir/${dump_seqs%.*}_metaMATE.filt \
+    --output $output_dir/${ASV_fasta%.*}_metaMATE.filt \
     --overwrite \
     --resultindex $result_index
 
     # generate a list of ASV IDs 
-    seqkit seq -n $output_dir/${dump_seqs%.*}_metaMATE.filt.fasta > \
-                        $output_dir/${dump_seqs%.*}_metaMATE.filt.list
+    seqkit seq -n $output_dir/${ASV_fasta%.*}_metaMATE.filt.fasta > \
+                        $output_dir/${ASV_fasta%.*}_metaMATE.filt.list
 
-    # filter the ASV table; include only the ASVs that are in ${dump_seqs%.*}_metaMATE.filt.list
-    out_table=$(basename $ASV_table)
-    awk -v var="$output_dir/${dump_seqs%.*}" 'NR==1; NR>1 {print $0 | "grep -Fwf "var"_metaMATE.filt.list"}' $ASV_table > \
-                                                                              $output_dir/${out_table%.*}_metaMATE.filt.txt
+    # filter the ASV table; include only the ASVs that are in ${ASV_fasta%.*}_metaMATE.filt.list
+    awk -v var="$output_dir/${ASV_fasta%.*}" 'NR==1; NR>1 {print $0 | "grep -Fwf "var"_metaMATE.filt.list"}' $ASV_table > \
+                                                                              $output_dir/${ASV_table%.*}_metaMATE.filt.txt
+
+    # filter the RDP.taxonomy.filt.txt file to include only ASVs retained by metaMATE
+    awk -v var="$output_dir/${ASV_fasta%.*}" 'NR==1; NR>1 {print $0 | "grep -Fwf "var"_metaMATE.filt.list"}' RDP.taxonomy.filt.txt > \
+                                                                              $output_dir/RDP.taxonomy.metaMATE.filt.txt
+                                                                              
+                                                                              
+
+
+
+.. note:: 
+
+    Herein case, the final filtered data is ``ASV_table_tax_filt_metaMATE.filt.txt`` and ``ASVs_tax_filt_metaMATE.filt.fasta`` in the ``metamate_out`` directory.
+    The filtered RDP-classifier results (matching the ASVs in the latter files) is ``RDP.taxonomy.metaMATE.filt.txt`` in the ``metamate_out`` dir.
+    
+    If deemed relevant, then you may proceed with the below workflow below that includes additional taxonomy assignemnt with BLAST, and clustering ASVs to OTUs. 
 
 
 .. _taxAssignCOI:
@@ -955,69 +1149,56 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
 Taxonomy assignment
 ~~~~~~~~~~~~~~~~~~~
 
-| Assign taxonomy with **RDP-classifier and BLAST**. 
-| The script below will first assign taxonomy to the metaMATE output fasta file with RDP-classifer;
-| then the RDP-classifier results will be sorted to discard ASVs with a bootstrap (~assignment confidence) value < 0.8 to kingdom Metazoa. 
-| The ASVs with at least 0.8 bootstrap value against Metazoa are further subjected to BLASTn search.
-| **Non-Metazoan ASVs are removed** at that stage.
+| Assign taxonomy with **BLAST**. 
+| Herein using the same reference database that was used in :ref:`metaMATE run <numtsCOI>`.
 
 .. code-block:: bash
-   :caption: at first, assign taxonomy with RDP-classifier
+   :caption: BLAST
    :linenos:
 
-    #!/bin/bash
+    # specify the query fasta file
+    cd metamate_out
+    fasta=$"ASVs_tax_filt_metaMATE.filt.fasta"
 
-    # USAGE: script.sh input.fasta input_OTU_table.txt BLAST
-            # if $3 = BLAST, then perform BLAST
-    # input.fasta = OTUs
-    # input_OTU_table.txt = OTU table; may contain seqs as a 2nd col (used in metazoa sort part)
+    # specify reference database for BLAST 
+    reference_database="../CO1Classifier_v5.1.0/CO1Classifier_v5.1.0.fasta"
+    reference_database=$(realpath $reference_database) # get full directory path
 
-    # specify reference database. Using the same as we used for metaMATE
-          # but in a format suitable for RDP-classifer 
-    DB="/home/sten/Desktop/DATABASES/COI_classifier_5.1.0/rRNAClassifier.properties"
-    printf "\n # Running RDP \n"
-    time rdp_classifier \                  
-    -Xmx12g \                              # Max MEM usage (Xmx12g = 12G)
-    classify \                             # RDP classify
-    -t $DB \                               # database file
-    -o RDP.taxonomy.txt \                  # outout file name
-    -q ${dump_seqs%.*}_metaMATE.filt.fasta # input file name (the output of metaMATE)
 
-.. code-block:: bash
-   :caption: Get only metazoa annotations (bootstrap >0.8)
-   :linenos:
+    ## if the database is just in fasta format, then convert it to BLAST format
 
-    # output = tax_meatazoa.csv and table_metazoa.csv
-    eval "$(conda shell.bash hook)"
-    conda activate dada2
-    printf "\n # Sorting Metazoa \n"
-    Rscript /home/sten/Desktop/HTS_data/SilvaNova/pipe_SNC/COI_postprocessing/RDP_Metazoa_sort2.R RDP.taxonomy.txt $2
+    ### Check and assign BLAST database
+    d1=$(echo $reference_database | awk 'BEGIN{FS=OFS="."}{print $NF}')
+    #make blast database if db is not formatted for BLAST
+    db_dir=$(dirname $reference_database)
+    check_db_presence=$(ls -1 $db_dir/*.nhr 2>/dev/null | wc -l)
+    if (( $check_db_presence != 0 )); then
+        if [[ $d1 == "fasta" ]] || [[ $d1 == "fa" ]] || [[ $d1 == "fas" ]] || [[ $d1 == "fna" ]] || [[ $d1 == "ffn" ]]; then
+            database=$"-db $reference_database"
+        elif [[ $d1 == "ndb" ]] || [[ $d1 == "nhr" ]] || [[ $d1 == "nin" ]] || [[ $d1 == "not" ]] || [[ $d1 == "nsq" ]] || [[ $d1 == "ntf" ]] || [[ $d1 == "nto" ]]; then
+            reference_database=$(echo $reference_database | awk 'BEGIN{FS=OFS="."}NF{NF-=1};1')
+            database=$"-db $reference_database"
+        fi
+    elif [[ $d1 == "fasta" ]] || [[ $d1 == "fa" ]] || [[ $d1 == "fas" ]] || [[ $d1 == "fna" ]] || [[ $d1 == "ffn" ]]; then
+            printf '%s\n' "Note: converting fasta formatted database for BLAST"
+            makeblastdb -in $reference_database -input_type fasta -dbtype nucl
+            database=$"-db $reference_database"
+    fi
 
-    # get only metazoa fasta based on tax_metazoa.csv #
-    seqkit grep -f <(awk -F ',' '{print $1}' tax_metazoa.csv) -w 0 OTUs_LULU.ORFs.fasta > OTUs_metazoa.fasta
-
-.. code-block:: bash
-   :caption: BLAST OTUs_metazoa.fasta
-   :linenos:
-
-    eval "$(conda shell.bash hook)"
-    conda activate LULU #blast work tested in this env, blast = BLAST 2.11.0+
-
-    DB="/home/sten/Desktop/DATABASES/COI_classifier_5.1.0/for_SINTAX/COIv5.1.DB"
-    #query
-    fasta=$"OTUs_metazoa.fasta"
-    seqcount=$(grep -c "^>" $fasta)
 
     #BLAST
-    printf "\n # Running BLAST for $seqcount seqs \n\n"
-    time blastn -strand plus -num_threads 8 \
-    -query $fasta \
-    -db $DB \
-    -out 10BestHits.txt -task blastn \
-    -max_target_seqs 10 -evalue=0.001 -word_size=7 -reward=1 -penalty=-1 -gapopen=1 -gapextend=2 \
-    -outfmt "6 delim=+ qseqid stitle qlen slen qstart qend sstart send evalue length nident mismatch gapopen gaps sstrand qcovs pident"
+    printf '%s\n' "# Running BLAST for $(grep -c "^>" $fasta) sequences"
+    blastn -strand plus \
+                -num_threads 20 \
+                -query $fasta \
+                $database \
+                -out 10BestHits.txt -task blastn \
+                -max_target_seqs 10 -evalue=0.001 \
+                -word_size=7 -reward=1 \
+                -penalty=-1 -gapopen=1 -gapextend=2 \
+    -outfmt "6 qseqid stitle qlen slen qstart qend sstart send evalue length nident mismatch gapopen gaps sstrand qcovs pident"
 
-    printf "#qseqid = Query Seq-id
+    #qseqid = Query Seq-id
     #qlen = Query sequence length
     #sacc = Subject accession
     #slen = Subject sequence length
@@ -1034,73 +1215,21 @@ Taxonomy assignment
     #gaps = Total number of gaps
     #1st_hit = BLAST 1st hit
     #sstrand = Subject Strand
-    #qcovs = Query Coverage Per Subject" > README.txt
+    #qcovs = Query Coverage Per Subject
 
-   # + to \t
-    sed -i 's/+/\t/g' 10BestHits.txt
-    #get only first occurrence of a duplicate row (1st hit)
-    #awk 'BEGIN{FS="+"}''!seen[$1]++' 10BestHits.txt > 1.temphit #sep = +
-    awk 'BEGIN{FS="\t"}''!seen[$1]++' 10BestHits.txt > 1.temphit #sep = \t
-
+    ### parse BLAST 1st hit 
+    awk 'BEGIN{FS="\t"}''!seen[$1]++' 10BestHits.txt > BLAST_1st_hit.txt
     #check which seqs got a hit
-    gawk 'BEGIN{FS="\t"}{print $1}' < 1.temphit | uniq > gothits.names
+    gawk 'BEGIN{FS="\t"}{print $1}' < BLAST_1st_hit.txt | \
+        uniq > gothits.names
     #add no_hits flag
     seqkit seq -n $fasta > $fasta.names
-    grep -v -w -F -f gothits.names $fasta.names | sed -e 's/$/\tNo_significant_similarity_found/' >> 1.temphit
+    grep -v -w -F -f gothits.names $fasta.names | \
+        sed -e 's/$/\tNo_significant_similarity_found/' >> BLAST_1st_hit.txt
     #add header
-    sed -e '1 i\qseqid+1st_hit+qlen+slen+qstart+qend+sstart+send+evalue+length+nident+mismatch+gapopen+gaps+sstrand+qcovs+pident' 
-    1.temphit > BLAST_1st_hit.txt
-    #+ to tab
-    sed -i 's/+/\t/g' BLAST_1st_hit.txt
-
-
-    ###10hits
-    #do the same for next 2-10 hits
-    time for i in {2..10}; do
-        awk -v i="$i" 'BEGIN{FS="\t"}''++seen[$1]==i' 10BestHits.txt > $i.temphit
-        gawk 'BEGIN{FS="\t"}{print $1}' < $i.temphit | uniq > gothits.names
-        grep -v -w -F -f gothits.names $fasta.names | sed -e 's/$/\tNo_BLAST_hit/' >> $i.temphit && rm gothits.names
-    done
-
-    #sort
-    time for file in *.temphit; do
-        sort -k 1 --field-separator=\t $file > $file.temp && rm $file
-    done
-
-    #merge
-    paste 1.temphit.temp 2.temphit.temp 3.temphit.temp 4.temphit.temp 5.temphit.temp 6.temphit.temp 7.temphit.temp 8.temphit.temp 
-    9.temphit.temp 10.temphit.temp > BLAST_10_hits.txt
-    rm *.temp
-
-    #format 10 hits
-    sed -i 's/No_significant_similarity_found.*/No_significant_similarity_found/' BLAST_10_hits.txt
-    sed -i 's/No_BLAST_hit.*/No_BLAST_hit/' BLAST_10_hits.txt
-    sed -i '1i\qseqid+1st_hit+qlen+slen+qstart+qend+sstart+send+evalue+length+nident+mismatch+gapopen+gaps+sstrand+qcovs+pident+qseqid+2nd_hit+qlen+slen+qstart+qend+sstart+send+evalue+length+nident+mismatch+gapopen+gaps+sstrand+qcovs+pident+qseqid+3rd_hit+qlen+slen+qstart+qend+sstart+send+evalue+length+nident+mismatch+gapopen+gaps+sstrand+qcovs+pident+qseqid+4th_hit+qlen+slen+qstart+qend+sstart+send+evalue+length+nident+mismatch+gapopen+gaps+sstrand+qcovs+pident+qseqid+5th_hit+qlen+slen+qstart+qend+sstart+send+evalue+length+nident+mismatch+gapopen+gaps+sstrand+qcovs+pident+qseqid+6th_hit+qlen+slen+qstart+qend+sstart+send+evalue+length+nident+mismatch+gapopen+gaps+sstrand+qcovs+pident+qseqid+7th_hit+qlen+slen+qstart+qend+sstart+send+evalue+length+nident+mismatch+gapopen+gaps+sstrand+qcovs+pident+qseqid+8th_hit+qlen+slen+qstart+qend+sstart+send+evalue+length+nident+mismatch+gapopen+gaps+sstrand+qcovs+pident+qseqid+9th_hit+qlen+slen+qstart+qend+sstart+send+evalue+length+nident+mismatch+gapopen+gaps+sstrand+qcovs+pident+qseqid+10th_hit+qlen+slen+qstart+qend+sstart+send+evalue+length+nident+mismatch+gapopen+gaps+sstrand+qcovs+pident' BLAST_10_hits.txt
-    sed -i 's/+/\t/g' BLAST_10_hits.txt
-
-
-    ##### BLAST 1st hit with query SEQ ######
-    #fasta to oneline
-    awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' < $fasta | sed -e 's/\r//' > $fasta.oneline
-
-    #sort hits
-    sort -k 1 --field-separator=\t BLAST_1st_hit.txt > BLAST_1st_hit_with_qseq.temp
-    sed -i 's/qseqid.*//' BLAST_1st_hit_with_qseq.temp
-    sed -i '/^$/d' BLAST_1st_hit_with_qseq.temp
-    sort -k 1 --field-separator=\t $fasta.oneline | sed -e 's/^>//' | sed -e 's/\r//' > seqs.txt
-    #merge seqs and 1st hit
-    paste seqs.txt BLAST_1st_hit_with_qseq.temp > BLAST_1st_hit_with_qseq.txt && rm BLAST_1st_hit_with_qseq.temp
-    sed -i '1 i\qseqid\tquery_seq\tqseqid\t1st_hit\tqlen\tslen\tqstart\tqend\tsstart\tsend\tevalue\tlength\tnident\tmismatch\tgapopen\tgaps\tsstrand\tqcovs\tpident' BLAST_1st_hit_with_qseq.txt
-
-    rm seqs.txt
-    rm $fasta.oneline
-    rm *.names
-
-    wc -l BLAST_1st_hit_with_qseq_sep=+.txt
-    grep -c "^>" $fasta
-
-
-.. _nonMetazoaCOI:
+    sed -i '1 i\
+    qseqid\t1st_hit\tqlen\tslen\tqstart\tqend\tsstart\tsend\tevalue\tlength\tnident\tmismatch\tgapopen\tgaps\tsstrand\tqcovs\tpident' \
+    BLAST_1st_hit.txt
 
 
 .. _clusteringCOI:
@@ -1111,59 +1240,198 @@ Clustering ASVs to OTUs
 | Clustering ASVs to OTUs with vsearch. 
 | Applying also post-clustering with LULU to merge potential "daughter-OTUs".
 
+.. code-block:: R
+   :caption: get the size of ASVs
+   :linenos:
+
+    # specify input ASVs table and fasta
+    ASV_table="ASV_table_tax_filt_metaMATE.filt.txt" # specify ASV table file  
+    ASV_fasta="ASVs_tax_filt_metaMATE.filt.fasta"    # specify ASVs fasta file  
+
+    # specify the clustering threshold
+    clustering_thresh="0.97"
+    ################################
+    library(Biostrings)
+    # Read the ASV table
+    ASV_table = read.table(ASV_table, sep = "\t", check.names = F, 
+                                header = T, row.names = 1)
+
+    # add 'sum' column
+    ASV_table$sum = rowSums(ASV_table)
+    # make ASV_sums object
+    ASV_sums = setNames(ASV_table$sum, rownames(ASV_table))
+
+    # Read the FASTA file
+    ASV_fasta = readDNAStringSet(ASV_fasta)
+
+    # add ";size=*" to ASV_fasta
+    names(ASV_fasta) = sapply(names(ASV_fasta), function(header) {
+        paste0(header, ";size=", ASV_sums[header])
+    })
+    # write fasta file
+    writeXStringSet(ASV_fasta, "ASVs.size.fasta",
+                            width = max(width(ASV_fasta)))
+
 .. code-block:: bash
    :caption: clustering
    :linenos:
 
-    ### Get ASV size annotation (global sum seqs) from an ASV table.
-    out=$(basename $fasta | awk 'BEGIN{FS=OFS="."}NF{NF -=1}1')
-    awk 'NR>1{for(i=3;i<=NF;i++) t+=$i; print ">"$1";size="t"\n"$2; t=0}' $ASV_tab > \
-                                                                        $out.size.fasta
+    # make output dir.
+    output_dir="OTU_table"
+    mkdir -p $output_dir
+    export output_dir
 
-    ### Cluster ASVs using vsearch.
-    vsearch --cluster_fast $out.size.fasta \
+    ### cluster ASVs using vsearch.
+    vsearch --cluster_fast ASVs.size.fasta \
         --id $clustering_thresh \
         --iddef 2 \
         --sizein \
         --xsize \
         --fasta_width 0 \
-        --centroids OTUs.fasta \
-        --uc OTUs.uc
+        --centroids $output_dir/OTUs.fasta \
+        --uc $output_dir/OTUs.uc
+
 
 .. code-block:: R
-   :caption: making OTU table (based on OTUs.uc and $ASV_tab)
+   :caption: generate an OTU table based on the clustered ASVs (*.uc file).
    :linenos:
 
-    Rscript $pipe_path/ASVs2OTUs.R
+    #!/usr/bin/Rscript
+
+    # specify input ASV table (the same one as for 'get the size of ASVs')
+    ASV_table="ASV_table_tax_filt_metaMATE.filt.txt"
+    
+    # read output dir
+    output_dir = Sys.getenv('output_dir')
+
+    # read output from vsearch clustering (-uc OTU.uc)
+    inp_UC = file.path(output_dir, "OTUs.uc") 
+    ################################
+    library(data.table)
+    # load input data - ASV table
+    ASV_table = fread(file = ASV_table, header = TRUE, sep = "\t")
+
+    ## Load input data - UC mapping file
+    UC = fread(file = inp_UC, header = FALSE, sep = "\t")
+    UC = UC[ V1 != "S" ]
+    UC[, ASV := tstrsplit(V9, ";", keep = 1) ]
+    UC[, OTU := tstrsplit(V10, ";", keep = 1) ]
+    UC[V1 == "C", OTU := ASV ]
+    UC = UC[, .(ASV, OTU)]
+
+    # convert ASV table to long format
+    ASV = melt(data = ASV_table,
+        id.vars = colnames(ASV_table)[1],
+        variable.name = "SampleID", value.name = "Abundance")
+    ASV = ASV[ Abundance > 0 ]
+
+    # add OTU IDs
+    ASV = merge(x = ASV, y = UC, by = "ASV", all.x = TRUE)
+    # summarize
+    OTU = ASV[ , .(Abundance = sum(Abundance, na.rm = TRUE)), 
+                                by = c("SampleID", "OTU")]
+
+    # reshape OTU table to wide format
+    OTU_table = dcast(data = ASV,
+        formula = OTU ~ SampleID,
+        value.var = "Abundance",
+        fun.aggregate = sum, fill = 0)
+
+    # write OTU table
+     # OTU names correspond to most abundant ASV in an OTU
+    fwrite(x = OTU_table, file = file.path(output_dir, 
+                                    "OTU_table.txt"), sep = "\t")
+
 
 .. code-block:: bash
-   :caption: LULU post-clustering
+   :caption: generate match list for post-clustering
    :linenos:
 
-    eval "$(conda shell.bash hook)"
-    conda activate LULU
+    # go to directrory that contains OTUs
+    cd $output_dir # 'OTU_table' in this case
 
-    #make blast db
+    # make blast database for post-clustering
     makeblastdb -in OTUs.fasta -parse_seqids -dbtype nucl
 
-    #generate match list
+    # generate match list for post-clustering
     blastn -db OTUs.fasta \
-    -outfmt '6 qseqid sseqid pident' \
-    -out match_list.txt \
-    -qcov_hsp_perc 75 \
-    -perc_identity 90 \
-    -query OTUs.fasta \
-    -num_threads 8
+        -outfmt '6 qseqid sseqid pident' \
+        -out match_list.txt \
+        -qcov_hsp_perc 75 \
+        -perc_identity 90 \
+        -query OTUs.fasta \
+        -num_threads 20
 
-    #Run LULU in R
-    Rscript $pipe_path/lulu.R
-    wait
 
-    # Drop discarded OTUs
-    awk 'NR>1{print $1}' OTU_table_LULU.txt > OTUs.list
-    cat OTUs.fasta | seqkit grep -w 0 -f OTUs.list > OTUs_LULU.fasta
+.. code-block:: R
+   :caption: run LULU post-clustering
+   :linenos:
 
-    rm OTUs.fasta.n* #remove blast database
+    #!/usr/bin/env Rscript
+
+    # specify minimum threshold of sequence similarity considering any OTU as an error of another
+    min_match = "90"
+
+    # specify OTU table 
+    OTU_table="OTU_table.txt"
+
+    ################################
+    library(devtools)
+    # load OTU table and match list
+    otutable = read.table(OTU_table, header = T, row.names = 1, sep = "\t")
+    matchlist = read.table("match_list.txt")
+
+    curated_result = lulu::lulu(otutable, matchlist, 
+        minimum_match = min_match)
+
+    # write post-clustered OTU table to file
+    curated_table = curated_result$curated_table
+    curated_table = cbind(OTU = rownames(curated_table), curated_table)
+    write.table(curated_table, file ="OTU_table_LULU.txt", 
+                sep = "\t", row.names = F, quote = FALSE)
+    write.table(curated_result$discarded_otus, 
+                file ="merged_units.lulu", col.names = FALSE, quote = FALSE)
+
+.. note:: 
+
+  Note that if the sample names start with a number, then the output OTU table may contain "X" prefix in the sample names. 
+
+
+.. code-block:: bash
+   :caption: match OTUs.fasta with post-clustered table (OTU_table_LULU)
+   :linenos:
+
+    # specify post-clustered table
+    OTU_table="OTU_table_LULU.txt"
+    # specify pre post-clustered OTUs fasta file
+    OTUs_fasta="OTUs.fasta"
+
+    # get matching OTUs
+    awk 'NR>1{print $1}' $OTU_table > OTUs_LULU.list
+    cat $OTUs_fasta | \
+      seqkit grep -w 0 -f OTUs_LULU.list > OTUs_LULU.fasta
+
+    # get matching RDP taxonomy results
+    head -n 1 ../RDP.taxonomy.metaMATE.filt.txt > RDP.taxonomy.txt
+    cat ../RDP.taxonomy.metaMATE.filt.txt | \
+      grep -wf OTUs_LULU.list >> RDP.taxonomy.txt
+
+    # get matching BLAST taxonomy results
+    head -n 1 ../BLAST_1st_hit.txt > BLAST_1st_hit.txt
+    cat ../BLAST_1st_hit.txt | \
+      grep -wf OTUs_LULU.list >> BLAST_1st_hit.txt
+
+
+    # move OTU_table two directories down
+    cd ..
+    mv $output_dir ../..
+
+    
+.. note:: 
+
+    The final OTUs data is ``OTU_table_LULU.txt`` and ``OTUs_LULU.fasta`` in the ``OTU_table`` directory.
+    The filtered RDP-classifier results (matching the ASVs in the latter files) is ``RDP.taxonomy.metaMATE.filt.txt`` in the ``metamate_out`` dir.
+    
 
 
 ____________________________________________________

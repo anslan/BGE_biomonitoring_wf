@@ -53,21 +53,21 @@ Bacteria/16S
 +=================================================+===========================+===================+
 | :ref:`Remove primers <remove_primers16S>`       | cutadapt                  | 4.4               |
 +-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Quality filtering <quality_filtering16S>` | DADA2                     | 2.28              |
+| :ref:`Quality filtering <quality_filtering16S>` | DADA2                     | 1.26              |
 +-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Denoise <denoise16S>`                     | DADA2                     | 2.28              |
+| :ref:`Denoise <denoise16S>`                     | DADA2                     | 1.26              |
 +-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Merge paired-end reads <denoise16S>`      | DADA2                     | 2.28              |
+| :ref:`Merge paired-end reads <denoise16S>`      | DADA2                     | 1.26              |
 +-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Chimera filtering <remove_chimeras16S>`   | DADA2                     | 2.28              |
+| :ref:`Chimera filtering <remove_chimeras16S>`   | DADA2                     | 1.26              |
 +-------------------------------------------------+---------------------------+-------------------+
 | :ref:`Remove tag-jumps <tagjumps16S>`           | UNCROSS2                  |                   |
 +-------------------------------------------------+---------------------------+-------------------+
 | :ref:`Merge sequencing runs* <mergeRuns16S>`    |                           |                   |
 +-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Taxonomy assignment <taxAssign16S>`       | naive Bayesian classifier | as in DADA2 v2.28 |
+| :ref:`Taxonomy assignment <taxAssign16S>`       | naive Bayesian classifier | as in DADA2 v1.26 |
 +-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Clustering ASVs to OTUs <clustering16S>`  | vsearch                   | 2.26.0            |
+| :ref:`Clustering ASVs to OTUs <clustering16S>`  | vsearch                   | 2.23              |
 +-------------------------------------------------+---------------------------+-------------------+
 | :ref:`Post-clustering <postclustering16S>`      | LULU, BLAST               | 0.1.0; 2.15.0     |
 +-------------------------------------------------+---------------------------+-------------------+

@@ -24,12 +24,12 @@
 
 |logo_BGE_alpha|
 
-Changelog history
-*****************
 
-.. toctree::
+v0.2b [2024_09_x]
+******************
 
-   changelog1
-   changelog2
+Implemented full bioinformatics workflow.
+
+____________________________________
 
 |eufund| |chfund| |ukrifund|
