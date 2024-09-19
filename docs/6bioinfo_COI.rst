@@ -296,7 +296,6 @@ Quality filtering
 Denoise and merge paired-end reads
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
 | Denoise and merge paired-end Illumina reads as in DADA2.
 |
 | When working with a **single directory** that hosts your fastq files, then
@@ -1293,7 +1292,7 @@ Clustering ASVs to OTUs
 
 
 .. code-block:: R
-   :caption: generate an OTU table based on the clustered ASVs (*.uc file).
+   :caption: generate an OTU table based on the clustered ASVs (.uc file).
    :linenos:
 
     #!/usr/bin/Rscript

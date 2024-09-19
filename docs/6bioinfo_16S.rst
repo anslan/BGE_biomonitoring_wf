@@ -128,7 +128,10 @@ ____________________________________________________
 Remove primers
 ~~~~~~~~~~~~~~
 
-Remove primer strings from paired-end data. 
+| Remove primer strings from paired-end data.
+|
+| When working with a **single directory** that hosts your fastq files, then
+| :yellow-background:`ignore (do not execute) the script lines in yellow.`
 
 .. note:: 
   
@@ -142,9 +145,11 @@ Remove primer strings from paired-end data.
 
 .. code-block:: bash
    :caption: remove primers with cutadapt
+   :emphasize-lines: 21-26, 51-52
+   :linenos:
 
     #!/bin/bash
-    ## workflow to remove primers via cutadapt [Sten Anslan]
+    ## workflow to remove primers via cutadapt
 
     # My working folder = /multiRunDir (see dir structure above)
 
@@ -155,6 +160,14 @@ Remove primer strings from paired-end data.
     fwd_primer=$"GTGYCAGCMGCCGCGGTAA"    #this is primer 515F
     rev_primer=$"GGCCGYCAATTYMTTTRAGTTT" #this is primer 926R
 
+    # edit primer trimming settings
+    maximum_error_rate="1" # Maximum error rate in primer string search;
+                           # if set as 1, then allow 1 mismatch;
+                           # if set as 0.1, then allow mismatch in 10% of the bases,
+                           # i.e. if a primer is 20 bp then allowing 2 mismatches.
+    overlap="19"           # The minimum overlap length. Keep it nearly as high
+                           # as the primer length to avoid short random matches.
+
     # get directory names if working with multiple sequencing runs
     DIRS=$(ls -d *) # -> sequencing_set01 sequencing_set02 sequencing_set03
 
@@ -162,18 +175,19 @@ Remove primer strings from paired-end data.
         printf "\nWorking with $sequencing_run \n"
         cd $sequencing_run
         #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-        mkdir primersCut_out
+        # make output dirs
+        mkdir -p primersCut_out
         mkdir -p primersCut_out/untrimmed
 
         ### Clip primers with cutadapt
         for inputR1 in *$read_R1*; do
             inputR2=$(echo $inputR1 | sed -e 's/R1/R2/')
             cutadapt --quiet \
-            -e 1 \
+            -e $maximum_error_rate \
             --minimum-length 32 \
-            --overlap 19 \
+            --overlap $overlap \
             --no-indels \
-            --cores 4 \
+            --cores=0 \
             --untrimmed-output primersCut_out/untrimmed/$inputR1 \
             --untrimmed-paired-output primersCut_out/untrimmed/$inputR2 \
             --pair-filter=both \
@@ -187,16 +201,20 @@ Remove primer strings from paired-end data.
         cd ..
     done
 
-
 .. _quality_filtering16S:
 
 Quality filtering 
 ~~~~~~~~~~~~~~~~~
 
-Quality filtering of the fastq files based on the allowed maximum error rate per sequence (as in DADA2).
+| Quality filtering of the fastq files based on the allowed maximum error rate per sequence (as in DADA2).
+|
+| When working with a **single directory** that hosts your fastq files, then
+| :yellow-background:`ignore (do not execute) the script lines in yellow.`
 
 .. code-block:: R
    :caption: quality filtering in DADA2 (in R)
+   :emphasize-lines: 13-19, 67-71
+   :linenos:
 
     #!/usr/bin/Rscript
     ## workflow to perform quality filtering within DADA2
@@ -234,17 +252,16 @@ Quality filtering of the fastq files based on the allowed maximum error rate per
             
             #quality filtering
             qfilt = filterAndTrim(R1s, filtR1, R2s, filtR2, 
-                                maxN = 0, 
-                                maxEE = c(2, 2), 
-                                truncQ = 2,  
-                                truncLen = c(0, 0),
-                                maxLen = 600, 
-                                minLen = 100, 
-                                minQ = 2, 
-                                rm.phix = TRUE, 
-                                matchIDs = TRUE,
-                                compress = TRUE, 
-                                multithread = TRUE)
+                                maxN = 0,            # max number of allowed N bases.
+                                maxEE = c(2, 2),     # max error rate per R1 and R2 read, respectively.
+                                truncQ = 2,          # truncate reads at the first instance of a quality score less than or equal to specified value. 
+                                truncLen = c(0, 0),  # truncate reads after specified length for R1 and R2 reads, respectively.
+                                maxLen = 600,        # discard reads longer than specified.
+                                minLen = 100,        # discard reads shorter than specified.
+                                minQ = 2,            # discard reads (after truncation) that contain a quality score below specified value.
+                                matchIDs = TRUE,     # output paired-end reads with matching IDs (for merging).
+                                compress = TRUE,     # gzip the output
+                                multithread = TRUE)  # use multiple threads
             saveRDS(qfilt, file.path(path_results, "qfilt_reads.rds"))
 
             # make sequence count report
@@ -257,7 +274,7 @@ Quality filtering of the fastq files based on the allowed maximum error rate per
             write.csv(seq_count, file.path(path_results, "seq_count_summary.csv"), 
                                 row.names = FALSE, quote = FALSE)
 
-            #save filtered R objects for denoising and merging (below)
+            # save filtered R objects for denoising and merging (below)
             filtR1 = sort(list.files(path_results, pattern = ".R1.fastq.gz", full.names = TRUE))
             filtR2 = sort(list.files(path_results, pattern = ".R2.fastq.gz", full.names = TRUE))
             sample_names = sapply(strsplit(basename(filtR1), ".R1.fastq.gz"), `[`, 1)
@@ -276,16 +293,21 @@ Quality filtering of the fastq files based on the allowed maximum error rate per
 Denoise and merge paired-end reads
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Denoise and merge paired-end Illumina reads as in DADA2.
+| Denoise and merge paired-end Illumina reads as in DADA2.
+|
+| When working with a **single directory** that hosts your fastq files, then
+| :yellow-background:`ignore (do not execute) the script lines in yellow.`
 
 
 .. code-block:: R
    :caption: denoise and merge paired-end reads in DADA2
+   :emphasize-lines: 7-13, 75-79
+   :linenos:
 
     #!/usr/bin/Rscript
     ## workflow to perform DADA2 denoising and merging
 
-    #load dada2 library 
+    # load dada2 library 
     library('dada2')
 
     # capturing the directory structure when working with multiple runs
@@ -369,18 +391,26 @@ Denoise and merge paired-end Illumina reads as in DADA2.
 Chimera filtering 
 ~~~~~~~~~~~~~~~~~
 
+| Remove putative chimeras with DADA2 'consensus' mode.
+|
+| When working with a **single directory** that hosts your fastq files, then
+| :yellow-background:`ignore (do not execute) the script lines in yellow.`
+
 .. code-block:: R
    :caption: remove chimeras in DADA2
+   :emphasize-lines: 14-20, 97-100
+   :linenos:
 
     #!/usr/bin/Rscript
-    ## workflow to perform chimera filtering within DADA2 [Sten Anslan]
+    ## workflow to perform chimera filtering within DADA2
 
     # load libraries
     library('dada2')
     library('openssl')
 
     # chimera filtering method
-    method = "consensus"  #"consensus" vs. "pooled"
+    method = "consensus" 
+
     # collapse ASVs that have no mismatshes or internal indels (identical up to shifts and/or length)
     collapseNoMismatch = "true"  #true/false 
 
@@ -478,12 +508,19 @@ Chimera filtering
 Remove tag-jumps
 ~~~~~~~~~~~~~~~~
 
+| Remove putative tag-jumps with UNCROSS2.
+|
+| When working with a **single directory** that hosts your fastq files, then
+| :yellow-background:`ignore (do not execute) the script lines in yellow.`
+
 .. code-block:: R
    :caption: removing putative tag-jumps with UNCROSS2 method
+   :emphasize-lines: 12-18, 112-116
+   :linenos:
 
    #!/usr/bin/Rscript
    ## Script to perform tag-jump removal; (C) Vladimir Mikryukov,
-                                        # edit, Sten Anslan
+                                             # edit, Sten Anslan
 
     # load libraries
     library(data.table)
@@ -505,17 +542,18 @@ Remove tag-jumps
             if (file.exists("ASV_table/ASV_table_collapsed.rds") == TRUE) {
                 tab = readRDS("ASV_table/ASV_table_collapsed.rds")
                 cat("input table = ASV_table/ASV_table_collapsed.rds\n")
-            } else {
+            } else { # loading chimera filtered ASV table
               tab = readRDS("ASV_table/chim_filt.rds")
               cat("input table = ASV_table/chim_filt.rds\n")
             }
 
+            # format ASV table
             ASVTABW = as.data.table(t(tab), keep.rownames = TRUE)
             colnames(ASVTABW)[1] = "ASV"
             # convert to long format
             ASVTAB = melt(data = ASVTABW, id.vars = "ASV",
             variable.name = "SampleID", value.name = "Abundance")
-            ## Remove zero-OTUs
+            # remove zero-OTUs
             ASVTAB = ASVTAB[ Abundance > 0 ]
             # estimate total abundance of sequence per plate
             ASVTAB[ , Total := sum(Abundance, na.rm = TRUE), by = "ASV" ]
@@ -540,15 +578,13 @@ Remove tag-jumps
                 p = as.numeric(set_p)
                 )
               )
-
             cat(" number of tag-jumps: ", sum(ASVTAB$TagJump, na.rm = TRUE), "\n")
           
-            # TJ stats
+            # tag-jump stats
             TJ = data.table(
                 Total_reads = sum(ASVTAB$Abundance),
                 Number_of_TagJump_Events = sum(ASVTAB$TagJump),
-                TagJump_reads = sum(ASVTAB[ TagJump == TRUE ]$Abundance, na.rm = T)
-                )
+                TagJump_reads = sum(ASVTAB[ TagJump == TRUE ]$Abundance, na.rm = T))
 
             TJ$ReadPercent_removed = with(TJ, (TagJump_reads / Total_reads * 100))
             fwrite(x = TJ, file = "ASV_table/TagJump_stats.txt", sep = "\t")
@@ -605,14 +641,17 @@ Remove tag-jumps
 Merge sequencing runs
 ~~~~~~~~~~~~~~~~~~~~~
 
-| If previous processing was applied on :ref:`multiple sequencing runs <multiRunDir16S>` , then here, 
+| If previous processing was applied on :ref:`multiple sequencing runs <multiRunDirCOI>` , then here, 
 | merge those sequenceing runs to form a single, unified ASV table. 
+| Assuming that tag-jump filtering was performed (inputs = ASV_table_TagJumpFiltered.rds)
 
 .. code-block:: R
    :caption: merge ASV tables from multiple sequencing runs
+   :emphasize-lines: 1-88
+   :linenos:
 
     #!/usr/bin/Rscript
-    ## Merge sequencing runs, if working with multiple ones; [Sten Anslan]
+    ## Merge sequencing runs, if working with multiple ones
 
     # load libraries
     library('dada2')
@@ -713,147 +752,14 @@ coming soon ...
 Clustering ASVs to OTUs
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: bash
-   :caption: clustering ASVs to OTUs
-
-   #!/bin/bash
-    ## Cluster ASVs to OTUs with vsearch; [Sten Anslan]
-
-    # specify working files (ASVs.fasta and ASV_table)
-    fasta=$"ASVs.merged_collapsed.fasta"      # no size annotation (i.e. ;size=)
-    ASV_tab=$"ASV_table.merged_collapsed.txt" # 2nd column must be "Sequence"
-    export ASV_tab                            # export for R (below)
-
-    #specify clustering threshold
-    clustering_thresh="0.97"
-
-    # get ASV size annotation (global sum seqs) from an ASV table
-        # & cluster size annotated ASVs to OTUs using vsearch
-    awk 'NR>1{for(i=3;i<=NF;i++) t+=$i; print ">"$1";size="t"\n"$2; t=0}' $ASV_tab | \
-    vsearch --cluster_fast - \
-        --id $clustering_thresh \
-        --iddef 2 \
-        --sizein \
-        --xsize \
-        --fasta_width 0 \
-        --centroids OTUs.fasta \
-        --uc OTUs.uc
-
-.. code-block:: R
-   :caption: generating OTU table based on the clustered ASVs
-
-    #!/usr/bin/Rscript
-    ## generate OTU table based on the clustered ASVs; (C) Vladimir Mikryukov,
-                                                        # edit, Sten Anslan.
-    # load library
-    library('data.table')
-
-    ## Required inputs
-    inp_ASVTAB = Sys.getenv('ASV_tab') # get above specified ASV_table file
-                                      # First column witout header
-                                      # 2nd col is SEQUENCE COLUMN! 
-                                      # NO SIZE ANNOTATION of ASV headers
-    ## Load input data - ASV table
-    cat("\n ASV_table to OTU_table: input = ", inp_ASVTAB, "\n")
-    ASVTAB = fread(file = inp_ASVTAB, header = TRUE, sep = "\t")
-    #drop 2nd col which has seqs
-    ASVTAB[[2]] = NULL
-
-    ## Load input data - UC mapping file
-    UC = fread(file = "OTUs.uc", header = FALSE, sep = "\t")
-    UC = UC[ V1 != "S" ]
-    UC[, ASV := tstrsplit(V9, ";", keep = 1) ]
-    UC[, OTU := tstrsplit(V10, ";", keep = 1) ]
-    UC[V1 == "C", OTU := ASV ]
-    UC = UC[, .(ASV, OTU)]
-
-    #Rename V1 col to "ASV"
-    colnames(ASVTAB)[1] = "ASV" 
-    ## Convert ASV table to long format
-    ASV = melt(data = ASVTAB,
-            id.vars = "ASV",
-            variable.name = "SampleID", 
-            value.name = "Abundance")
-    ASV = ASV[ Abundance > 0 ]
-
-    ## Add OTU IDs
-    ASV = merge(x = ASV, y = UC, by = "ASV", all.x = TRUE)
-    ## Summarize
-    OTU = ASV[ , .(Abundance = sum(Abundance, na.rm = TRUE)), by = c("SampleID", "OTU")]
-
-    ## Reshape to wide format
-    OTU_tab = dcast(data = ASV,
-              formula = OTU ~ SampleID,
-              value.var = "Abundance",
-              fun.aggregate = sum, fill = 0)
-    ## Export OTU table
-      # OTU names correspond to most abundant ASV in an OTU cluster
-    fwrite(x = OTU_tab, file = "OTU_table.txt", sep = "\t")
-
+coming soon ...
 
 .. _postclustering16S:
 
 Post-clustering
 ~~~~~~~~~~~~~~~
 
-Post-clustering for merging consistently co-occuring 'daughter-OTUs' with `LULU <https://github.com/tobiasgf/lulu>`_. 
-
-.. code-block:: bash
-   :caption: make match list database for post-clustering
-
-    #!/bin/bash
-    ## make match list database for post-clustering using BLAST; [Sten Anslan] 
-
-    # make blast database
-    makeblastdb -in OTUs.fasta -parse_seqids -dbtype nucl
-    # generate match list
-    blastn -db OTUs.fasta \
-            -outfmt '6 qseqid sseqid pident' \
-            -out match_list.txt \
-            -qcov_hsp_perc 75 \
-            -perc_identity 89 \
-            -query OTUs.fasta \
-            -num_threads 8
-
-
-.. code-block:: R
-   :caption: post-clustering with LULU
-
-    #!/usr/bin/Rscript
-    ## run post-clustering with LULU; [Sten Anslan] 
-
-    # load library 
-    library('devtools')
-
-    # load OTU table and match list
-    otutable    = read.table("OTU_table.txt", header = T, row.names = 1)
-    matchlist   = read.table("match_list.txt")
-    lulu_result = lulu::lulu(otutable, matchlist, minimum_match = 90) 
-
-    # export post-clustered OTU table
-    write.table(lulu_result$curated_table, 
-                file ="OTU_table_LULU.txt", 
-                sep = "\t", col.names = NA,
-                row.names = TRUE, quote = FALSE)
-    write.table(lulu_result$discarded_otus, 
-                file ="discarded_lulu_OTUs.txt", 
-                sep = "\t", col.names = NA, 
-                row.names = TRUE, quote = FALSE)
-
-
-.. code-block:: bash
-   :caption: get post-clustered fasta file
-
-    #!/bin/bash
-    ## make OTUs_LULU.fasta file corresponding to the OTUs in the LULU filtered table; [Sten Anslan] 
-
-    # drop discarded OTUs
-    awk 'NR>1{print $1}' OTU_table_LULU.txt > OTUs.list
-    cat OTUs.fasta | seqkit grep -w 0 -f OTUs.list > OTUs_LULU.fasta
-
-    # remove blast database files 
-    rm OTUs.fasta.n* 
-    rm OTUs.list 
+coming soon ...
 
 ____________________________________________________
 
