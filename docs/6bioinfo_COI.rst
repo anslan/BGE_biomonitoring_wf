@@ -48,33 +48,68 @@ Arthropods/COI
 | 
 | The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
 
-+-------------------------------------------------+---------------+-------------+
-| Process                                         | Software      | Version     |
-+=================================================+===============+=============+
-| :ref:`Remove primers <remove_primersCOI>`       | cutadapt      | 4.4         |
-+-------------------------------------------------+---------------+-------------+
-| :ref:`Quality filtering <quality_filteringCOI>` | DADA2         | 1.26        |
-+-------------------------------------------------+---------------+-------------+
-| :ref:`Denoise <denoiseCOI>`                     | DADA2         | 1.26        |
-+-------------------------------------------------+---------------+-------------+
-| :ref:`Merge paired-end reads <denoiseCOI>`      | DADA2         | 1.26        |
-+-------------------------------------------------+---------------+-------------+
-| :ref:`Chimera filtering <remove_chimerasCOI>`   | DADA2         | 1.26        |
-+-------------------------------------------------+---------------+-------------+
-| :ref:`Remove tag-jumps <tagjumpsCOI>`           | UNCROSS2      |             |
-+-------------------------------------------------+---------------+-------------+
-| :ref:`Merge sequencing runs* <mergeRunsCOI>`    | DADA2         | 1.26        |
-+-------------------------------------------------+---------------+-------------+
-| :ref:`Pre-select target taxa <sorttaxaCOI>`     | RDP, R        | 2.13        |
-+-------------------------------------------------+---------------+-------------+
-| :ref:`Remove NUMTs <numtsCOI>`                  | metaMATE      | 0.4.3       |
-+-------------------------------------------------+---------------+-------------+
-| :ref:`Taxonomy assignment <taxAssignCOI>`       | BLAST         | 2.15.0      |
-+-------------------------------------------------+---------------+-------------+
-| :ref:`Clustering ASVs to OTUs <clusteringCOI>`  | vsearch, LULU | 2.23, 0.1.0 |
-+-------------------------------------------------+---------------+-------------+
+
+Dependencies
+~~~~~~~~~~~~
+
++-------------------------------------------------+---------------+---------------+
+| Process                                         | Software      | Version       |
++=================================================+===============+===============+
+| :ref:`Remove primers <remove_primersCOI>`       | cutadapt      | 4.9           |
++-------------------------------------------------+---------------+---------------+
+| :ref:`Quality filtering <quality_filteringCOI>` | DADA2         | 1.30          |
++-------------------------------------------------+---------------+---------------+
+| :ref:`Denoise <denoiseCOI>`                     | DADA2         | 1.30          |
++-------------------------------------------------+---------------+---------------+
+| :ref:`Merge paired-end reads <denoiseCOI>`      | DADA2         | 1.30          |
++-------------------------------------------------+---------------+---------------+
+| :ref:`Chimera filtering <remove_chimerasCOI>`   | DADA2         | 1.30          |
++-------------------------------------------------+---------------+---------------+
+| :ref:`Remove tag-jumps <tagjumpsCOI>`           | UNCROSS2      |               |
++-------------------------------------------------+---------------+---------------+
+| :ref:`Merge sequencing runs* <mergeRunsCOI>`    | DADA2         | 1.30          |
++-------------------------------------------------+---------------+---------------+
+| :ref:`Pre-select target taxa <sorttaxaCOI>`     | RDP, R        | 2.13          |
++-------------------------------------------------+---------------+---------------+
+| :ref:`Remove NUMTs <numtsCOI>`                  | metaMATE      | 0.4.3         |
++-------------------------------------------------+---------------+---------------+
+| :ref:`Taxonomy assignment <taxAssignCOI>`       | BLAST         | 2.16.0+       |
++-------------------------------------------------+---------------+---------------+
+| :ref:`Clustering ASVs to OTUs <clusteringCOI>`  | vsearch, LULU | 2.28.1, 0.1.0 |
++-------------------------------------------------+---------------+---------------+
 
 \*only applicable when there are multiple sequencing runs per study. 
+
+
+.. note::
+
+    All the dependencies/software of the pipeline are available on a `Docker image <https://hub.docker.com/r/pipecraft/bioscanflow>`_.
+
+| Download `Docker for windows <https://www.docker.com/get-started>`_ 
+| Download `Docker for Mac <https://www.docker.com/get-started>`_ 
+| Install Docker for Linux - `follow the guidelines under appropriate Linux distribution <https://docs.docker.com/engine/install/ubuntu/>`_
+
+.. code-block:: bash
+   :caption: get the Docker image
+   
+   docker pull pipecraft/bioscanflow:1
+
+.. code-block:: bash
+   :caption: example of running the pipeline via Docker image
+   
+   # run docker 
+    # specify the files location with -v flag  ($PWD = the current working directory)
+   docker run -i --tty -v $PWD/:/Files pipecraft/bioscanflow:1 
+
+   # inside the container, the files are accessible in the /Files dir
+   cd Files
+
+   # checking if cutadapt is available
+   cutadapt -h 
+
+   # ready to run the pipe as below ...
+    ## make sure that via the shared folder (-v) path you have access also to the reference databases.
+
 
 
 Data structure
@@ -789,7 +824,6 @@ When RDP-classifier is finished, then get the target taxon, based on the user sp
    :linenos:
 
     #!/usr/bin/env Rscript
-
     ### Filter dataset based on RDP classifier results to include target taxa 
 
     # specify taxon and threshold
@@ -975,7 +1009,7 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
    :linenos:
 
     #!/bin/bash
-    ## remove NUMTs with metaMATE
+    ## run metaMATE-find
   
     ## go to the directory that hosts your ASVs.fasta and ASV table files.
   
@@ -1103,6 +1137,8 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
    :caption: run metaMATE-dump to discard putative artefact ASVs
    :linenos:
 
+    #!/bin/bash
+
     ## metaMATE-dump 
     ASV_fasta=$(basename $ASV_fasta)
     
@@ -1154,6 +1190,8 @@ Taxonomy assignment
 .. code-block:: bash
    :caption: BLAST
    :linenos:
+
+    #!/bin/bash
 
     # specify the query fasta file
     cd metamate_out
@@ -1243,6 +1281,8 @@ Clustering ASVs to OTUs
    :caption: get the size of ASVs
    :linenos:
 
+    #!/usr/bin/env Rscript
+
     # specify input ASVs table and fasta
     ASV_table="ASV_table_tax_filt_metaMATE.filt.txt" # specify ASV table file  
     ASV_fasta="ASVs_tax_filt_metaMATE.filt.fasta"    # specify ASVs fasta file  
@@ -1272,8 +1312,10 @@ Clustering ASVs to OTUs
                             width = max(width(ASV_fasta)))
 
 .. code-block:: bash
-   :caption: clustering
+   :caption: clustering with vsearch
    :linenos:
+
+    #!/bin/bash 
 
     # make output dir.
     output_dir="OTU_table"
@@ -1346,6 +1388,8 @@ Clustering ASVs to OTUs
    :caption: generate match list for post-clustering
    :linenos:
 
+    #!/bin/bash
+
     # go to directrory that contains OTUs
     cd $output_dir # 'OTU_table' in this case
 
@@ -1366,7 +1410,7 @@ Clustering ASVs to OTUs
    :caption: run LULU post-clustering
    :linenos:
 
-    #!/usr/bin/env Rscript
+    #!/usr/bin/Rscript
 
     # specify minimum threshold of sequence similarity considering any OTU as an error of another
     min_match = "90"
@@ -1399,6 +1443,8 @@ Clustering ASVs to OTUs
 .. code-block:: bash
    :caption: match OTUs.fasta with post-clustered table (OTU_table_LULU)
    :linenos:
+
+    #!/bin/bash
 
     # specify post-clustered table
     OTU_table="OTU_table_LULU.txt"
