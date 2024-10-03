@@ -237,6 +237,7 @@ Remove primers
         cd ..
     done
 
+____________________________________________________
 
 .. _quality_filteringCOI:
 
@@ -260,7 +261,7 @@ Quality filtering
     library('dada2')
 
     # specify the identifier string for the R1 files
-    read_R1 = ".R1"
+    read_R1 = "_R1"
     
     # get the identifier string for the R2 files
     read_R2 = gsub("R1", "R2", read_R1)
@@ -325,6 +326,7 @@ Quality filtering
         }
     }
 
+____________________________________________________
 
 .. _denoiseCOI:
 
@@ -422,7 +424,7 @@ Denoise and merge paired-end reads
         }
     }
 
-
+____________________________________________________
 
 .. _remove_chimerasCOI:
 
@@ -540,7 +542,7 @@ Chimera filtering
         }
     }
 
-
+____________________________________________________
 
 .. _tagjumpsCOI:
 
@@ -674,7 +676,7 @@ Remove tag-jumps
         }
     }
 
-
+____________________________________________________
 
 .. _mergeRunsCOI:
 
@@ -779,6 +781,8 @@ Merge sequencing runs
                         " sequences."))
     }
 
+____________________________________________________
+
 .. _sorttaxaCOI:
 
 Pre-select target taxa
@@ -788,6 +792,9 @@ Pre-select target taxa
 | For example, if you are interested in Hymenoptera, then discard all ASVs that do not match to the target taxon based on the user defined threshold. 
 | Here, the taxonomy is assigned with the RDP-classifier against `CO1Classifier v5.1.0 database. <https://github.com/terrimporter/CO1Classifier>`_ 
 | --- `Download the CO1Classifier v5.1.0 for RDP here (click) <https://github.com/terrimporter/CO1Classifier/releases/download/RDP-COI-v5.1.0/RDP_COIv5.1.0.zip>`_ ---
+|
+| **See below if no pre-selection is preferred**
+
 
 .. code-block:: bash
    :caption: assign taxonomy with RDP-classifier
@@ -806,6 +813,7 @@ Pre-select target taxa
     reference_database=$(realpath $reference_database) # get database names with full path
 
     # specify input fasta file
+    cd ASV_table
     ASV_fasta="ASVs.fasta"
 
     # Run RDP-classifier
@@ -956,8 +964,37 @@ When RDP-classifier is finished, then get the target taxon, based on the user sp
                     width = max(width(fasta.tax_filt)))
 
     
+____________________________________________________
 
-    
+**If no pre-selection is preferred, then just remove "Sequence" column from the ASV table**
+
+.. code-block:: R
+   :caption: remove "Sequence" column from the ASV table
+   :linenos:
+
+    # read ASV table
+    ASV_table = "ASV_table.txt"
+    table = read.table(ASV_table, sep = "\t", check.names = F, header = T, row.names = 1)
+
+    # check ASV table; if 1st col is sequence, then remove it for metaMATE
+    if (colnames(table)[1] == "Sequence") {
+        cat("## removing 'Sequence' column ... \n")
+        table = table[, -1]
+
+        # write filtered table
+        table_filt = cbind(ASV = rownames(table), table)
+        write.table(table_filt, 
+                file = paste0(sub("\\.[^.]*$", ".noSeq.txt", ASV_table)),  
+                quote = F, 
+    	        row.names = F,
+                sep = "\t")
+
+    } else {
+        cat("## there was no 'Sequence' column; proceed with the current table ... \n")
+    }
+
+____________________________________________________    
+  
 .. _numtsCOI:
 
 Remove NUMTs
@@ -1014,13 +1051,14 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     ## go to the directory that hosts your ASVs.fasta and ASV table files.
   
     # specify input ASVs table and fasta
-    ASV_table="ASV_table_tax_filt.txt"   # specify ASV table file 
+    ASV_table="ASV_table_tax_filt.txt"   # specify ASV table file;
+                                         # make sure that the 2nd col is not "Sequence"
     ASV_fasta="ASVs_tax_filt.fasta"      # specify ASVs fasta file 
 
     # specify variables
     genetic_code="5"        # the standard genetic code. 5 is invertebrate mitochondrial code
     length="313"            # the expected length of an amplicon
-    basesvariation="3"      # allowed length variation (bp) from the expected length of an amplicon
+    basesvariation="6"      # allowed length variation (bp) from the expected length of an amplicon
     taxgroups="undefined"   # (optional); if sequence binning is to be performed on 
                                # a per-taxon basis (as in specifications file) 
                                   # then specify the taxon grouping file
@@ -1055,6 +1093,7 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
         printf '%s\n' "ERROR]: specifications file seems to be wrong. 
          Does not contain any of the terms (library, total, clade, taxon)."
     fi
+
 
     ### metaMATE-find
     printf "# Running metaMATE-find\n"
@@ -1178,6 +1217,7 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     
     If deemed relevant, then you may proceed with the below workflow below that includes additional taxonomy assignemnt with BLAST, and clustering ASVs to OTUs. 
 
+____________________________________________________
 
 .. _taxAssignCOI:
 
@@ -1268,6 +1308,10 @@ Taxonomy assignment
     qseqid\t1st_hit\tqlen\tslen\tqstart\tqend\tsstart\tsend\tevalue\tlength\tnident\tmismatch\tgapopen\tgaps\tsstrand\tqcovs\tpident' \
     BLAST_1st_hit.txt
 
+    #remove unnecessary files 
+    rm *.names
+
+____________________________________________________
 
 .. _clusteringCOI:
 
@@ -1287,8 +1331,6 @@ Clustering ASVs to OTUs
     ASV_table="ASV_table_tax_filt_metaMATE.filt.txt" # specify ASV table file  
     ASV_fasta="ASVs_tax_filt_metaMATE.filt.fasta"    # specify ASVs fasta file  
 
-    # specify the clustering threshold
-    clustering_thresh="0.97"
     ################################
     library(Biostrings)
     # Read the ASV table
@@ -1316,6 +1358,9 @@ Clustering ASVs to OTUs
    :linenos:
 
     #!/bin/bash 
+
+    # specify the clustering threshold
+    clustering_thresh="0.97"
 
     # make output dir.
     output_dir="OTU_table"
