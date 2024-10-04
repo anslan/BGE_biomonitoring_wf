@@ -52,31 +52,33 @@ Arthropods/COI
 Dependencies
 ~~~~~~~~~~~~
 
-+-------------------------------------------------+---------------+---------------+
-| Process                                         | Software      | Version       |
-+=================================================+===============+===============+
-| :ref:`Remove primers <remove_primersCOI>`       | cutadapt      | 4.9           |
-+-------------------------------------------------+---------------+---------------+
-| :ref:`Quality filtering <quality_filteringCOI>` | DADA2         | 1.30          |
-+-------------------------------------------------+---------------+---------------+
-| :ref:`Denoise <denoiseCOI>`                     | DADA2         | 1.30          |
-+-------------------------------------------------+---------------+---------------+
-| :ref:`Merge paired-end reads <denoiseCOI>`      | DADA2         | 1.30          |
-+-------------------------------------------------+---------------+---------------+
-| :ref:`Chimera filtering <remove_chimerasCOI>`   | DADA2         | 1.30          |
-+-------------------------------------------------+---------------+---------------+
-| :ref:`Remove tag-jumps <tagjumpsCOI>`           | UNCROSS2      |               |
-+-------------------------------------------------+---------------+---------------+
-| :ref:`Merge sequencing runs* <mergeRunsCOI>`    | DADA2         | 1.30          |
-+-------------------------------------------------+---------------+---------------+
-| :ref:`Pre-select target taxa <sorttaxaCOI>`     | RDP, R        | 2.13          |
-+-------------------------------------------------+---------------+---------------+
-| :ref:`Remove NUMTs <numtsCOI>`                  | metaMATE      | 0.4.3         |
-+-------------------------------------------------+---------------+---------------+
-| :ref:`Taxonomy assignment <taxAssignCOI>`       | BLAST         | 2.16.0+       |
-+-------------------------------------------------+---------------+---------------+
-| :ref:`Clustering ASVs to OTUs <clusteringCOI>`  | vsearch, LULU | 2.28.1, 0.1.0 |
-+-------------------------------------------------+---------------+---------------+
++-----------------------------------------------------+----------+---------+
+| Process                                             | Software | Version |
++=====================================================+==========+=========+
+| :ref:`Remove primers <remove_primersCOI>`           | cutadapt | 4.9     |
++-----------------------------------------------------+----------+---------+
+| :ref:`Quality filtering <quality_filteringCOI>`     | DADA2    | 1.30    |
++-----------------------------------------------------+----------+---------+
+| :ref:`Denoise <denoiseCOI>`                         | DADA2    | 1.30    |
++-----------------------------------------------------+----------+---------+
+| :ref:`Merge paired-end reads <denoiseCOI>`          | DADA2    | 1.30    |
++-----------------------------------------------------+----------+---------+
+| :ref:`Chimera filtering <remove_chimerasCOI>`       | DADA2    | 1.30    |
++-----------------------------------------------------+----------+---------+
+| :ref:`Remove tag-jumps <tagjumpsCOI>`               | UNCROSS2 |         |
++-----------------------------------------------------+----------+---------+
+| :ref:`Merge sequencing runs* <mergeRunsCOI>`        | DADA2    | 1.30    |
++-----------------------------------------------------+----------+---------+
+| :ref:`Pre-select target taxa <sorttaxaCOI>`         | RDP, R   | 2.13    |
++-----------------------------------------------------+----------+---------+
+| :ref:`Remove NUMTs <numtsCOI>`                      | metaMATE | 0.4.3   |
++-----------------------------------------------------+----------+---------+
+| :ref:`Taxonomy assignment <taxAssignCOI>`           | BLAST    | 2.16.0+ |
++-----------------------------------------------------+----------+---------+
+| :ref:`Clustering ASVs to OTUs <clusteringCOI>`      | vsearch  | 2.28.1  |
++-----------------------------------------------------+----------+---------+
+| :ref:`Post-clusteringlustering <postclusteringCOI>` | LULU     | 0.1.0   |
++-----------------------------------------------------+----------+---------+
 
 \*only applicable when there are multiple sequencing runs per study. 
 
@@ -570,6 +572,9 @@ Remove tag-jumps
     set_f = 0.03 # f-parameter of UNCROSS (e.g., 0.03)
     set_p = 1    # p-parameter (e.g., 1.0)
 
+    # output dir
+    path_results="ASV_table"
+
     # capturing the directory structure when working with multiple runs
     wd = getwd() # -> wd is "~/multiRunDir"
     dirs = list.dirs(recursive = FALSE)
@@ -579,7 +584,7 @@ Remove tag-jumps
             print(paste0("Working with ", dirs[i]))
             #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
             # load ASV table
-             # loading ASV_table_collapsed if collapseNoMismatch was "true" (above)
+            # loading ASV_table_collapsed if collapseNoMismatch was "true" (above)
             if (file.exists("ASV_table/ASV_table_collapsed.rds") == TRUE) {
                 tab = readRDS("ASV_table/ASV_table_collapsed.rds")
                 cat("input table = ASV_table/ASV_table_collapsed.rds\n")
@@ -660,7 +665,7 @@ Remove tag-jumps
             row.names(toutput) = asv_headers
             # write ASVs.fasta to path_results
             asv_fasta = c(rbind(paste(">", asv_headers, sep=""), asv_seqs))
-            write(asv_fasta, file.path(path_results, "ASV_table_TagJumpFiltered.fasta"))
+            write(asv_fasta, file.path(path_results, "ASVs_TagJumpFiltered.fasta"))
             # write ASVs table to path_results
             write.table(toutput, file.path(path_results, "ASV_table_TagJumpFiltered.txt"), 
                                     sep = "\t", col.names = NA, row.names = TRUE, quote = FALSE)
@@ -1319,7 +1324,6 @@ Clustering ASVs to OTUs
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 | Clustering ASVs to OTUs with vsearch. 
-| Applying also post-clustering with LULU to merge potential "daughter-OTUs".
 
 .. code-block:: R
    :caption: get the size of ASVs
@@ -1410,6 +1414,8 @@ Clustering ASVs to OTUs
         id.vars = colnames(ASV_table)[1],
         variable.name = "SampleID", value.name = "Abundance")
     ASV = ASV[ Abundance > 0 ]
+     # add colnames, to make sure 1st is 'ASV'
+    colnames(ASV) = c("ASV", "SampleID", "Abundance")
 
     # add OTU IDs
     ASV = merge(x = ASV, y = UC, by = "ASV", all.x = TRUE)
@@ -1428,6 +1434,13 @@ Clustering ASVs to OTUs
     fwrite(x = OTU_table, file = file.path(output_dir, 
                                     "OTU_table.txt"), sep = "\t")
 
+
+.. _postclusteringCOI:
+
+Post-clustering
+~~~~~~~~~~~~~~~
+
+Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
 
 .. code-block:: bash
    :caption: generate match list for post-clustering
@@ -1511,6 +1524,9 @@ Clustering ASVs to OTUs
     cat ../BLAST_1st_hit.txt | \
       grep -wf OTUs_LULU.list >> BLAST_1st_hit.txt
 
+
+    # remove unnecessary files
+    rm OTUs.fasta.n*
 
     # move OTU_table two directories down
     cd ..

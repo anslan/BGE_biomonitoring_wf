@@ -48,38 +48,72 @@ Bacteria/16S
 | 
 | The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
 
-+-------------------------------------------------+---------------------------+-------------------+
-| Process                                         | Software                  | Version           |
-+=================================================+===========================+===================+
-| :ref:`Remove primers <remove_primers16S>`       | cutadapt                  | 4.4               |
-+-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Quality filtering <quality_filtering16S>` | DADA2                     | 1.26              |
-+-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Denoise <denoise16S>`                     | DADA2                     | 1.26              |
-+-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Merge paired-end reads <denoise16S>`      | DADA2                     | 1.26              |
-+-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Chimera filtering <remove_chimeras16S>`   | DADA2                     | 1.26              |
-+-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Remove tag-jumps <tagjumps16S>`           | UNCROSS2                  |                   |
-+-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Merge sequencing runs* <mergeRuns16S>`    |                           |                   |
-+-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Taxonomy assignment <taxAssign16S>`       | naive Bayesian classifier | as in DADA2 v1.26 |
-+-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Clustering ASVs to OTUs <clustering16S>`  | vsearch                   | 2.23              |
-+-------------------------------------------------+---------------------------+-------------------+
-| :ref:`Post-clustering <postclustering16S>`      | LULU, BLAST               | 0.1.0; 2.15.0     |
-+-------------------------------------------------+---------------------------+-------------------+
+
+Dependencies
+~~~~~~~~~~~~
+
++-----------------------------------------------------+----------+---------+
+| Process                                             | Software | Version |
++=====================================================+==========+=========+
+| :ref:`Remove primers <remove_primers16S>`           | cutadapt | 4.9     |
++-----------------------------------------------------+----------+---------+
+| :ref:`Quality filtering <quality_filtering16S>`     | DADA2    | 1.30    |
++-----------------------------------------------------+----------+---------+
+| :ref:`Denoise <denoise16S>`                         | DADA2    | 1.30    |
++-----------------------------------------------------+----------+---------+
+| :ref:`Merge paired-end reads <denoise16S>`          | DADA2    | 1.30    |
++-----------------------------------------------------+----------+---------+
+| :ref:`Chimera filtering <remove_chimeras16S>`       | DADA2    | 1.30    |
++-----------------------------------------------------+----------+---------+
+| :ref:`Remove tag-jumps <tagjumps16S>`               | UNCROSS2 |         |
++-----------------------------------------------------+----------+---------+
+| :ref:`Merge sequencing runs* <mergeRuns16S>`        | DADA2    | 1.30    |
++-----------------------------------------------------+----------+---------+
+| :ref:`Taxonomy assignment <taxAssign16S>`           | BLAST    | 2.16.0+ |
++-----------------------------------------------------+----------+---------+
+| :ref:`Clustering ASVs to OTUs <clustering16S>`      | vsearch  | 2.28.1  |
++-----------------------------------------------------+----------+---------+
+| :ref:`Post-clusteringlustering <postclustering16S>` | LULU     | 0.1.0   |
++-----------------------------------------------------+----------+---------+
+
 
 \*only applicable when there are multiple sequencing runs per study. 
+
+
+.. note::
+
+    All the dependencies/software of the pipeline are available on a `Docker image <https://hub.docker.com/r/pipecraft/bioscanflow>`_.
+
+| Download `Docker for windows <https://www.docker.com/get-started>`_ 
+| Download `Docker for Mac <https://www.docker.com/get-started>`_ 
+| Install Docker for Linux - `follow the guidelines under appropriate Linux distribution <https://docs.docker.com/engine/install/ubuntu/>`_
+
+.. code-block:: bash
+   :caption: get the Docker image
+   
+   docker pull pipecraft/bioscanflow:1
+
+.. code-block:: bash
+   :caption: example of running the pipeline via Docker image
+   
+   # run docker 
+    # specify the files location with -v flag  ($PWD = the current working directory)
+   docker run -i --tty -v $PWD/:/Files pipecraft/bioscanflow:1 
+
+   # inside the container, the files are accessible in the /Files dir
+   cd Files
+
+   # checking if cutadapt is available
+   cutadapt -h 
+
+   # ready to run the pipe as below ...
+    ## make sure that via the shared folder (-v) path you have access also to the reference databases.
 
 
 
 Data structure
 ~~~~~~~~~~~~~~
 
-.. _multiRunDir16S:
 
 Multiple sequencing runs
 ------------------------
@@ -223,7 +257,7 @@ Quality filtering
     library('dada2')
 
     # specify the identifier string for the R1 files
-    read_R1 = ".R1"
+    read_R1 = "_R1"
     
     # get the identifier string for the R2 files
     read_R2 = gsub("R1", "R2", read_R1)
@@ -529,6 +563,9 @@ Remove tag-jumps
     set_f = 0.03 # f-parameter of UNCROSS (e.g., 0.03)
     set_p = 1    # p-parameter (e.g., 1.0)
 
+    # output dir
+    path_results="ASV_table"
+
     # capturing the directory structure when working with multiple runs
     wd = getwd() # -> wd is "~/multiRunDir"
     dirs = list.dirs(recursive = FALSE)
@@ -619,7 +656,7 @@ Remove tag-jumps
             row.names(toutput) = asv_headers
             # write ASVs.fasta to path_results
             asv_fasta = c(rbind(paste(">", asv_headers, sep=""), asv_seqs))
-            write(asv_fasta, file.path(path_results, "ASV_table_TagJumpFiltered.fasta"))
+            write(asv_fasta, file.path(path_results, "ASVs_TagJumpFiltered.fasta"))
             # write ASVs table to path_results
             write.table(toutput, file.path(path_results, "ASV_table_TagJumpFiltered.txt"), 
                                     sep = "\t", col.names = NA, row.names = TRUE, quote = FALSE)
@@ -641,7 +678,7 @@ Remove tag-jumps
 Merge sequencing runs
 ~~~~~~~~~~~~~~~~~~~~~
 
-| If previous processing was applied on :ref:`multiple sequencing runs <multiRunDirCOI>` , then here, 
+| If previous processing was applied on :ref:`multiple sequencing runs <multiRunDir16S>` , then here, 
 | merge those sequenceing runs to form a single, unified ASV table. 
 | Assuming that tag-jump filtering was performed (inputs = ASV_table_TagJumpFiltered.rds)
 
@@ -745,21 +782,333 @@ Merge sequencing runs
 Taxonomy assignment
 ~~~~~~~~~~~~~~~~~~~
 
-coming soon ...
+| Assign taxonomy with **BLAST**. 
+| Herein using the same `SILVA138.1 reference database <https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1>`_ 
+
+.. code-block:: bash
+   :caption: BLAST
+   :linenos:
+
+    #!/bin/bash
+
+    # specify the query fasta file
+    cd ASV_table
+    fasta=$"ASVs_TagJumpFiltered.fasta"
+
+    # specify reference database for BLAST 
+    reference_database="silva_nr99_v138.1_wSpecies_train_set.fa"
+    reference_database=$(realpath $reference_database) # get full directory path
+
+
+    ## if the database is just in fasta format, then convert it to BLAST format
+
+    ### Check and assign BLAST database
+    d1=$(echo $reference_database | awk 'BEGIN{FS=OFS="."}{print $NF}')
+    #make blast database if db is not formatted for BLAST
+    db_dir=$(dirname $reference_database)
+    check_db_presence=$(ls -1 $db_dir/*.nhr 2>/dev/null | wc -l)
+    if (( $check_db_presence != 0 )); then
+        if [[ $d1 == "fasta" ]] || [[ $d1 == "fa" ]] || [[ $d1 == "fas" ]] || [[ $d1 == "fna" ]] || [[ $d1 == "ffn" ]]; then
+            database=$"-db $reference_database"
+        elif [[ $d1 == "ndb" ]] || [[ $d1 == "nhr" ]] || [[ $d1 == "nin" ]] || [[ $d1 == "not" ]] || [[ $d1 == "nsq" ]] || [[ $d1 == "ntf" ]] || [[ $d1 == "nto" ]]; then
+            reference_database=$(echo $reference_database | awk 'BEGIN{FS=OFS="."}NF{NF-=1};1')
+            database=$"-db $reference_database"
+        fi
+    elif [[ $d1 == "fasta" ]] || [[ $d1 == "fa" ]] || [[ $d1 == "fas" ]] || [[ $d1 == "fna" ]] || [[ $d1 == "ffn" ]]; then
+            printf '%s\n' "Note: converting fasta formatted database for BLAST"
+            makeblastdb -in $reference_database -input_type fasta -dbtype nucl
+            database=$"-db $reference_database"
+    fi
+
+
+    #BLAST
+    printf '%s\n' "# Running BLAST for $(grep -c "^>" $fasta) sequences"
+    blastn -strand plus \
+                -num_threads 20 \
+                -query $fasta \
+                $database \
+                -out 10BestHits.txt -task blastn \
+                -max_target_seqs 10 -evalue=0.001 \
+                -word_size=7 -reward=1 \
+                -penalty=-1 -gapopen=1 -gapextend=2 \
+    -outfmt "6 qseqid stitle qlen slen qstart qend sstart send evalue length nident mismatch gapopen gaps sstrand qcovs pident"
+
+    #qseqid = Query Seq-id
+    #qlen = Query sequence length
+    #sacc = Subject accession
+    #slen = Subject sequence length
+    #qstart = Start of alignment in query
+    #qend = End of alignment in query
+    #sstart = Start of alignment in subject
+    #send = End of alignment in subject
+    #evalue = Expect value
+    #length = Alignment length
+    #pident = Percentage of identical matches
+    #nident = Number of identical matches
+    #mismatch = Number of mismatches
+    #gapopen = Number of gap openings
+    #gaps = Total number of gaps
+    #1st_hit = BLAST 1st hit
+    #sstrand = Subject Strand
+    #qcovs = Query Coverage Per Subject
+
+    ### parse BLAST 1st hit 
+    awk 'BEGIN{FS="\t"}''!seen[$1]++' 10BestHits.txt > BLAST_1st_hit.txt
+    #check which seqs got a hit
+    gawk 'BEGIN{FS="\t"}{print $1}' < BLAST_1st_hit.txt | \
+        uniq > gothits.names
+    #add no_hits flag
+    seqkit seq -n $fasta > $fasta.names
+    grep -v -w -F -f gothits.names $fasta.names | \
+        sed -e 's/$/\tNo_significant_similarity_found/' >> BLAST_1st_hit.txt
+    #add header
+    sed -i '1 i\
+    qseqid\t1st_hit\tqlen\tslen\tqstart\tqend\tsstart\tsend\tevalue\tlength\tnident\tmismatch\tgapopen\tgaps\tsstrand\tqcovs\tpident' \
+    BLAST_1st_hit.txt
+
+    #remove unnecessary files 
+    rm *.names
+
+____________________________________________________
+
+.. note:: 
+
+    The final ASVs data is ``ASV_table_TagJumpFiltered.txt`` and ``ASVs_TagJumpFiltered.fasta`` in the ``ASV_table`` directory.
+    In case of Merging multiple sequencing runs, the ASVs data is ``ASV_table.merged.txt`` / ``ASV_table.merged_collapsed.txt`` and ``ASVs.merged.fasta`` / ``ASVs.merged_collapsed.fasta`` in the ``multiRunDir``.
+
+    The matching BLAST taxonomy file is ``BLAST_1st_hit.txt`` in the ``ASV_table`` directory.
+
+____________________________________________________
 
 .. _clustering16S:
 
 Clustering ASVs to OTUs
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-coming soon ...
+| Clustering ASVs to OTUs with vsearch. 
+
+
+.. code-block:: R
+   :caption: get the size of ASVs
+   :linenos:
+
+    #!/usr/bin/env Rscript
+
+    # specify input ASVs table and fasta
+    ASV_table="ASV_table_TagJumpFiltered.txt" # specify ASV table file  
+    ASV_fasta="ASVs_TagJumpFiltered.fasta"    # specify ASVs fasta file  
+
+    ################################
+    # remove "Sequence" column from the ASV table (if present)
+    ASV_table = read.table(ASV_table, sep = "\t", check.names = F, 
+                                header = T, row.names = 1)
+
+    # check ASV table; if 1st col is sequence, then remove it
+    if (colnames(ASV_table)[1] == "Sequence") {
+        cat("## removing 'Sequence' column ... \n")
+        ASV_table = ASV_table[, -1]
+    }
+    ################################
+    # add size annototation to ASV seqs
+    library(Biostrings)
+
+    # add 'sum' column
+    ASV_table$sum = rowSums(ASV_table)
+    # make ASV_sums object
+    ASV_sums = setNames(ASV_table$sum, rownames(ASV_table))
+    # Read the FASTA file
+    ASV_fasta = readDNAStringSet(ASV_fasta)
+    # add ";size=*" to ASV_fasta
+    names(ASV_fasta) = sapply(names(ASV_fasta), function(header) {
+        paste0(header, ";size=", ASV_sums[header])
+    })
+    # write fasta file
+    writeXStringSet(ASV_fasta, "ASVs.size.fasta",
+                            width = max(width(ASV_fasta)))
+
+
+.. code-block:: bash
+   :caption: clustering with vsearch
+   :linenos:
+
+    #!/bin/bash 
+
+    # specify the clustering threshold
+    clustering_thresh="0.97"
+
+    # make output dir.
+    output_dir="OTU_table"
+    mkdir -p $output_dir
+    export output_dir
+
+    ### cluster ASVs using vsearch.
+    vsearch --cluster_fast ASVs.size.fasta \
+        --id $clustering_thresh \
+        --iddef 2 \
+        --sizein \
+        --xsize \
+        --fasta_width 0 \
+        --centroids $output_dir/OTUs.fasta \
+        --uc $output_dir/OTUs.uc
+
+
+.. code-block:: R
+   :caption: generate an OTU table based on the clustered ASVs (.uc file).
+   :linenos:
+
+    #!/usr/bin/Rscript
+
+    # specify input ASV table (the same one as for 'get the size of ASVs')
+    ASV_table="ASV_table_TagJumpFiltered.txt"
+    
+    # read output dir
+    output_dir = Sys.getenv('output_dir')
+
+    # read output from vsearch clustering (-uc OTU.uc)
+    inp_UC = file.path(output_dir, "OTUs.uc") 
+    ################################
+    library(data.table)
+    # load input data - ASV table
+    ASV_table = fread(file = ASV_table, header = TRUE, sep = "\t")
+
+    # check ASV table; if 2nd col is 'Sequence', then remove it
+    if (colnames(ASV_table)[2] == "Sequence") {
+        cat("## removing 'Sequence' column ... \n")
+        ASV_table = ASV_table[, -2]
+    }
+
+    ## Load input data - UC mapping file
+    UC = fread(file = inp_UC, header = FALSE, sep = "\t")
+    UC = UC[ V1 != "S" ]
+    UC[, ASV := tstrsplit(V9, ";", keep = 1) ]
+    UC[, OTU := tstrsplit(V10, ";", keep = 1) ]
+    UC[V1 == "C", OTU := ASV ]
+    UC = UC[, .(ASV, OTU)]
+
+    # convert ASV table to long format
+    ASV = melt(data = ASV_table,
+        id.vars = colnames(ASV_table)[1],
+        variable.name = "SampleID", value.name = "Abundance")
+    ASV = ASV[ Abundance > 0 ]
+    # add colnames, to make sure 1st is 'ASV'
+    colnames(ASV) = c("ASV", "SampleID", "Abundance")
+
+    # add OTU IDs
+    ASV = merge(x = ASV, y = UC, by = "ASV", all.x = TRUE)
+    # summarize
+    OTU = ASV[ , .(Abundance = sum(Abundance, na.rm = TRUE)), 
+                                by = c("SampleID", "OTU")]
+
+    # reshape OTU table to wide format
+    OTU_table = dcast(data = ASV,
+        formula = OTU ~ SampleID,
+        value.var = "Abundance",
+        fun.aggregate = sum, fill = 0)
+
+    # write OTU table
+     # OTU names correspond to most abundant ASV in an OTU
+    fwrite(x = OTU_table, file = file.path(output_dir, 
+                                    "OTU_table.txt"), sep = "\t")
+
+____________________________________________________
 
 .. _postclustering16S:
 
 Post-clustering
 ~~~~~~~~~~~~~~~
 
-coming soon ...
+Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
+
+.. code-block:: bash
+   :caption: generate match list for post-clustering
+   :linenos:
+
+    #!/bin/bash
+
+    # go to directrory that contains OTUs
+    cd $output_dir # 'OTU_table' in this case
+
+    # make blast database for post-clustering
+    makeblastdb -in OTUs.fasta -parse_seqids -dbtype nucl
+
+    # generate match list for post-clustering
+    blastn -db OTUs.fasta \
+        -outfmt '6 qseqid sseqid pident' \
+        -out match_list.txt \
+        -qcov_hsp_perc 75 \
+        -perc_identity 90 \
+        -query OTUs.fasta \
+        -num_threads 20
+
+
+.. code-block:: R
+   :caption: run LULU post-clustering
+   :linenos:
+
+    #!/usr/bin/Rscript
+
+    # specify minimum threshold of sequence similarity considering any OTU as an error of another
+    min_match = "90"
+
+    # specify OTU table 
+    OTU_table="OTU_table.txt"
+
+    ################################
+    library(devtools)
+    # load OTU table and match list
+    otutable = read.table(OTU_table, header = T, row.names = 1, sep = "\t")
+    matchlist = read.table("match_list.txt")
+
+    curated_result = lulu::lulu(otutable, matchlist, 
+        minimum_match = min_match)
+
+    # write post-clustered OTU table to file
+    curated_table = curated_result$curated_table
+    curated_table = cbind(OTU = rownames(curated_table), curated_table)
+    write.table(curated_table, file ="OTU_table_LULU.txt", 
+                sep = "\t", row.names = F, quote = FALSE)
+    write.table(curated_result$discarded_otus, 
+                file ="merged_units.lulu", col.names = FALSE, quote = FALSE)
+
+.. note:: 
+
+  Note that if the sample names start with a number, then the output OTU table may contain "X" prefix in the sample names. 
+
+
+.. code-block:: bash
+   :caption: match OTUs.fasta with post-clustered table (OTU_table_LULU)
+   :linenos:
+
+    #!/bin/bash
+
+    # specify post-clustered table
+    OTU_table="OTU_table_LULU.txt"
+    # specify pre post-clustered OTUs fasta file
+    OTUs_fasta="OTUs.fasta"
+
+    # get matching OTUs
+    awk 'NR>1{print $1}' $OTU_table > OTUs_LULU.list
+    cat $OTUs_fasta | \
+      seqkit grep -w 0 -f OTUs_LULU.list > OTUs_LULU.fasta
+
+    # get matching BLAST taxonomy results
+    head -n 1 ../BLAST_1st_hit.txt > BLAST_1st_hit.txt
+    cat ../BLAST_1st_hit.txt | \
+      grep -wf OTUs_LULU.list >> BLAST_1st_hit.txt
+
+    # remove unnecessary files
+    rm OTUs.fasta.n*
+
+    # move OTU_table two directories down
+    cd ..
+    mv $output_dir ../..
+
+    
+.. note:: 
+
+    The final OTUs data is ``OTU_table_LULU.txt`` and ``OTUs_LULU.fasta`` in the ``OTU_table`` directory.
+
+    The matching BLAST taxonomy file is ``BLAST_1st_hit.txt`` in the ``OTU_table`` directory.
 
 ____________________________________________________
 
