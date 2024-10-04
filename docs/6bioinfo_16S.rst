@@ -114,6 +114,7 @@ Dependencies
 Data structure
 ~~~~~~~~~~~~~~
 
+.. _multiRunDir16S:
 
 Multiple sequencing runs
 ------------------------
