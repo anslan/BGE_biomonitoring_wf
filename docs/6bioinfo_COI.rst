@@ -199,7 +199,7 @@ Remove primers
     rev_primer=$"TANACYTCNGGRTGNCCRAARAAYCA"    #this is primer jgHCO2198
 
     # edit primer trimming settings
-    maximum_error_rate="1" # Maximum error rate in primer string search;
+    maximum_error_rate="2" # Maximum error rate in primer string search;
                            # if set as 1, then allow 1 mismatch;
                            # if set as 0.1, then allow mismatch in 10% of the bases,
                            # i.e. if a primer is 20 bp then allowing 2 mismatches.
@@ -558,7 +558,7 @@ Remove tag-jumps
 
 .. code-block:: R
    :caption: removing putative tag-jumps with UNCROSS2 method
-   :emphasize-lines: 12-18, 112-116
+   :emphasize-lines: 15-21, 115-119
    :linenos:
 
    #!/usr/bin/Rscript
