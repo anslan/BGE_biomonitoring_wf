@@ -27,8 +27,12 @@
 Fungi/ITS
 *********
 
-The below **full bioinformatics workflow can be run through XXX**, 
-but see also subsections below for step-by-setp scripts.
+| This is executable step-by-step pipeline for **rRNA ITS1/ITS2** amplicon data analyses from Illumina sequencing machine.
+|  
+| The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/>`_ (v1.1.0; releasing this soon, with a tutorial),
+| which implemets also various error handling processes and sequence summary statistics (lacking here in step-by-step code). 
+| 
+| The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
 
 +----------------------------------------------+--------------+---------+
 | Process                                      | Software     | Version |
@@ -45,7 +49,7 @@ but see also subsections below for step-by-setp scripts.
 +----------------------------------------------+--------------+---------+
 | :ref:`Remove tag-jumps <tagjumps>`           | UNCROSS2     | x       |
 +----------------------------------------------+--------------+---------+
-| :ref:`Extract ITS2 region <itsx>`            | ITSx         | 1.1.3   |
+| :ref:`Extract ITS1/2 region <itsx>`          | ITSx         | 1.1.3   |
 +----------------------------------------------+--------------+---------+
 | :ref:`Merge sequencing runs* <mergeRuns>`    |              |         |
 +----------------------------------------------+--------------+---------+
@@ -92,8 +96,50 @@ Merge sequencing runs
 
 .. _itsx:
 
-Extract ITS2 region 
-~~~~~~~~~~~~~~~~~~~
+Extract ITS1/ITS2 region 
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Extract the ITS1/ITS2 region, i.e., clip conservative primer binding sites (18S, 5.8S, 28S) from the ASVs, for
+making ASVs that differ only withing the ITS1/ITS2 part. 
+
+.. code-block:: bash
+   :caption: Extract ITS with ITSx
+   :emphasize-lines: 
+   :linenos:
+
+    #output dir
+    output_dir=$"ITSx_out"
+    mkdir $output_dir
+    mkdir -p tempdir2
+
+    #load variables
+    organisms=$"-t all"
+    regions=$"--save_regions ITS2"
+    partial=$"--partial 50"
+    cores=$"--cpu 20"
+    eval=$"-E 0.01"
+    score=$"-S 0"
+    domains=$"-N 2" 
+    complement=$"--complement F"
+    only_full=$"--only_full F"
+    truncate=$"--truncate T"
+
+    $itsx_path -i tempdir/$input.unique.$extension \
+    -o tempdir/$input. \
+    --preserve T \
+    --graphical F \
+    $organisms \
+    $partial \
+    $regions \
+    $cores \
+    $eval \
+    $score \
+    $domains \
+    $complement \
+    $only_full \
+    $truncate
+
+
 
 
 .. _taxAssign:

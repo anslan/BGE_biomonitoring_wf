@@ -41,7 +41,7 @@
 Bacteria/16S
 ************
 
-| This is executable step-by-step pipeline for **rRNA 16S** amplicon data analyses.
+| This is executable step-by-step pipeline for **rRNA 16S** amplicon data analyses from Illumina sequencing machine.
 |  
 | The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/>`_ (v1.1.0; releasing this soon, with a tutorial),
 | which implemets also various error handling processes and sequence summary statistics (lacking here in step-by-step code). 

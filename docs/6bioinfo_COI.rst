@@ -41,7 +41,7 @@
 Arthropods/COI
 **************
 
-| This is executable step-by-step pipeline for **COI** amplicon data analyses.
+| This is executable step-by-step pipeline for **COI** amplicon data analyses from Illumina sequencing machine.
 |  
 | The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/>`_ (v1.1.0; releasing this soon, with a tutorial),
 | which implemets also various error handling processes and sequence summary statistics (lacking here in step-by-step code). 
@@ -1067,6 +1067,7 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     taxgroups="undefined"   # (optional); if sequence binning is to be performed on 
                                # a per-taxon basis (as in specifications file) 
                                   # then specify the taxon grouping file
+    NA_abund_thresh="0.05"  # nonauthentic_retained_estimate_p < 0.05 (value from mateMATE results)
     ## 
 
     # check if taxgroups is specified, if not then this var is empty.
