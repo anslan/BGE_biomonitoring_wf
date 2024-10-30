@@ -37,6 +37,7 @@ Descriptions on how to extract DNA from different substrates.
 |DNA_ex|
 
 .. toctree::
+   :maxdepth: 1
 
    3DNA_extraction_water
    3DNA_extraction_soil

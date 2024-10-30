@@ -31,6 +31,7 @@ Sampling
 Standard operation procedures (SOP) for sampling schemes within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project
 
 .. toctree::
+   :maxdepth: 1
 
    1sampling_malaise
    1sampling_water

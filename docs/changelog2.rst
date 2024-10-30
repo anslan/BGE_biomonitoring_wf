@@ -25,7 +25,7 @@
 |logo_BGE_alpha|
 
 
-v0.2b [2024_09_x]
+v0.2b [2024_10_31]
 ******************
 
 Implemented full bioinformatics workflow.

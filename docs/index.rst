@@ -46,6 +46,26 @@ BIOSCAN biomonitoring workflow
 |under_construction|
 
 
+
+.. grid:: 2
+
+    .. grid-item-card:: :material-regular:`library_books;3em`
+        :text-align: center
+        :link: 6bioinfo.html
+
+        **6bioinfo**
+
+        Reading and analysing DNA and protein sequences
+
+    .. grid-item-card::  :material-regular:`location_searching;3em`
+        :text-align: center
+        :link: 6bioinfo_COI.html
+
+        **6bioinfo_COI**
+
+        Analysing sequence patterns such as kmers, minimzers and motifs
+
+
 Contents
 ========
 

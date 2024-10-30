@@ -30,6 +30,7 @@ Sample prep. for DNA extraction
 Descriptions on how to prepare samples for the DNA extractions.
 
 .. toctree::
+   :maxdepth: 1
 
    2prep_malaise
    2prep_water

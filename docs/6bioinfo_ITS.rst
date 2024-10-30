@@ -104,7 +104,6 @@ making ASVs that differ only withing the ITS1/ITS2 part.
 
 .. code-block:: bash
    :caption: Extract ITS with ITSx
-   :emphasize-lines: 
    :linenos:
 
     #output dir

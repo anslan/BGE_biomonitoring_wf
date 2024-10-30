@@ -17,17 +17,13 @@ version = '0.2b'
 release = version
 
 # -- General configuration ---------------------------------------------------
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
-extensions = []
+extensions = ['sphinx_design']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-# This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', '_local_docs']
 
 # -- Options for HTML output -------------------------------------------------
@@ -48,10 +44,3 @@ sphinx_tabs_disable_tab_closing = True
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-# custom css
-def setup(app):
-    app.add_css_file('text-backgrounds.css')
-# usage:
-#.. raw:: html
-
-#  <span class="highlight-blue">This text has blue background</span>
