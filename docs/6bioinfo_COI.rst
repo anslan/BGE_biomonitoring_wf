@@ -183,13 +183,11 @@ Remove primers
 
 .. code-block:: bash
    :caption: remove primers with cutadapt
-   :emphasize-lines: 21-26, 51-52
+   :emphasize-lines: 22-28, 55-56
    :linenos:
 
     #!/bin/bash
-    ## workflow to remove primers via cutadapt
-
-    # My working folder = /multiRunDir (see dir structure above)
+    ## workflow to remove primers with cutadapt
 
     # specify the identifier string for the R1 files
     read_R1="_R1"
@@ -199,14 +197,19 @@ Remove primers
     rev_primer=$"TANACYTCNGGRTGNCCRAARAAYCA"    #this is primer jgHCO2198
 
     # edit primer trimming settings
-    maximum_error_rate="2" # Maximum error rate in primer string search;
-                           # if set as 1, then allow 1 mismatch;
-                           # if set as 0.1, then allow mismatch in 10% of the bases,
-                           # i.e. if a primer is 20 bp then allowing 2 mismatches.
-    overlap="22"           # The minimum overlap length. Keep it nearly as high
-                           # as the primer length to avoid short random matches.
+    mismatches="2"  # Numer of allowed mismatches in primer string search;
+                      # if set as 1, then allow 1 mismatch;
+                      # if set as 0.1, then allow mismatch in 10% of the bases.
+    overlap="22"    # The minimum overlap length. Keep it nearly as high
+                      # as the primer length to avoid short random matches.
+    ##
+    # get the reverse complementary of the primers
+        # needed when the amplicon length is shorter than the sequencing cycle
+    fwd_primer_rc=$(echo $fwd_primer | rev | tr "ACGTRYKMBDHV" "TGCAYRMKVHDB") 
+    rev_primer_rc=$(echo $rev_primer | rev | tr "ACGTRYKMBDHV" "TGCAYRMKVHDB") 
 
     # get directory names if working with multiple sequencing runs
+        # in that case, my working folder = /multiRunDir (see dir structure above)
     DIRS=$(ls -d *) # -> sequencing_set01 sequencing_set02 sequencing_set03
 
     for sequencing_run in $DIRS; do 
@@ -221,7 +224,7 @@ Remove primers
         for inputR1 in *$read_R1*; do
             inputR2=$(echo $inputR1 | sed -e 's/R1/R2/')
             cutadapt --quiet \
-            -e $maximum_error_rate \
+            -e $mismatches \
             --minimum-length 32 \
             --overlap $overlap \
             --no-indels \
@@ -230,7 +233,9 @@ Remove primers
             --untrimmed-paired-output primersCut_out/untrimmed/$inputR2 \
             --pair-filter=both \
             -g $fwd_primer \
+            -a $fwd_primer...$rev_primer_rc";optional" \
             -G $rev_primer \
+            -A $rev_primer...$fwd_primer_rc";optional" \
             -o primersCut_out/$inputR1 \
             -p primersCut_out/$inputR2 \
             $inputR1 $inputR2

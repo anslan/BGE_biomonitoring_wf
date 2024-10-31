@@ -112,31 +112,31 @@ making ASVs that differ only withing the ITS1/ITS2 part.
     mkdir -p tempdir2
 
     #load variables
-    organisms=$"-t all"
-    regions=$"--save_regions ITS2"
-    partial=$"--partial 50"
-    cores=$"--cpu 20"
-    eval=$"-E 0.01"
-    score=$"-S 0"
-    domains=$"-N 2" 
-    complement=$"--complement F"
-    only_full=$"--only_full F"
-    truncate=$"--truncate T"
+    organisms=$"all"
+    regions=$"ITS2"
+    partial=$"50"
+    cores=$"20"
+    eval=$"0.01"
+    score=$"0"
+    domains=$"2" 
+    complement=$"F"
+    only_full=$"F"
 
+    # ITSx
     $itsx_path -i tempdir/$input.unique.$extension \
-    -o tempdir/$input. \
-    --preserve T \
-    --graphical F \
-    $organisms \
-    $partial \
-    $regions \
-    $cores \
-    $eval \
-    $score \
-    $domains \
-    $complement \
-    $only_full \
-    $truncate
+        -o tempdir/$input. \
+        --preserve T \
+        --graphical F \
+        -t $organisms \
+        --partial $partial \
+        --save_regions $regions \
+        --cpu $cores \
+        -E $eval \
+        -S $score \
+        -N $domains \
+        --complement $complement \
+        --only_full $only_full \
+        --truncate T
 
 
 
