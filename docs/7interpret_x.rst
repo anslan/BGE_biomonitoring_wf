@@ -1,8 +1,3 @@
-.. |logo_BGE_alpha| image:: _static/logo_BGE_alpha.png
-  :width: 300
-  :alt: Alternative text
-  :target: https://biodiversitygenomics.eu/
-
 .. |eufund| image:: _static/eu_co-funded.png
   :width: 220
   :alt: Alternative text
@@ -15,6 +10,10 @@
   :width: 150
   :alt: Alternative text
 
+.. |hmsc1| image:: _static/hmsc1.png
+  :width: 550
+  :alt: Alternative text
+
 .. raw:: html
 
     <style> .red {color:#ff0000; font-weight:bold; font-size:16px} </style>
@@ -22,20 +21,23 @@
 .. role:: red
 
 
-|logo_BGE_alpha|
+Analyses X
+***********
+
+Analyses X is a ...
 
 
-Interpretations
-***************
 
-The documentation for the development of BIOSCAN biomonitorig workflow.
+Example analyses X
+~~~~~~~~~~~~~~~~~~
 
-.. toctree::
-   :maxdepth: 1
+Description about the data, and place where to download the test data. 
 
-   7interpret_x
-   7interpret_y
-   7interpret_hmsc
+etc
+---
+
+other ... 
+
 
 ____________________________________________________
 
