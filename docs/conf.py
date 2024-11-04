@@ -44,6 +44,7 @@ html_theme_options = {
 }
 
 sphinx_tabs_disable_tab_closing = True
+html_allow_raw_html = True
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
