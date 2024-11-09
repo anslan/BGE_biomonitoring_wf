@@ -27,7 +27,7 @@
         .yellow-background {
             background-color: #feffd0;
             color: #000000;  /* text color */
-            font-size: 20px; /* text size */
+            font-size: 18px; /* text size */
             padding: 5px;   /* add  padding */
         }
     </style>
@@ -41,10 +41,9 @@
 Arthropods/COI
 **************
 
-| This is executable step-by-step pipeline for **COI** amplicon data analyses from Illumina sequencing machine.
+| This is executable step-by-step pipeline for **COI** amplicon data from Illumina sequencing machine.
 |  
-| The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/>`_ (v1.1.0; releasing this soon, with a tutorial),
-| which implemets also various error handling processes and sequence summary statistics (lacking here in step-by-step code). 
+| The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/>`_ (v1.1.0; releasing this soon, with a tutorial), which implemets also various error handling processes and sequence summary statistics (lacking here in step-by-step code). 
 | 
 | The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
 
@@ -1037,6 +1036,8 @@ Remove NUMTs
   
   --- `Download the CO1Classifier v5.1.0 database here (click) <https://github.com/terrimporter/CO1Classifier/releases/download/SINTAX-COI-v5.1.0-ref/SINTAX_COIv5.1.0_ref.zip>`_ ---
 
+  If you have your own set of reference sequences, then use those; or merge those with the other databases (such as the above one) to extend the ref. database.
+
 
 Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi>`_ for ``genetic_code`` setting below.
 
@@ -1312,7 +1313,7 @@ ____________________________________________________
 Clustering ASVs to OTUs
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-| Clustering ASVs to OTUs with vsearch. 
+| This step clusters ASVs to OTUs with vsearch. 
 
 .. code-block:: R
    :caption: get the size of ASVs

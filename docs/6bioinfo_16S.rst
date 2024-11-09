@@ -27,7 +27,7 @@
         .yellow-background {
             background-color: #feffd0;
             color: #000000;  /* text color */
-            font-size: 22px; /* text size */
+            font-size: 18px; /* text size */
             padding: 5px;   /* add  padding */
         }
     </style>
@@ -41,10 +41,9 @@
 Bacteria/16S
 ************
 
-| This is executable step-by-step pipeline for **rRNA 16S** amplicon data analyses from Illumina sequencing machine.
+| This is executable step-by-step pipeline for **rRNA 16S** amplicon data from Illumina sequencing machine.
 |  
-| The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/>`_ (v1.1.0; releasing this soon, with a tutorial),
-| which implemets also various error handling processes and sequence summary statistics (lacking here in step-by-step code). 
+| The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/>`_ (v1.1.0; releasing this soon, with a tutorial), which implemets also various error handling processes and sequence summary statistics (lacking here in step-by-step code). 
 | 
 | The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
 
@@ -75,7 +74,6 @@ Dependencies
 +-----------------------------------------------------+----------+----------------+
 | :ref:`Post-clusteringlustering <postclustering16S>` | LULU     | 0.1.0          |
 +-----------------------------------------------------+----------+----------------+
-
 
 \*only applicable when there are multiple sequencing runs per study. 
 
@@ -783,101 +781,59 @@ Merge sequencing runs
 Taxonomy assignment
 ~~~~~~~~~~~~~~~~~~~
 
-| Assign taxonomy with **BLAST**. 
-| Herein using the same `SILVA138.1 reference database <https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1>`_ 
+| Assign taxonomy with **RDP classifier** (assignTaxonomy function in DADA2). 
+| Herein using the `SILVA138.1 reference database <https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1>`_ 
 
 .. code-block:: bash
-   :caption: BLAST
+   :caption: assignTaxonomy
    :linenos:
 
-    #!/bin/bash
+    #!/usr/bin/env Rscript
 
     # specify the query fasta file
-    cd ASV_table
     fasta=$"ASVs_TagJumpFiltered.fasta"
+    # specify reference database 
+    reference_database="silva_nr99_v138.1_wSpecies_train_set.fa.gz"
 
-    # specify reference database for BLAST 
-    reference_database="silva_nr99_v138.1_wSpecies_train_set.fa"
-    reference_database=$(realpath $reference_database) # get full directory path
+    # load fasta file
+    library("seqinr")
+    fasta = read.fasta(fasta, seqtype = "DNA", 
+                        as.string = TRUE, 
+                        forceDNAtolower = FALSE, 
+                        seqonly = FALSE)
+    seq_names = getName(fasta)
+    seqs = unlist(getSequence(fasta, as.string = TRUE))
 
+    # print number of ASVs
+    paste("Number of input sequences = ", length(seq_names))
 
-    ## if the database is just in fasta format, then convert it to BLAST format
+    # assign taxonomy with dada2 'assignTaxonomy'
+    library("dada2")
+    set.seed(1)
+    tax = assignTaxonomy(seqs, 
+            reference_database, 
+            multithread = TRUE, 
+            minBoot = 80, 
+            tryRC = TRUE, 
+            outputBootstraps = TRUE)
 
-    ### Check and assign BLAST database
-    d1=$(echo $reference_database | awk 'BEGIN{FS=OFS="."}{print $NF}')
-    #make blast database if db is not formatted for BLAST
-    db_dir=$(dirname $reference_database)
-    check_db_presence=$(ls -1 $db_dir/*.nhr 2>/dev/null | wc -l)
-    if (( $check_db_presence != 0 )); then
-        if [[ $d1 == "fasta" ]] || [[ $d1 == "fa" ]] || [[ $d1 == "fas" ]] || [[ $d1 == "fna" ]] || [[ $d1 == "ffn" ]]; then
-            database=$"-db $reference_database"
-        elif [[ $d1 == "ndb" ]] || [[ $d1 == "nhr" ]] || [[ $d1 == "nin" ]] || [[ $d1 == "not" ]] || [[ $d1 == "nsq" ]] || [[ $d1 == "ntf" ]] || [[ $d1 == "nto" ]]; then
-            reference_database=$(echo $reference_database | awk 'BEGIN{FS=OFS="."}NF{NF-=1};1')
-            database=$"-db $reference_database"
-        fi
-    elif [[ $d1 == "fasta" ]] || [[ $d1 == "fa" ]] || [[ $d1 == "fas" ]] || [[ $d1 == "fna" ]] || [[ $d1 == "ffn" ]]; then
-            printf '%s\n' "Note: converting fasta formatted database for BLAST"
-            makeblastdb -in $reference_database -input_type fasta -dbtype nucl
-            database=$"-db $reference_database"
-    fi
+    # format and export taxonomy table
+    tax_out = cbind(seq_names, tax$tax, tax$boot)
+    colnames(tax_out)[1] = "Seq_name"
+    write.table(tax_out, "taxonomy.txt", 
+                sep = "\t", 
+                col.names = NA, 
+                row.names = TRUE, 
+                quote = FALSE)
 
-
-    #BLAST
-    printf '%s\n' "# Running BLAST for $(grep -c "^>" $fasta) sequences"
-    blastn -strand plus \
-                -num_threads 20 \
-                -query $fasta \
-                $database \
-                -out 10BestHits.txt -task blastn \
-                -max_target_seqs 10 -evalue=0.001 \
-                -word_size=7 -reward=1 \
-                -penalty=-1 -gapopen=1 -gapextend=2 \
-    -outfmt "6 qseqid stitle qlen slen qstart qend sstart send evalue length nident mismatch gapopen gaps sstrand qcovs pident"
-
-    #qseqid = Query Seq-id
-    #qlen = Query sequence length
-    #sacc = Subject accession
-    #slen = Subject sequence length
-    #qstart = Start of alignment in query
-    #qend = End of alignment in query
-    #sstart = Start of alignment in subject
-    #send = End of alignment in subject
-    #evalue = Expect value
-    #length = Alignment length
-    #pident = Percentage of identical matches
-    #nident = Number of identical matches
-    #mismatch = Number of mismatches
-    #gapopen = Number of gap openings
-    #gaps = Total number of gaps
-    #1st_hit = BLAST 1st hit
-    #sstrand = Subject Strand
-    #qcovs = Query Coverage Per Subject
-
-    ### parse BLAST 1st hit 
-    awk 'BEGIN{FS="\t"}''!seen[$1]++' 10BestHits.txt > BLAST_1st_hit.txt
-    #check which seqs got a hit
-    gawk 'BEGIN{FS="\t"}{print $1}' < BLAST_1st_hit.txt | \
-        uniq > gothits.names
-    #add no_hits flag
-    seqkit seq -n $fasta > $fasta.names
-    grep -v -w -F -f gothits.names $fasta.names | \
-        sed -e 's/$/\tNo_significant_similarity_found/' >> BLAST_1st_hit.txt
-    #add header
-    sed -i '1 i\
-    qseqid\t1st_hit\tqlen\tslen\tqstart\tqend\tsstart\tsend\tevalue\tlength\tnident\tmismatch\tgapopen\tgaps\tsstrand\tqcovs\tpident' \
-    BLAST_1st_hit.txt
-
-    #remove unnecessary files 
-    rm *.names
+    ### output = taxonomy.txt
 
 ____________________________________________________
 
 .. note:: 
 
-    The final ASVs data is ``ASV_table_TagJumpFiltered.txt`` and ``ASVs_TagJumpFiltered.fasta`` in the ``ASV_table`` directory.
+    The final ASVs data is ``ASV_table_TagJumpFiltered.txt`` and ``ASVs_TagJumpFiltered.fasta`` in the ``ASV_table`` directory. 
     In case of Merging multiple sequencing runs, the ASVs data is ``ASV_table.merged.txt`` / ``ASV_table.merged_collapsed.txt`` and ``ASVs.merged.fasta`` / ``ASVs.merged_collapsed.fasta`` in the ``multiRunDir``.
-
-    The matching BLAST taxonomy file is ``BLAST_1st_hit.txt`` in the ``ASV_table`` directory.
 
 ____________________________________________________
 
@@ -1092,10 +1048,10 @@ Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
     cat $OTUs_fasta | \
       seqkit grep -w 0 -f OTUs_LULU.list > OTUs_LULU.fasta
 
-    # get matching BLAST taxonomy results
-    head -n 1 ../BLAST_1st_hit.txt > BLAST_1st_hit.txt
-    cat ../BLAST_1st_hit.txt | \
-      grep -wf OTUs_LULU.list >> BLAST_1st_hit.txt
+    # get matching taxonomy results for OTUs
+    head -n 1 ../taxonomy.txt > taxonomy.txt
+    cat ../taxonomy.txt | \
+      grep -wf OTUs_LULU.list >> taxonomy.txt
 
     # remove unnecessary files
     rm OTUs.fasta.n*
@@ -1108,8 +1064,7 @@ Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
 .. note:: 
 
     The final OTUs data is ``OTU_table_LULU.txt`` and ``OTUs_LULU.fasta`` in the ``OTU_table`` directory.
-
-    The matching BLAST taxonomy file is ``BLAST_1st_hit.txt`` in the ``OTU_table`` directory.
+    The matching taxonomy file is ``taxonomy.txt`` in the ``OTU_table`` directory.
 
 ____________________________________________________
 
