@@ -1,5 +1,5 @@
 .. |logo_BGE_alpha| image:: _static/logo_BGE_alpha.png
-  :width: 400
+  :width: 300
   :alt: Alternative text
   :target: https://biodiversitygenomics.eu/
 
@@ -24,18 +24,15 @@
 
 |logo_BGE_alpha|
 
-Pollinator communities
-**********************
-
-.. |under_construction| image:: _static/under_construction.png
-  :width: 250
-  :alt: Alternative text
-
 
 High mountain systems
 *********************
 
-|under_construction|
+The SOP for the 'High Mountain Systems - Arthropod sampling with Malaise traps' is hosted also in `WorkflowHub. <https://doi.org/10.48546/workflowhub.sop.17.2>`_
+
+
+
+
 
      
 ____________________________________________________

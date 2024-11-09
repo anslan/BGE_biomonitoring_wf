@@ -1,5 +1,5 @@
 .. |logo_BGE_alpha| image:: _static/logo_BGE_alpha.png
-  :width: 400
+  :width: 300
   :alt: Alternative text
   :target: https://biodiversitygenomics.eu/
 
