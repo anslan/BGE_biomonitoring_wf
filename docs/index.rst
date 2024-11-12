@@ -49,6 +49,7 @@
 
 .. role:: red
 
+
 .. |under_construction| image:: _static/under_construction.png
   :width: 150
   :alt: Alternative text

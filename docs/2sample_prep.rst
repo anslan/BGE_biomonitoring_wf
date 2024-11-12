@@ -15,6 +15,18 @@
   :width: 150
   :alt: Alternative text
 
+.. |water| image:: _static/google_fonts/water_drop_48dp_000000_FILL0_wght200_GRAD0_opsz48.svg
+  :width: 50
+  :alt: Alternative text
+
+.. |soil| image:: _static/google_fonts/soil.png
+  :width: 50
+  :alt: Alternative text
+
+.. |insect| image:: _static/google_fonts/insect.png
+  :width: 50
+  :alt: Alternative text
+
 .. raw:: html
 
     <style> .red {color:#ff0000; font-weight:bold; font-size:16px} </style>
@@ -27,14 +39,40 @@
 Sample prep. for DNA extraction
 *******************************
 
-Descriptions on how to prepare samples for the DNA extractions.
+.. grid:: 3
+
+    .. grid-item-card::
+        :text-align: center
+        :link: 2prep_water.html
+
+        |water|
+
+        **Water**
+
+    .. grid-item-card::
+        :text-align: center
+        :link: 2prep_soil.html
+
+        |soil|
+          
+        **Soil**
+
+    .. grid-item-card::
+        :text-align: center
+        :link: 2prep_malaise.html
+
+        |insect|
+          
+        **Malaise trap**
+
+___________________________________________________
 
 .. toctree::
    :maxdepth: 1
 
-   2prep_malaise
    2prep_water
    2prep_soil
+   2prep_malaise
 
 ____________________________________________________
 

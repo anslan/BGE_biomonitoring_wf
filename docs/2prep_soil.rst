@@ -15,6 +15,12 @@
   :width: 150
   :alt: Alternative text
 
+.. |oven_dry| image:: _static/oven_dry.jpg
+  :width: 350
+  :alt: Alternative text
+  :class: center
+
+
 .. raw:: html
 
     <style> .red {color:#ff0000; font-weight:bold; font-size:16px} </style>
@@ -27,13 +33,18 @@
 Soil
 ****
 
-Descriptions on how to prepare soil samples for the DNA extractions.
+1. If soil samples are frozen, then transfer soil into a clean paper bag and active thaw/dry the samples in an oven at ~37ºC.
+   
+|oven_dry|
 
-.. |under_construction| image:: _static/under_construction.png
-  :width: 250
-  :alt: Alternative text
+2. When the soil is dry, then homogenise the soil sample by 
+   for example transferring soil to a sterile zip-lock plastic bag that is reinforced
+   with the tape on the sides and crush the soil in between the hands into fine 
+   soil powder.
 
-|under_construction|
+3. Weigh maximum of **250 mg** (~100 mg for very organic rich sample) of the soil powder to a 2mL
+   PowerBead Pro Tube. Store the PowerBead Pro tubes with the soil at
+   -20ºC until further steps. Or proceed immediately with the DNA extraction.
 
 ____________________________________________________
 

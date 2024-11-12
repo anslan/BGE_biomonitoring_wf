@@ -31,14 +31,16 @@ Water
 Sylphium® dual filters
 ----------------------
 
+This is **Qiagen DNeasy PowerWater** extraction method (with few modifications) to 
+isolate eDNA from encapsuled, **Sylphium® dual filters**.
+
 .. |sylphium_filter| image:: _static/sylphium_filter.png
-  :width: 300
+  :width: 310
   :alt: Alternative text
 
 |sylphium_filter|
 
-**Qiagen DNeasy PowerWater** extraction method (with few modifications) to 
-isolate eDNA from encapsuled (Sylphium® dual filters) water samples
+
 
 Equipment and Consumables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -80,25 +82,6 @@ Procedure
 #. Centrifuge the tubes at 13,000 x g for 1 min.
 #. Avoiding the pellet, transfer the supernatant to a clean 2 mL collection tube (provided), up to 700 µL max.
 #. Add 650 µL of Solution PW3 and vortex briefly to mix. Short-spin samples. 
-
-____________________________________________________
-
-Sterivex filters
-----------------
-
-.. |sterivex_filter| image:: _static/sterivex_filter.jpg
-  :width: 300
-  :alt: Alternative text
-
-|sterivex_filter|
-
-Should we include this? 
-
-.. |under_construction| image:: _static/under_construction.png
-  :width: 250
-  :alt: Alternative text
-
-|under_construction|
 
 ____________________________________________________
 

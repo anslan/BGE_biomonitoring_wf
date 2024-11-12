@@ -28,22 +28,13 @@
 Soil
 *****
 
-General guidelines for sampling soil for identifying soil fungal, bacterial and arthropod communites via metabarcoding. 
+General guidelines for sampling soil for identifying soil microbial communities via metabarcoding. 
 
-.. |under_construction| image:: _static/under_construction.png
-  :width: 250
-  :alt: Alternative text
 
-|under_construction|
+Sampling design
+---------------
 
-____________________________________________________
-
-BGE case studies
-~~~~~~~~~~~~~~~~
-
-.. toctree::
-
-   1_1soil_case_studies
+x
 
 ____________________________________________________
 

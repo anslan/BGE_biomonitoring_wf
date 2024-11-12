@@ -18,6 +18,19 @@
 .. |lab| image:: _static/lab.jpg
   :width: 650
   :alt: Alternative text
+  :class: center
+
+.. |bacteria| image:: _static/google_fonts/bacteria.png
+  :width: 50
+  :alt: Alternative text
+
+.. |fungi| image:: _static/google_fonts/fungi.png
+  :width: 50
+  :alt: Alternative text
+
+.. |insect| image:: _static/google_fonts/insect.png
+  :width: 50
+  :alt: Alternative text
 
 .. raw:: html
 
@@ -32,15 +45,45 @@
 Ampolicon lib. prep.
 ********************
 
-Descriptions on how to prepare amplicon libraries for high-throughput sequencing using Illumina platform.
+Amplicon library preparations for high-throughput sequencing using Illumina platform.
+
+.. grid:: 3
+
+    .. grid-item-card::
+        :text-align: center
+        :link: 4amplicon_16S.html
+
+        |bacteria|
+
+        **16S**
+
+    .. grid-item-card::
+        :text-align: center
+        :link: 4amplicon_ITS.html
+
+        |fungi|
+          
+        **ITS2**
+
+    .. grid-item-card::
+        :text-align: center
+        :link: 4amplicon_COI.html
+
+        |insect|
+          
+        **COI**
+
 
 |lab|
 
-.. |under_construction| image:: _static/under_construction.png
-  :width: 250
-  :alt: Alternative text
+___________________________________________________
 
-|under_construction|
+.. toctree::
+   :maxdepth: 1
+
+   4amplicon_16S
+   4amplicon_ITS
+   4amplicon_COI
 
 
 |eufund| |chfund| |ukrifund|

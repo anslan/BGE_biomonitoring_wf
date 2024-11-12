@@ -76,7 +76,7 @@ First time set-up
 .. _placement:
 
 Placement of the Malaise trap
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :red:`Placement of the Malaise trap is important`; this affects the the collection efficiency.
 Herein quoting Gressitt and Gressitt (1962): 
@@ -115,8 +115,7 @@ Collecting samples
 ____________________________________________________
 
 
-References
-~~~~~~~~~~
+**References**
 
 Gressitt, J. L., & Gressitt, M. K. (1962). 
 An improved Malaise trap. Pacific insects, 4(1), 87-90.
@@ -126,15 +125,6 @@ Can Townes type Malaise traps be improved? Some recent developments. Entomologis
 
 Uhler, J., Haase, P., Hoffmann, L., Hothorn, T., Schmidl, J., Stoll, S., ... & Müller, J. (2022). 
 A comparison of different Malaise trap types. Insect Conservation and Diversity, 15(6), 666-672.
-
-____________________________________________________
-
-BGE case studies
-~~~~~~~~~~~~~~~~
-
-.. toctree::
-
-   1_1malaise_case_studies
 
 ____________________________________________________
 

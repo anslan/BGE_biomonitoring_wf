@@ -18,6 +18,20 @@
 .. |DNA_ex| image:: _static/DNA_ex.jpg
   :width: 650
   :alt: Alternative text
+  :class: center
+
+.. |water| image:: _static/google_fonts/water_drop_48dp_000000_FILL0_wght200_GRAD0_opsz48.svg
+  :width: 50
+  :alt: Alternative text
+
+.. |soil| image:: _static/google_fonts/soil.png
+  :width: 50
+  :alt: Alternative text
+
+.. |insect| image:: _static/google_fonts/insect.png
+  :width: 50
+  :alt: Alternative text
+
 
 .. raw:: html
 
@@ -32,8 +46,36 @@
 DNA extraction
 **************
 
-Descriptions on how to extract DNA from different substrates.
+DNA extraction protocols for water, soil and Malaise trap samples. 
 
+
+.. grid:: 3
+
+    .. grid-item-card::
+        :text-align: center
+        :link: 3DNA_extraction_water.html
+
+        |water|
+
+        **Water**
+
+    .. grid-item-card::
+        :text-align: center
+        :link: 3DNA_extraction_soil.html
+
+        |soil|
+          
+        **Soil**
+
+    .. grid-item-card::
+        :text-align: center
+        :link: 3DNA_extraction_malaise.html
+
+        |insect|
+          
+        **Malaise trap**
+
+    
 |DNA_ex|
 
 .. toctree::
@@ -42,6 +84,8 @@ Descriptions on how to extract DNA from different substrates.
    3DNA_extraction_water
    3DNA_extraction_soil
    3DNA_extraction_malaise
+
+
 
 ____________________________________________________
 
