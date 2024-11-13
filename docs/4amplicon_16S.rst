@@ -20,14 +20,13 @@
   :alt: Alternative text
   :class: center
 
-
-
 .. raw:: html
 
     <style> .red {color:#ff0000; font-weight:bold; font-size:16px} </style>
 
 .. role:: red
 
+.. _amplicon16S:
 
 |logo_BGE_alpha|
 
@@ -37,6 +36,8 @@ rRNA 16S
 
 Amplicon library preparation for 16S V4 region to target **bacterial communities** using **2-step PCR** 
 with primers **515F** (GTGYCAGCMGCCGCGGTAA) and **926R** (CCGYCAATTYMTTTRAGTTT).
+
+*Besides used primers and the PCR conditions for the 1st PCR, the protocol in identical to* :ref:`ITS2 <ampliconITS2>` *and* :ref:`COI <ampliconCOI>` *library prep.*
 
 .. admonition:: Primer constructs for 1st PCR
 
@@ -118,7 +119,7 @@ Total volum per PCR reaction = **10µL**.
 | Hold at 10ºC         |            |
 +----------------------+------------+
 
-**Expected amplicon size = 584 bp** *(insert length + primer lengths + 6bp NNs (avg.) + 67bp overhangs).*
+**Expected amplicon size = 584 bp** *(insert length (~472 bp) + primer lengths + 6bp NNs (avg.) + 67bp overhangs).*
 
 
 ● Test the PCR success of all samples through electrophoresis of 2 µL using 2% agarose gel.
