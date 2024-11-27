@@ -42,8 +42,6 @@ Other tools
 ***********
 
 
-.. _blast:
-
 BLAST
 ~~~~~
 

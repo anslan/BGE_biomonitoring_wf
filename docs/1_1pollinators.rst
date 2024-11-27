@@ -20,7 +20,7 @@
 Pollinator communities
 **********************
 
-The SOP for the BGE case study 'Pollinator Communities - Malaise trap sampling' within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
+The SOP for the 'Pollinator Communities - Malaise trap sampling' within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
 This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.18.1>`_
 *(which hosts the downloadable PDF).*
 

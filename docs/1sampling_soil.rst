@@ -28,13 +28,35 @@
 Soil
 *****
 
-General guidelines for sampling soil for identifying soil microbial communities via metabarcoding. 
+General guidelines for sampling soil for identifying soil microbial communities via metabarcoding following `Tedersoo et al. 2022 <https://doi.org/10.1111/mec.16460>`_.
+
+Sampling equipment
+------------------
+
+| **Minimal required equipment**: 
+
+| 1. Lab gloves
+| 2. Soil corer, or knife, or gardening shovel
+| 3. Zip-lock bags 
+
+General considerations
+----------------------
+
+**Sample size.** Individual soil samples should be sufficiently large to ensure 
+there is enough material for DNA extraction, required physicochemical analysis, and for storage/backup. 
+**Spatial scale.** In order to maintain statistical independence of samples at a site, 
+samples should be positioned beyond the spatial autocorrelation range, usually 5-10 meters in soil fungi. 
+**Pooling samples.** The amount of subsamples can significantly impact the representation of microbial diversity in heterogeneous environments; 
+using fewer subsamples may lead to an underestimated diversity. 
+The optimal number of subsamples to combine varies depending on the area size, 
+typically ranging from 7 to 25. 
 
 
-Sampling design
----------------
-
-x
+The pooling effect is probably influenced by the diversity of habitats, such as pH levels, organic material, salinity, and types of plant species existing.
+Given the greater overall richness, pooled samples also require deeper
+sequencing to detect rare taxa.
+Furthermore, pooling is unsuited for co-occurrence
+analyses assessing biotic interactions
 
 ____________________________________________________
 

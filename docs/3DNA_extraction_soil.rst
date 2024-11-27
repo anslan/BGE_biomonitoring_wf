@@ -28,11 +28,12 @@
 Soil
 ****
 
+This DNA extraction procedure follows the SOP within the `BGE <https://biodiversitygenomics.eu/>`_ case study 'Ecological Restoration - Soil sampling'.
+This is mirror for the workflow hosted in `WorkflowHub <https://workflowhub.eu/sops/12>`_
+*(which hosts the downloadable PDF).*
 
-https://workflowhub.eu/sops/12
 
-
-This step uses Qiagen MagAttract® PowerSoil® Pro DNA Kit extraction
+Qiagen MagAttract® PowerSoil® Pro DNA Kit extraction
 method to isolate eDNA from soil samples using the KingFisher Apex
 instrument, following both the provider’s protocol and adjustments from
 the `Earth Microbiome Project’s High Throughput DNA extraction

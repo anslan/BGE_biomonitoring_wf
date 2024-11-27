@@ -31,11 +31,17 @@ Water
 Sylphium® dual filters
 ----------------------
 
+
+
 This is **Qiagen DNeasy PowerWater** extraction method (with few modifications) to 
 isolate eDNA from encapsuled, **Sylphium® dual filters**.
+This DNA extraction procedure follows the SOP within the `BGE <https://biodiversitygenomics.eu/>`_ case study 
+'Detection of Non-Indigenous Marine Species from Port Water Samples'.
+This is mirror for the workflow hosted in `WorkflowHub <https://workflowhub.eu/sops/12>`_
+*(which hosts the downloadable PDF).*
 
 .. |sylphium_filter| image:: _static/sylphium_filter.png
-  :width: 310
+  :width: 420
   :alt: Alternative text
 
 |sylphium_filter|

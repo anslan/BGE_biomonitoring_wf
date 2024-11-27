@@ -221,9 +221,9 @@ samples are in rows; and taxonomy table format follows the above example.
               ranLevels = list(sample = rL.sample,site = rL.site))
 
     models = list(m)
-    names(models) = c("Swedish_seasonal_model")
+    names(models) = c("seasonal_model")
     save(models, file = paste0("models/unfitted_models.RData"))
-    models
+
 
  
 Fit model 

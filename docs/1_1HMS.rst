@@ -31,7 +31,7 @@ This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546
     <iframe src="_static/SOPs/2023_06_23_SOP_HMS-Arthropods_Version_1.4_LANC.html" width="100%" height="680px"></iframe>
 
 **Citation:**
-Najera Cortazar, L., Ferreira, S., & Mata, V. (2024). Biodiversity Genomics Europe | High Mountain Systems - Arthropod sampling with Malaise traps. WorkflowHub. https://doi.org/10.48546/WORKFLOWHUB.SOP.17.2
+Najera Cortazar, L., Ferreira, S., Mata, V., & Beja, P. (2024). Biodiversity Genomics Europe | High Mountain Systems - Arthropod sampling with Malaise traps. WorkflowHub. https://doi.org/10.48546/WORKFLOWHUB.SOP.17.2
 ____________________________________________________
 
 |eufund| |chfund| |ukrifund|
