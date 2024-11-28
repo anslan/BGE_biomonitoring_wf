@@ -14,6 +14,10 @@
   :width: 650
   :alt: Alternative text
 
+.. |output_icon| image:: _static/output_icon.png
+  :width: 50
+  :alt: Alternative text
+
 .. raw:: html
 
     <style> .red {color:#ff0000; font-weight:bold; font-size:16px} </style>
@@ -42,9 +46,9 @@ Starting point
 
 The input for HMSC analysis consists of species/OTU community matrix (Y matrix) accompanied with 
 the matrix of environmental covariates (X matrix), and optionally species 
-traits (T matrix) and phylogeny (C matrix).
+traits (T) matrix and phylogeny (C) matrix.
 
-.. admonition:: note that samples are rows in the input Y and X matrices0
+.. admonition:: Community and Environment (metadata)
 
   *example of input Y (community) matrix*:
 
@@ -63,7 +67,7 @@ traits (T matrix) and phylogeny (C matrix).
   *example of input X (environmental metadata) matrix*:
 
   +-------------+---------+-----------------+----------+-----------+-----+
-  |             | site    | collection_date | latitude | longitude | etc |
+  |             | site    | collection_date | latitude | longitude | ... |
   +-------------+---------+-----------------+----------+-----------+-----+
   | **sample1** | site_01 | 2022_07_15      | 0.1      | 0.2       | ... |
   +-------------+---------+-----------------+----------+-----------+-----+
@@ -97,11 +101,14 @@ traits (T matrix) and phylogeny (C matrix).
 
   Including the phylogeny matrix helps to understand if the species responses to the environmental covariates are phylogenetically structured, i.e., do similar species  respond similarly.
 
-  The phylogeny matrix may be presented as Newick tree. 
-  Alternatively, data on taxonomic idenity may used as a proxy of phylogenetic relatedness. 
-  In the latter case, the UNCLASSIFIED taxonomic ranks (that are common in the metabarcoding data) should be informative 
-  in a sense that **not all e.g. family level unclassified OTUs are closely related**. 
-  For example, the distance between unclassified OTUs could be calculated and then OTUs falling within the user defined distance threshold could be classified as various levels of *pseudotaxa*. 
+  The phylogeny matrix may be presented as **Newick tree** file. 
+  Alternatively, data on **taxonomic ranks** may used as a proxy of phylogenetic relatedness. 
+  In the latter case, the UNCLASSIFIED taxonomic ranks *(that are common in the metabarcoding data)* 
+  should be informative   in a sense that 
+  **not all e.g. family level unclassified OTUs would be considered as closely related** because 
+  they have the 'same label'.   For example, the distance between unclassified OTUs could 
+  be calculated and then OTUs falling within the user defined distance threshold could be 
+  classified as various levels of *pseudotaxa*. 
 
   *Example of the taxonomy table:*
 
@@ -117,12 +124,14 @@ traits (T matrix) and phylogeny (C matrix).
   | **OTU_04** | ... | Collembola | Entomobryomorpha | **Family_0032** | **Genus_022** |
   +------------+-----+------------+------------------+-----------------+---------------+
 
-  Here, for example the sequences of **OTU_02 and OTU_04 differ 9%**; so we consider those are originating from different genera but likely from the same family. 
+  Here, for example the sequences of **OTU_02 and OTU_04 differ 9.8%**; so we consider those are originating from different genera but likely from the same family. 
 
 ___________________________________________________
 
 Install HMSC
 ~~~~~~~~~~~~
+
+Install hmsc R package (if already not installed).
 
 .. code-block:: R
    :caption: install hmsc R package  
@@ -145,93 +154,164 @@ Install HMSC
 
 ___________________________________________________
 
+Select data
+~~~~~~~~~~~
+
+In this 'select data' section, we are assuming that 
+our input Y and X matrixes are tab delimited text files where 
+samples are in rows; and taxonomy table format follows the above example.
+
+Here, we are also deciding if we want to proceed with the **presence-absence or abundance** (read count)
+community matrix.
+
+.. note:: 
+
+  Before using to the full dataset, try fitting the model with a **small subset**
+  for faster model testing and validation.
+
+
+.. code-block:: R
+   :caption: select data and prep. data
+   :linenos:
+
+   #!/usr/bin/Rscript
+
+   # input matrices file names; according to the above HMSC figure.
+      # here, expecting all files to be tab-delimited.
+   Y_file = "OTU_table.txt" # Community; samples are rows
+   X_file = "env_meta.txt"  # Environment; samples are rows
+   C_file = "taxonomy.txt"  # Phylogeny (optional) 
+                            # (herein a 'pseudo-phylogeny' based on the 
+                            # assigned taxonomic ranks; species are rows)
+   T_file = ""              # Traits (optional)
+   sp_prevalence = 100      # set a species prevalence threshold; 
+                            # meaning that perform HMSC for species 
+                            # in a Y-matrix, that occur >= 100 samples in this case. 
+    #-------------------------------------------------------------------------------------------#
+
+    # load community matrix Y
+    Y = read.table(Y_file, sep = "\t", 
+                      check.names = F, 
+                      header = T, 
+                      row.names = 1)
+    # load metadata matrix X
+    X = read.table(X_file, sep = "\t", 
+                        check.names = F, 
+                        header = T, 
+                        row.names = 1)
+    # load taxonomy matrix C; 
+      # so we can use it as a proxy for phylogeny 
+    taxonomy = read.table(C_file, sep = "\t", 
+                          check.names = F, 
+                          header = T, 
+                          row.names = 1)
+
+    # herein, converting Y matrix to presence-absence
+    Y = 1*(Y>0)
+
+    # select OTUs/species that are present at least in $sp_prevalence (specified above) samples
+    prevalence = colSums(Y != 0)
+    select.sp = prevalence >= sp_prevalence
+    Y = Y[, select.sp]
+    taxonomy = taxonomy[select.sp, ]
+
+    ### creating a phylogenetic tree from a set of nested taxonomic ranks in the taxonomy table
+     # ranks as.factors; assuming that ranks start from the 2nd column in the taxonomy table 
+        # and we have 7 ranks
+    for(i in 2:8) taxonomy[,i] = as.factor(taxonomy[,i])
+     # convert tax to phylo tree
+    phy.tree = as.phylo(~Phylum/Class/Order/Family/Genus/Species, 
+                    data = taxonomy, collapse = FALSE)
+     
+    # this "pseudo-tree" does not have any branch lengths, which are needed for the model;
+    # assign arbitrary branch lengths
+      if (is.null(phy.tree$edge.length)) {
+        phy.tree$edge.length = rep(1, nrow(phy.tree$edge))
+      }
+     # rename tree tip lables according to the labels in the Y matrix.
+     phy.tree$tip.label = colnames(Y)
+
+     # check the tree 
+     plot(phy.tree, cex=0.6)
+
+___________________________________________________
+
 Define model
 ~~~~~~~~~~~~
 
-Here, we are defining the model for HMSC. 
-For example, our input Y and X matrixes are tab delimited text files where 
-samples are in rows; and taxonomy table format follows the above example. 
+According to our dataset, we are defining the model for HMSC.
+That is, we specify the structure, including the response variable (community data), 
+covariates (environmental predictors), random effects, and phylogenetic relationships. 
 
 .. code-block:: R
-   :caption: load data and define model
+   :caption: define model
    :linenos:
 
    #!/usr/bin/Rscript
 
    library(Hmsc)
 
-    # load community matrix (ASV/OTU/species table); tab-delimited txt file
-    Y = read.table("OTU_table.txt", sep = "\t", 
-                      check.names = F, header = T, row.names = 1)
-
-    # load environmental covariates; tab-delimited txt file
-    X = read.table("env_meta.txt", sep = "\t", 
-                        check.names = F, header = T, row.names = 1)
-
-    # load taxonomy; tab-delimited txt file; 
-      # so we can use it as a proxy for phylogeny 
-    taxonomy = read.table("taxonomy.txt", sep = "\t", 
-                          check.names = F, header = T, row.names = 1)
-
-    
-    ### reducing a dataset by sub-selection OTUs that are present at least 99 samples
-    prev = colSums(Y)
-    sel.sp = prev>=100
-    Y = Y[, sel.sp]
-    taxonomy = taxonomy[sel.sp, ]
-
-    # creating a phylogenetic tree from a set of nested taxonomic variables in the taxonomy table
-    taxonomy$Phylum = as.factor(taxonomy$Phylum)
-    taxonomy$Class = as.factor(taxonomy$Class)
-    taxonomy$Order = as.factor(taxonomy$Order)
-    taxonomy$Family = as.factor(taxonomy$Family)
-    taxonomy$Genus = as.factor(taxonomy$Genus)
-    tax.tree = as.phylo(~Phylum/Class/Order/Family/Genus, 
-                      data = taxonomy, collapse = FALSE)
-
-
-
     # defining our study design; structure of the data
     studyDesign = data.frame(
-                    sample = as.factor(rownames(X)), 
-                    site = as.factor(X$site)
+                    sample = as.factor(rownames(X)),    # rownames(X) = sample names
+                    site = as.factor(X$Site)
                     )
 
-    # convert sample collection dates into Julian days relative to a specific start date 
-    da = as.Date(X$collection_date)
-    jday =  1 + julian(da) - julian(as.Date("2022-07-15"))
-
-    XData = data.frame(seqdepth = log(read_counts$raw_nread), jday)
-
-
-    #we use 3.141593 instead of pi because otherwise R will think that pi is a variable in the model and script S7_make_predictions will yield an error message
-    XFormula = ~cos(2*3.141593*jday/365) +  sin(2*3.141593*jday/365) + cos(4*3.141593*jday/365) + sin(4*3.141593*jday/365) + seqdepth
-
-    for(i in 4:12) taxonomy[,i] = as.factor(taxonomy[,i])
-    phy.tree = as.phylo.formula(~kingdom/phylum/class/order/family/subfamily/tribe/genus/species,data=taxonomy)
-    phy.tree$tip.label = colnames(Y)
-    plot(phy.tree,cex=0.2)
+    ### incorporating random effects into the  HMSC model. 
+     # (to capture the influence of unmeasured factors that vary across different 
+     # levels of the data; e.g., among sites, samples). 
+    # sampling units
     rL.sample = HmscRandomLevel(units = levels(studyDesign$sample))
-    rL.site = HmscRandomLevel(units = levels(studyDesign$site))
+    # sampling sites
+    rL.site = HmscRandomLevel(units = levels(studyDesign$site)) 
 
-    m = Hmsc(Y = Y, distr = "probit",
-              XData = XData, XFormula = XFormula,
-              phyloTree = phy.tree,
-              studyDesign = studyDesign,
-              ranLevels = list(sample = rL.sample,site = rL.site))
+    # convert sample collection dates into Julian days relative to a specific start date 
+    da = as.Date(meta$CollectionDate)
+    jday = 1 + julian(da) - julian(as.Date("2024-01-01"))
 
+    # not covered here, but DOWNLOAD RELEVANT COVARIATES (E.G., CLIMATE, WEATHER, LANDCOVER) 
+    # FROM DATABASES BASED ON COORDINATES AND SAMPLING TIMES
+
+    # create a data frame of covariates (predictor variables) that will be included in the model
+    XData = data.frame(seqdepth = log(meta$seq_depth),  # number of sequences per sample
+                        jday)                           # Julian days
+
+    ### specify the formula for the fixed effects
+    # using 3.141593 instead of pi to prevent issues when 'pi' is considered as a variable; 
+    XFormula = ~cos(2*3.141593*jday/365) +  # model seasonal effects; annual cycles
+                sin(2*3.141593*jday/365) +  # model seasonal effects; annual cycles
+                cos(4*3.141593*jday/365) +  # model seasonal effects; semiannual cycles
+                sin(4*3.141593*jday/365) +  # model seasonal effects; semiannual cycles
+                seqdepth                    # number of sequences per sample
+
+    ### define a model 
+    m = Hmsc(Y = Y,             # response matrix
+          distr = "probit",      # distribution model for the response variable ('probit' for PA)
+          XData = XData,          # predictor variables 
+          XFormula = XFormula,     # fixed effects in the model
+          phyloTree = phy.tree,     # phylogenetic tree object
+          studyDesign = studyDesign, # study design object
+          ranLevels = list(sample = rL.sample, site = rL.site)) # random level objects
+    
+    # organize, name, and save your HMSC models (to easily manage multiple models if needed)
     models = list(m)
-    names(models) = c("seasonal_model")
+    names(models) = c("model_1")
     save(models, file = paste0("models/unfitted_models.RData"))
 
+    # check models
+    models
 
- 
-Fit model 
+___________________________________________________
+
+Fit model
 ~~~~~~~~~
 
 The following HMSC pipeline is a modified version of the pipeline presented at the `ISEC 2024 Hmsc workshop <https://www.helsinki.fi/en/researchgroups/statistical-ecology/software/hmsc>`_.
 
+| ``input:`` unfitted_models file (**unfitted_models.RData**)
+| ``output:`` fitted models, with fitting done for multiple RUNs:
 
+...
 
 
 ____________________________________________________

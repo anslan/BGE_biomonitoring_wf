@@ -21,10 +21,10 @@ High mountain systems
 *********************
 
 The SOP for the 'High Mountain Systems - Arthropod sampling with Malaise traps' within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project.
-This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.17.2>`_
+This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.17.3>`_
 *(which hosts the downloadable PDF).*
 
-`Click here for PDF view <https://workflowhub.eu/sops/17/content_blobs/558/view_content>`_
+`Click here for PDF view <https://workflowhub.eu/sops/17/content_blobs/561/view_content>`_ 
 
 .. raw:: html
 
