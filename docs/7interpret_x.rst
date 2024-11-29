@@ -21,22 +21,10 @@
 .. role:: red
 
 
-Analyses X
-***********
+Other analyses
+**************
 
-Analyses X is a ...
-
-
-
-Example analyses X
-~~~~~~~~~~~~~~~~~~
-
-Description about the data, and place where to download the test data. 
-
-etc
----
-
-other ... 
+in prep.
 
 
 ____________________________________________________

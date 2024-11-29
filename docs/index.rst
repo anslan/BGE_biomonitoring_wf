@@ -49,24 +49,22 @@
 
 .. role:: red
 
-
 .. |under_construction| image:: _static/under_construction.png
   :width: 150
   :alt: Alternative text
 
 
-|logo_BGE_alpha| |under_construction|
+|logo_BGE_alpha|
 
 Bioscan biomonitoring workflow
 ******************************
-
 
 | *bioscanflow*: documentation for the metabarcoding workflow(s); 
 | developed withing the framework of `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ (BGE). 
 | :red:`This is work in progress...`
 
 
-.. grid:: 4
+.. grid:: 3
 
     .. grid-item-card::
         :text-align: center
@@ -92,6 +90,8 @@ Bioscan biomonitoring workflow
 
         **DNA extraction**
 
+.. grid:: 3
+
     .. grid-item-card::
         :text-align: center
         :link: 4amplicon_lib.html
@@ -99,16 +99,6 @@ Bioscan biomonitoring workflow
         |labs|
 
         **Library prep.**
-
-.. grid:: 3
-
-    .. grid-item-card::
-        :text-align: center
-        :link: 5sequencing.html
-
-        |browse_activity|
-
-        **Sequencing**
 
     .. grid-item-card::
         :text-align: center
@@ -138,7 +128,6 @@ Contents
    2sample_prep
    3DNA_extraction
    4amplicon_lib
-   5sequencing
    6bioinfo
    7interpret
    8additional_resources

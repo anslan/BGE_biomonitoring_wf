@@ -33,9 +33,8 @@ The documentation for the development of BIOSCAN biomonitorig workflow.
 .. toctree::
    :maxdepth: 1
 
-   7interpret_x
-   7interpret_y
    7interpret_hmsc
+   7interpret_x
 
 ____________________________________________________
 
