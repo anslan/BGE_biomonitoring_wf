@@ -1,5 +1,5 @@
 .. |eufund| image:: _static/eu_co-funded.png
-  :width: 220
+  :width: 200
   :alt: Alternative text
 
 .. |chfund| image:: _static/ch-logo-200x50.png
@@ -17,6 +17,11 @@
 .. |output_icon| image:: _static/output_icon.png
   :width: 50
   :alt: Alternative text
+
+.. |logo_BGE_small| image:: _static/logo_BGE_alpha.png
+  :width: 120
+  :alt: Alternative text
+  :target: https://biodiversitygenomics.eu/
 
 .. raw:: html
 
@@ -1355,4 +1360,4 @@ Making predictions and generating plots.
 
 ___________________________________________________
 
-|eufund| |chfund| |ukrifund|
+|logo_BGE_small| |eufund| |chfund| |ukrifund|

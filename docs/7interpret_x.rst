@@ -1,5 +1,5 @@
 .. |eufund| image:: _static/eu_co-funded.png
-  :width: 220
+  :width: 200
   :alt: Alternative text
 
 .. |chfund| image:: _static/ch-logo-200x50.png
@@ -10,9 +10,10 @@
   :width: 150
   :alt: Alternative text
 
-.. |hmsc1| image:: _static/hmsc1.png
-  :width: 550
+.. |logo_BGE_small| image:: _static/logo_BGE_alpha.png
+  :width: 120
   :alt: Alternative text
+  :target: https://biodiversitygenomics.eu/
 
 .. raw:: html
 
@@ -29,4 +30,4 @@ in prep.
 
 ____________________________________________________
 
-|eufund| |chfund| |ukrifund|
+|logo_BGE_small| |eufund| |chfund| |ukrifund|

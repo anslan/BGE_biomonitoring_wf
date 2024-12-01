@@ -4,7 +4,7 @@
   :target: https://biodiversitygenomics.eu/
 
 .. |eufund| image:: _static/eu_co-funded.png
-  :width: 220
+  :width: 200
   :alt: Alternative text
 
 .. |chfund| image:: _static/ch-logo-200x50.png
@@ -20,6 +20,10 @@
   :alt: Alternative text
   :class: center
 
+.. |logo_BGE_small| image:: _static/logo_BGE_alpha.png
+  :width: 120
+  :alt: Alternative text
+  :target: https://biodiversitygenomics.eu/
 
 .. raw:: html
 
@@ -33,19 +37,22 @@
 Soil
 ****
 
-1. If soil samples are frozen, then transfer soil into a clean paper bag and active thaw/dry the samples in an oven at ~37ºC.
+General guidelines for preparing soil samples :ref:`for DNA extraction <DNAex_soil>`.
+
+1. After collection (or if soil samples are frozen), transfer soil into a clean paper 
+   bag and active thaw/dry the samples in an oven at ~37ºC.
    
 |oven_dry|
 
 2. When the soil is dry, then homogenise the soil sample by 
-   for example transferring soil to a sterile zip-lock plastic bag that is reinforced
+   for example transferring soil to a sterile zip-lock plastic bag that is **reinforced**
    with the tape on the sides and crush the soil in between the hands into fine 
    soil powder.
 
-3. Weigh maximum of **250 mg** (~100 mg for very organic rich sample) of the soil powder to a 2mL
+3. Weigh maximum of **250 mg** (~100 mg for very organic rich sample) of the soil powder to a 2 mL
    PowerBead Pro Tube. Store the PowerBead Pro tubes with the soil at
    -20ºC until further steps. Or proceed immediately with the DNA extraction.
 
 ____________________________________________________
 
-|eufund| |chfund| |ukrifund|
+|logo_BGE_small| |eufund| |chfund| |ukrifund|

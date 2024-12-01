@@ -1,8 +1,3 @@
-.. |logo_BGE_alpha| image:: _static/logo_BGE_alpha.png
-  :width: 300
-  :alt: Alternative text
-  :target: https://biodiversitygenomics.eu/
-
 .. |eufund| image:: _static/eu_co-funded.png
   :width: 200
   :alt: Alternative text
@@ -13,10 +8,6 @@
 
 .. |ukrifund| image:: _static/ukri-logo-200x59.png
   :width: 150
-  :alt: Alternative text
-
-.. |NovaSeq| image:: _static/NovaSeq6000.jpg
-  :width: 600
   :alt: Alternative text
 
 .. |logo_BGE_small| image:: _static/logo_BGE_alpha.png
@@ -31,15 +22,13 @@
 .. role:: red
 
 
-|logo_BGE_alpha|
+Detection of non-indigenous marine species from port water samples
+******************************************************************
 
+The sampling SOP for the 'Detection of Non-Indigenous Marine Species from Port Water Samples' 
+within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project follows the 
+guidelines provided in :ref:`the water sampling section <sampling_water>`.
 
-Sequencing
-**********
-
-Illumina sequencing description
-
-|NovaSeq|
 
 ____________________________________________________
 

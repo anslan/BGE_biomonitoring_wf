@@ -20,7 +20,7 @@
   :alt: Alternative text
 
 .. |eufund| image:: _static/eu_co-funded.png
-  :width: 220
+  :width: 200
   :alt: Alternative text
 
 .. |chfund| image:: _static/ch-logo-200x50.png
@@ -30,6 +30,11 @@
 .. |ukrifund| image:: _static/ukri-logo-200x59.png
   :width: 150
   :alt: Alternative text
+
+.. |logo_BGE_small| image:: _static/logo_BGE_alpha.png
+  :width: 120
+  :alt: Alternative text
+  :target: https://biodiversitygenomics.eu/
 
 .. raw:: html
 
@@ -66,6 +71,7 @@
 
 |logo_BGE_alpha|
 
+.. _registering_samples_in_plutof:
 
 Registering samples in PlutoF GO 
 ********************************
@@ -137,4 +143,4 @@ Note that **images, videos, audio and other sample associated files** can be als
 
 ___________________________________________________
 
-|eufund| |chfund| |ukrifund|
+|logo_BGE_small| |eufund| |chfund| |ukrifund|

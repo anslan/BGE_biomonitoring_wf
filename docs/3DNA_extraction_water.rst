@@ -4,7 +4,7 @@
   :target: https://biodiversitygenomics.eu/
 
 .. |eufund| image:: _static/eu_co-funded.png
-  :width: 220
+  :width: 200
   :alt: Alternative text
 
 .. |chfund| image:: _static/ch-logo-200x50.png
@@ -14,6 +14,11 @@
 .. |ukrifund| image:: _static/ukri-logo-200x59.png
   :width: 150
   :alt: Alternative text
+
+.. |logo_BGE_small| image:: _static/logo_BGE_alpha.png
+  :width: 120
+  :alt: Alternative text
+  :target: https://biodiversitygenomics.eu/
 
 .. raw:: html
 
@@ -28,25 +33,27 @@
 Water
 *****
 
-Sylphium® dual filters
-----------------------
+.. _DNAex_sylphium_dual_filters:
 
+Sylphium dual filters
+~~~~~~~~~~~~~~~~~~~~~
 
-
-This is **Qiagen DNeasy PowerWater** extraction method (with few modifications) to 
-isolate eDNA from encapsuled, **Sylphium® dual filters**.
-This DNA extraction procedure follows the SOP within the `BGE <https://biodiversitygenomics.eu/>`_ case study 
-'Detection of Non-Indigenous Marine Species from Port Water Samples'.
-This is mirror for the workflow hosted in `WorkflowHub <https://workflowhub.eu/sops/12>`_
+Herein processes follow lab SOP for the 'Detection of Non-Indigenous Marine Species from Port Water Samples' 
+within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
+This is mirror for the workflow hosted in `WorkflowHub <https://workflowhub.eu/sops/11?version=1>`_
 *(which hosts the downloadable PDF).*
 
-.. |sylphium_filter| image:: _static/sylphium_filter.png
-  :width: 420
+.. |sylphium_filter2| image:: _static/sylphium_filter2.png
+  :width: 200
   :alt: Alternative text
 
-|sylphium_filter|
+|sylphium_filter2|
 
 
+Samples for the following DNA extraction have 
+been :ref:`prepared according to guidelines here <prep_sylphium_dual_filters>`.
+
+___________________________________________________
 
 Equipment and Consumables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -56,39 +63,67 @@ Equipment and Consumables
 +==========================================+===================+=========+
 | Sylphium capsules filled with ATL buffer | 3.5 mL per sample | -20°C   |
 +------------------------------------------+-------------------+---------+
-| 3M Sodium Acetate solution               | 0.3 mL per sample | 15-25ºC |
+| 96% Ethanol (EtOH)                       | 6.6 mL per sample | 15-25ºC |
 +------------------------------------------+-------------------+---------+
-| 96% Ethanol                              | 6.6 mL per sample | 15-25ºC |
+| 50ml Syringes                            | 1 per sample      |         |
 +------------------------------------------+-------------------+---------+
-| 50ml Syringes                            |                   |         |
+| Proteinase K (PK)                        | 40 μL per sample  | -20°C   |
 +------------------------------------------+-------------------+---------+
-| Proteinase K                             |                   |         |
-+------------------------------------------+-------------------+---------+
-| Qiagen DNeasy PowerWater kit             |                   | 15-25ºC |
+| Qiagen DNeasy Blood and Tissue kit       |                   | 15-25ºC |
 +------------------------------------------+-------------------+---------+
 | 96-well 0.2 mL PCR plate                 | 1 plate           |         |
 +------------------------------------------+-------------------+---------+
 
+___________________________________________________
 
 Procedure 
 ~~~~~~~~~~
 
-#. Take the capsule to RT and shake it in a mechanical shaker for at least 30 minutes. If needed, capsules could be incubated at 37ºC for 10-30 min beforehand. 
-#. Mix each capsule by hand and transfer its content into a 15 mL tube (using a syringe). 
-#. Add 6.6 mL of ethanol and 0.3 mL of 3 M sodium acetate to each tube. Mix by inverting a couple of times. 
-#. Incubate overnight at -20ºC.
-#. Centrifuge each sample at 15 000 g, for 15 min (or 8 000 g for 30 min) at 6°C, and discard the supernatant (using a pipette but with caution to not disturb the pellet).
-#. Add 1 mL of Solution PW1 to the pellet and mix by pipetting. PW1 should be used still warm.
-#. Add 25 µL of proteinase K (20 mg/mL) to each sample. Mix by vortex, short-spin and incubate at 56ºC for at least 3h. 
-#. Centrifuge the tubes ≤4000 x g for 1 min.
-#. Transfer the supernatant to a clean 2 mL collection tube (provided). Pipette until you have removed as much supernatant as possible (maximum of 650 µL) using a 1,250 µL pipette tip.
-#. Centrifuge tubes at 13,000 x g for 1 min.
-#. Avoiding the pellet, transfer the supernatant to a clean 2 mL collection tube (provided). 
-#. Add 200 µL of Solution IRS and vortex briefly to mix. Incubate at 2-8°C for 5 min.
-#. Centrifuge the tubes at 13,000 x g for 1 min.
-#. Avoiding the pellet, transfer the supernatant to a clean 2 mL collection tube (provided), up to 700 µL max.
-#. Add 650 µL of Solution PW3 and vortex briefly to mix. Short-spin samples. 
+Assuming that the samples have been prepared according to :ref:`guidelines here <prep_sylphium_dual_filters>`:
+
+* Set the thermoblock at 70ºC; 
+* Set the oven at 55ºC; 
+* Clean the working space and material with disinfectant (e.g. 5-10% bleach) and ethanol (to vipe off bleach) and leave the UV light on for at least 15 mins;
+* Use filtered pipette tips at all steps; 
+* If AL buffer has precipitate, heat to 55°C for 5-10 min to dissolve. 
+* Follow the manufacturer's instructions (for Qiagen DNeasy Blood and Tissue kit) to prepare the AW1 and AW2 buffers. 
+* AL buffer + ethanol (96%) could be used pre-mixed.
+
+
+1. Mix each capsule by hand and transfer its content into a 15 mL tube using a syringe, through the inlet side. 
+2. Add 96% ethanol and AL Buffer to each tube in a 1:1:1 ratio 
+   (e.g. 2,000 μL ATL + PK : 2,000 μL AL buffer: 2,000 μL 96% ethanol). 
+   Vortex tubes immediately, for 20s, and short-spin them.
+3. Capture and purify the eDNA following either option a) or b):
+
+  **a.** By centrifugation (based on the DNeasy Blood and Tissue standard protocol):
+
+    i. Load up to **650 μL of supernatant** onto a Mini Spin Column. Centrifuge at **6,000 x g for 1 min**.  
+    ii. Discard  the  2-mL  collection  tube  and  replace  it  with  a  new  collection  tube  (not provided). Repeat until all the supernatant has been processed. 
+    iii. Place the Mini Spin Column Filter into a clean 2-mL collection tube (provided). 
+    iv. Add **500  μL  of  AW1  Buffer** and  centrifuge  at **6,000  x  g  for  1  min**.  Discard  the  2-mL collection tube, and place the Mini Spin Column in a new collection tube (provided). 
+    v. Add **500 μL of AW2 Buffer** and centrifuge at **20,000 x g for 1 min**. Discard the 2-mL collection tube. 
+
+  **b.** Using the QIAvac 24 Plus vacuum manifold as an alternative: 
+
+    i. Place the Mini Spin Columns in the QIAvac system
+    ii. Load **650 μL of supernatant** onto a Mini Spin Column.
+    iii. Turn on the vacuum pump at -80/-90 kPa. 
+    iv. Repeat the previous steps until all the supernatant has been processed. 
+    v. Add **500 μL of AW1 Buffer**. 
+    vi. Add **500 μL of AW2 Buffer**. 
+    vii. Turn off the vacuum pump once all the volume has passed through.
+
+4. Place the DNeasy Mini Spin Column in a new collection tube. 
+   Centrifuge at **20,000 x g for 2 min** to completely dry the membrane. 
+   Discard the collection tube containing the flow-through. 
+5. Place the column in a clean 1.5 mL tube and add **100 μL of heated TE** (at 70ºC) 
+   to the centre of the column membrane.  
+6. Incubate for **10 min** at room temperature. Centrifuge at **6,000 x g for 1 min**.  
+7. Repeat previous two steps above (5-6) using the same 1.5 mL tube to obtain maximum yield. 
+8. Transfer **60 μL** eDNA extract to a 96-well plate (working plate) and archive the remaining at -20ºC or -80ºC. Leave at least two empty wells per plate for the PCR negative control (PNC).   
+9. Quantify the samples by spectrophotometry. Dilute samples with EB buffer into a new 96-well plate (if needed). 
 
 ____________________________________________________
 
-|eufund| |chfund| |ukrifund|
+|logo_BGE_small| |eufund| |chfund| |ukrifund|

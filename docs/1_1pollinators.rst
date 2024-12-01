@@ -1,5 +1,5 @@
 .. |eufund| image:: _static/eu_co-funded.png
-  :width: 220
+  :width: 200
   :alt: Alternative text
 
 .. |chfund| image:: _static/ch-logo-200x50.png
@@ -9,6 +9,11 @@
 .. |ukrifund| image:: _static/ukri-logo-200x59.png
   :width: 150
   :alt: Alternative text
+
+.. |logo_BGE_small| image:: _static/logo_BGE_alpha.png
+  :width: 120
+  :alt: Alternative text
+  :target: https://biodiversitygenomics.eu/
 
 .. raw:: html
 
@@ -35,4 +40,4 @@ Najera Cortazar, L., Ferreira, S., & Beja, P. (2024). Biodiversity Genomics Euro
 
 ____________________________________________________
 
-|eufund| |chfund| |ukrifund|
+|logo_BGE_small| |eufund| |chfund| |ukrifund|

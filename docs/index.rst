@@ -4,7 +4,7 @@
   :target: https://biodiversitygenomics.eu/
 
 .. |eufund| image:: _static/eu_co-funded.png
-  :width: 220
+  :width: 200
   :alt: Alternative text
 
 .. |chfund| image:: _static/ch-logo-200x50.png
@@ -42,6 +42,11 @@
 .. |search_insights| image:: _static/google_fonts/search_insights_48dp_000000_FILL0_wght400_GRAD0_opsz48.svg
   :width: 50
   :alt: Alternative text
+
+.. |logo_BGE_small| image:: _static/logo_BGE_alpha.png
+  :width: 120
+  :alt: Alternative text
+  :target: https://biodiversitygenomics.eu/
 
 .. raw:: html
 
@@ -135,4 +140,4 @@ Contents
 
 ____________________________________________________
 
-|eufund| |chfund| |ukrifund|
+|logo_BGE_small| |eufund| |chfund| |ukrifund|
