@@ -39,7 +39,7 @@ This is mirror for the workflow hosted in `WorkflowHub <https://workflowhub.eu/s
 *(which hosts the downloadable PDF).*
 
 
-Qiagen MagAttract® PowerSoil® Pro DNA Kit extraction
+**Qiagen MagAttract® PowerSoil® Pro DNA Kit** extraction
 method to isolate eDNA from soil samples using the KingFisher Apex
 instrument, following both the provider’s protocol and adjustments from
 the `Earth Microbiome Project’s High Throughput DNA extraction
@@ -55,9 +55,9 @@ Equipment and Consumables
 +-----------------------------------------+-------------------+----------+
 | Qiagen MagAttract PowerSoil Pro DNA Kit |                   |          |
 +-----------------------------------------+-------------------+----------+
-| Solution CD2                            |                   | 2-8º     |
+| - Solution CD2                          |                   | 2-8º     |
 +-----------------------------------------+-------------------+----------+
-| Other reagents                          |                   | 15-25ºC  |
+| - Other reagents                        |                   | 15-25ºC  |
 +-----------------------------------------+-------------------+----------+
 | Proteinase K (PK)                       |                   | -20 ºC   |
 +-----------------------------------------+-------------------+----------+
@@ -140,23 +140,23 @@ DNA extraction
      extractions.
 
 
-| 1. Centrifuge the PowerBead Pro Tubes **at 15000 x g for 1 min**.
+| 5. Centrifuge the PowerBead Pro Tubes **at 15000 x g for 1 min**.
 |
-| 2. Transfer the supernatant to the CMTRs and add **300 µL Solution CD2** to each well of CMTRs. Pipette up and down 3-5 times to thoroughly mix after supernatant addition to each well.
+| 6. Transfer the supernatant to the CMTRs and add **300 µL Solution CD2** to each well of CMTRs. Pipette up and down 3-5 times to thoroughly mix after supernatant addition to each well.
 |
 |   *Note: Expect 500-600 µL. The supernatant may still contain some soil particles.*
 |
-| 3. Seal the CMTRs with the caps provided and then vortex. Centrifuge the CMTRs at **4500 x g for 6 min** at room temperature.
+| 7. Seal the CMTRs with the caps provided and then vortex. Centrifuge the CMTRs at **4500 x g for 6 min** at room temperature.
 |
-| 4. Taking care to avoid any residual pellet, transfer the supernatant from each well to a clean KingFisher deep-well 96 plate. Expect to recover 650-700µL maximum.
+| 8. Taking care to avoid any residual pellet, transfer the supernatant from each well to a clean KingFisher deep-well 96 plate. Expect to recover 650-700µL maximum.
 |
-| 5. Resuspend MagAttract Suspension G Beads by vortexing. For each 96-well plate to be processed, add **3 mL of the resuspended MagAttract Suspension G Beads to 44 mL Buffer QSB1** and mix well. Immediately transfer to a multichannel pipette reservoir.
+| 9. Resuspend MagAttract Suspension G Beads by vortexing. For each 96-well plate to be processed, add **3 mL of the resuspended MagAttract Suspension G Beads to 44 mL Buffer QSB1** and mix well. Immediately transfer to a multichannel pipette reservoir.
 |
 |   *Note: Maintain the MagAttract Suspension G Beads in suspension (by pipetting up and down several times) to ensure uniform distribution.*
 |
-| 6. Add **470 µL of the MagAttract Suspension G beads/Buffer QSB1 mix** to each well-containing lysate in a KingFisher 96 deep-well plate and mix by pipetting (KF Plate 1).
+| 10. Add **470 µL of the MagAttract Suspension G beads/Buffer QSB1 mix** to each well-containing lysate in a KingFisher 96 deep-well plate and mix by pipetting (KF Plate 1).
 |
-| 7. Transfer up to **650 µL of the MagAttract Suspension G beads/Buffer QSB1/lysate** mix from each sample to another KingFisher 96 deep-well plate (*KF Plate 2*), to be used in the first binding step. Both KF Plates 1&2 will be placed in the machine to improve yield.
+| 11. Transfer up to **650 µL of the MagAttract Suspension G beads/Buffer QSB1/lysate** mix from each sample to another KingFisher 96 deep-well plate (*KF Plate 2*), to be used in the first binding step. Both KF Plates 1&2 will be placed in the machine to improve yield.
 
 ___________________________________________________
 
