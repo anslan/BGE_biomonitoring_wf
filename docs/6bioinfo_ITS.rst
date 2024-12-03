@@ -911,7 +911,40 @@ making ASVs that differ only withing the ITS1/ITS2 part.
 Taxonomy assignment
 ~~~~~~~~~~~~~~~~~~~
 
-...
+Taxonomy assignment with the `SINTAX <https://www.biorxiv.org/content/10.1101/074161v1>_` 
+against `EUKARYOME database. <https://eukaryome.org/>`_ 
+
+**---** `Download the EUKARYOME (v1.9.2) for SINTAX here (click) <https://sisu.ut.ee/wp-content/uploads/sites/643/SINTAX_EUK_ITS_v1.9.zip>`_ **---**
+
+.. code-block:: bash
+   :caption: assign taxonomy with SINTAX
+   :linenos:
+
+    #!/bin/bash
+
+    # download the EUKARYOME reference databse
+    wget \
+      "https://sisu.ut.ee/wp-content/uploads/sites/643/SINTAX_EUK_ITS_v1.9.zip"
+    # unzip the database and edit name
+    unzip SINTAX_EUK_ITS_v1.9.zip -d EUKARYOME1.9.2_sintax
+    
+    # specify reference database
+    reference_database="EUKARYOME1.9.2_sintax/SINTAX_EUK_ITS_v1.9.fasta"
+    reference_database=$(realpath $reference_database) # get database names with full path
+
+    # specify input fasta file
+    cd ASV_table
+    ASV_fasta="ASVs.ITSx.fasta"
+
+    # Run SINTAX classifier
+    vsearch -sintax $ASV_fasta \
+                  -db $reference_database \
+                  -tabbedout taxonomy.txt \
+                  -strand both \
+                  -sintax_cutoff 0.8 \
+                  --threads 8
+
+____________________________________________________
 
 .. _clusteringITS:
 
@@ -1110,10 +1143,10 @@ Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
     cat $OTUs_fasta | \
       seqkit grep -w 0 -f OTUs_LULU.list > OTUs_LULU.fasta
 
-    # get matching RDP taxonomy results
-    head -n 1 ../RDP.taxonomy.txt > RDP.taxonomy.txt
-    cat ../RDP.taxonomy.txt | \
-      grep -wf OTUs_LULU.list >> RDP.taxonomy.txt
+    # get matching SINTAX taxonomy results
+    head -n 1 ../taxonomy.txt > taxonomy.txt
+    cat ../taxonomy.txt | \
+      grep -wf OTUs_LULU.list >> taxonomy.txt
 
     # remove unnecessary files
     rm OTUs.fasta.n*
@@ -1127,7 +1160,7 @@ Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
 
     The final OTUs data is ``OTU_table_LULU.txt`` and ``OTUs_LULU.fasta`` in the ``OTU_table`` directory.
 
-    The matching RDP taxonomy files are ``RDP.taxonomy.txt`` in the ``OTU_table`` directory.
+    The matching SINTAX taxonomy files are ``taxonomy.txt`` in the ``OTU_table`` directory.
 
 ____________________________________________________
 
