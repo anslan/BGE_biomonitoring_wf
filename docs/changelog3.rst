@@ -29,13 +29,21 @@
 
 |logo_BGE_alpha|
 
-Changelog history
-*****************
 
-.. toctree::
+v1.0b [2024_12_03]
+*******************
 
-   changelog3
-   changelog2
-   changelog1
+| First version of the full user guide; for review. 
+| Includes all steps from sampling to interpretations following the case studies withing BGE. 
+
+____________________________________
+
+TODO: 
+
+- add library prep. specifications for 418 bp COI amplicon. 
+- extend hmsc interpretations based on the case study data. 
+- extend analyses guidelines based on partner contribuitions using case study data.
+ 
+____________________________________
 
 |logo_BGE_small| |eufund| |chfund| |ukrifund|

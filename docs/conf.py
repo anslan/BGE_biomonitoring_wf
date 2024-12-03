@@ -19,7 +19,7 @@ copyright = '2024, Sten Anslan'
 author = 'Sten Anslan et al.'
 
 # The full version, including alpha/beta/rc tags
-version = '0.2b'
+version = '1.0b'
 release = version
 
 # -- General configuration ---------------------------------------------------

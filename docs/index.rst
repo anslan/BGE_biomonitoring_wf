@@ -66,8 +66,6 @@ Bioscan biomonitoring workflow
 
 | *bioscanflow*: documentation for the metabarcoding workflow(s); 
 | developed withing the framework of `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ (BGE). 
-| :red:`This is work in progress...`
-
 
 .. grid:: 3
 
