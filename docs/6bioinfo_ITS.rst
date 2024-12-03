@@ -911,8 +911,8 @@ making ASVs that differ only withing the ITS1/ITS2 part.
 Taxonomy assignment
 ~~~~~~~~~~~~~~~~~~~
 
-Taxonomy assignment with the `SINTAX <https://www.biorxiv.org/content/10.1101/074161v1>_` 
-against `EUKARYOME database. <https://eukaryome.org/>`_ 
+Taxonomy assignment with the `SINTAX <https://www.biorxiv.org/content/10.1101/074161v1>`_ 
+against `EUKARYOME database <https://eukaryome.org/>`_ .
 
 **---** `Download the EUKARYOME (v1.9.2) for SINTAX here (click) <https://sisu.ut.ee/wp-content/uploads/sites/643/SINTAX_EUK_ITS_v1.9.zip>`_ **---**
 
