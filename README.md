@@ -4,4 +4,4 @@ Repository for developing documentation for metabarcoding-based biomonitoring wo
 
 __________________________
 
-'Dockerfile' and 'bioscanflow_env.yml' are for building [Docker image] (https://registry.hub.docker.com/r/pipecraft/bioscanflow) for bioinformatics processing of the sequenceing data. 
+'Dockerfile' and 'bioscanflow_env.yml' are for building [Docker image](https://registry.hub.docker.com/r/pipecraft/bioscanflow) for bioinformatics processing of the sequenceing data. 
