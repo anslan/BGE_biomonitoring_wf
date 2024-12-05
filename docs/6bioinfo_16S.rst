@@ -239,6 +239,8 @@ Remove primers
         cd ..
     done
 
+____________________________________________________
+
 .. _quality_filtering16S:
 
 Quality filtering 
@@ -326,6 +328,8 @@ Quality filtering
         }
     }
 
+____________________________________________________
+
 .. _denoise16S:
 
 Denoise and merge paired-end reads
@@ -339,7 +343,7 @@ Denoise and merge paired-end reads
 
 .. code-block:: R
    :caption: denoise and merge paired-end reads in DADA2
-   :emphasize-lines: 7-13, 75-79
+   :emphasize-lines: 7-13, 74-78
    :linenos:
 
     #!/usr/bin/Rscript
@@ -361,6 +365,9 @@ Denoise and merge paired-end reads
             filtR2 = readRDS("qualFiltered_out/filtR2.rds")
             qfilt = readRDS("qualFiltered_out/qfilt_reads.rds")
             sample_names = readRDS("qualFiltered_out/sample_names.rds")
+            cat("\n sample names = ", sample_names, "\n ")
+            names(filtR1) = sample_names
+            names(filtR2) = sample_names
 
             # create output dir
             path_results = "denoised_merged"
@@ -379,28 +386,24 @@ Denoise and merge paired-end reads
               print( plotErrors(errR) )
             dev.off()
 
-            # dereplicate
-            derepR1 = derepFastq(filtR1, qualityType = "Auto")
-            derepR2 = derepFastq(filtR2, qualityType = "Auto")
+            # Sample inference and merger of paired-end reads
+            mergers = vector("list", length(sample_names))
+            names(mergers) = sample_names
+            for(sample in sample_names) {
+              cat("\n -- Processing:", sample, "\n")
+              derepF = derepFastq(filtR1[[sample]])
+              ddF = dada(derepF, err = errF, multithread = TRUE)
+              derepR = derepFastq(filtR2[[sample]])
+              ddR = dada(derepR, err = errR, multithread = TRUE)
+              merger = mergePairs(ddF, derepF, ddR, derepR)
+              mergers[[sample]] = merger
+            }
+            rm(derepF); rm(derepR)
+            gc()
+            saveRDS(mergers, (file.path(path_results, "mergers.rds")))
 
-            # denoise
-            dadaR1 = dada(derepR1, err = errF, 
-                            pool = FALSE, selfConsist = FALSE, 
-                            multithread = TRUE)
-            dadaR2 = dada(derepR2, err = errR, 
-                            pool = FALSE, selfConsist = FALSE, 
-                            multithread = TRUE)
-
-            # merge paired-end reads
-            print("# Merging ...")
-            merge = mergePairs(dadaR1, derepR1, dadaR2, derepR2, 
-                                maxMismatch = 2,
-                                minOverlap = 15,
-                                justConcatenate = FALSE,
-                                trimOverhang = FALSE)
-            #make sequence table
-            ASV_tab = makeSequenceTable(merge)
-            rownames(ASV_tab) = gsub("R1.fastq.gz", "", rownames(ASV_tab))
+            # make sequence table
+            ASV_tab = makeSequenceTable(mergers)
             #write RDS object
             saveRDS(ASV_tab, (file.path(path_results, "rawASV_table.rds")))
 
@@ -422,7 +425,7 @@ Denoise and merge paired-end reads
         }
     }
 
-
+____________________________________________________
 
 .. _remove_chimeras16S:
 
@@ -540,6 +543,7 @@ Chimera filtering
         }
     }
 
+____________________________________________________
 
 .. _tagjumps16S:
 
@@ -676,6 +680,7 @@ Remove tag-jumps
         }
     }
 
+____________________________________________________
 
 .. _mergeRuns16S:
 
@@ -780,6 +785,7 @@ Merge sequencing runs
                         " sequences."))
     }
 
+____________________________________________________
 
 .. _taxAssign16S:
 
