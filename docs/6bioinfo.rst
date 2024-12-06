@@ -45,4 +45,9 @@ Descriptions on how to process Illumina paired-end data of different amplicons.
 
 ____________________________________________________
 
+We acknowledge `CSC - IT Center for Science <https://csc.fi/en/>`_, Finland, for computational resources
+while building and testing these workflows.
+
+____________________________________________________
+
 |logo_BGE_small| |eufund| |chfund| |ukrifund|

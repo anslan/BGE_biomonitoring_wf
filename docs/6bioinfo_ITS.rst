@@ -1171,4 +1171,9 @@ Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
 
 ____________________________________________________
 
+We acknowledge `CSC - IT Center for Science <https://csc.fi/en/>`_, Finland, for computational resources
+while building and testing this workflows.
+
+____________________________________________________
+
 |logo_BGE_small| |eufund| |chfund| |ukrifund|
