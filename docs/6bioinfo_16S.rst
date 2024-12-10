@@ -205,6 +205,10 @@ Remove primers
                            # i.e. if a primer is 20 bp then allowing 2 mismatches.
     overlap="19"           # The minimum overlap length. Keep it nearly as high
                            # as the primer length to avoid short random matches.
+    pair_filter="any" # Option 'any' discards a read pair if primers are not found in 
+                        # either of the read pairs (R1 and R2). 
+                        # Option 'both' keeps the read pair if a primer is found in 
+                        # at least one of the read pairs. 
 
     # get directory names if working with multiple sequencing runs
     DIRS=$(ls -d *) # -> sequencing_set01 sequencing_set02 sequencing_set03
@@ -228,7 +232,7 @@ Remove primers
             --cores=0 \
             --untrimmed-output primersCut_out/untrimmed/$inputR1 \
             --untrimmed-paired-output primersCut_out/untrimmed/$inputR2 \
-            --pair-filter=both \
+            --pair-filter=$pair_filter \
             -g $fwd_primer \
             -G $rev_primer \
             -o primersCut_out/$inputR1 \

@@ -201,11 +201,15 @@ Remove primers
     rev_primer=$"TANACYTCNGGRTGNCCRAARAAYCA"    #this is primer jgHCO2198
 
     # edit primer trimming settings
-    mismatches="2"  # Numer of allowed mismatches in primer string search;
-                      # if set as 1, then allow 1 mismatch;
-                      # if set as 0.1, then allow mismatch in 10% of the bases.
-    overlap="22"    # The minimum overlap length. Keep it nearly as high
-                      # as the primer length to avoid short random matches.
+    mismatches="2"    # Numer of allowed mismatches in primer string search;
+                        # if set as 1, then allow 1 mismatch;
+                        # if set as 0.1, then allow mismatch in 10% of the bases.
+    overlap="22"      # The minimum overlap length. Keep it nearly as high
+                        # as the primer length to avoid short random matches.
+    pair_filter="any" # Option 'any' discards a read pair if primers are not found in 
+                        # either of the read pairs (R1 and R2). 
+                        # Option 'both' keeps the read pair if a primer is found in 
+                        # at least one of the read pairs. 
     ##
     # get the reverse complementary of the primers
         # needed when the amplicon length is shorter than the sequencing cycle
@@ -235,7 +239,7 @@ Remove primers
             --cores=0 \
             --untrimmed-output primersCut_out/untrimmed/$inputR1 \
             --untrimmed-paired-output primersCut_out/untrimmed/$inputR2 \
-            --pair-filter=both \
+            --pair-filter=$pair_filter \
             -g $fwd_primer \
             -a $fwd_primer...$rev_primer_rc";optional" \
             -G $rev_primer \
