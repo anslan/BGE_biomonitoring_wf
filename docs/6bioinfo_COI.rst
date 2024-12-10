@@ -187,7 +187,7 @@ Remove primers
 
 .. code-block:: bash
    :caption: remove primers with cutadapt
-   :emphasize-lines: 23-29, 56-57
+   :emphasize-lines: 27-33, 60-61
    :linenos:
 
     #!/bin/bash

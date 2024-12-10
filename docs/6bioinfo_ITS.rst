@@ -179,7 +179,7 @@ Remove primers
 
 .. code-block:: bash
    :caption: remove primers with cutadapt
-   :emphasize-lines: 27-32, 57-58
+   :emphasize-lines: 31-36, 61-62
    :linenos:
 
     #!/bin/bash
@@ -202,15 +202,15 @@ Remove primers
 
     # edit primer trimming settings
     maximum_error_rate="2" # Maximum error rate in primer string search;
-                           # if set as 1, then allow 1 mismatch;
-                           # if set as 0.1, then allow mismatch in 10% of the bases,
-                           # i.e. if a primer is 20 bp then allowing 2 mismatches.
+                            # if set as 1, then allow 1 mismatch;
+                            # if set as 0.1, then allow mismatch in 10% of the bases,
+                            # i.e. if a primer is 20 bp then allowing 2 mismatches.
     overlap="17"           # The minimum overlap length. Keep it nearly as high
-                           # as the primer length to avoid short random matches.
-    pair_filter="any" # Option 'any' discards a read pair if primers are not found in 
-                        # either of the read pairs (R1 and R2). 
-                        # Option 'both' keeps the read pair if a primer is found in 
-                        # at least one of the read pairs. 
+                            # as the primer length to avoid short random matches.
+    pair_filter="both"     # Option 'any' discards a read pair if primers are not found in 
+                            # either of the read pairs (R1 and R2). 
+                            # Option 'both' keeps the read pair if a primer is found in 
+                            # at least one of the read pairs. 
 
     # get directory names if working with multiple sequencing runs
     DIRS=$(ls -d *) # -> sequencing_set01 sequencing_set02 sequencing_set03
