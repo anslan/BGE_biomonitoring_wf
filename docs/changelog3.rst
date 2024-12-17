@@ -30,19 +30,22 @@
 |logo_BGE_alpha|
 
 
-v1.0b [2024_12_03]
+v1.0b [2024_12_17]
 *******************
 
-| First version of the full user guide; for review. 
+| First version of the full user guide.
 | Includes all steps from sampling to interpretations following the case studies withing BGE. 
+| Currently, the interpretations section includes only basic workflow with HMSC.
 
 ____________________________________
 
 TODO: 
 
 - add library prep. specifications for 418 bp COI amplicon. 
+- add notes about slight deviations from the original FAVIS protocol.
 - extend hmsc interpretations based on the case study data. 
 - extend analyses guidelines based on partner contribuitions using case study data.
+- add downloadable script files for each process in the Bioinformatics section 
  
 ____________________________________
 
