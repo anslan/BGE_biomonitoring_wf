@@ -33,8 +33,8 @@
 v1.0b [2024_12_17]
 *******************
 
-| First version of the full user guide.
-| Includes all steps from sampling to interpretations following the case studies withing BGE. 
+| First version of the full documentation.
+| Includes all steps from sampling to bioinformatics following the case studies withing BGE. 
 | Currently, the interpretations section includes only basic workflow with HMSC.
 
 ____________________________________
