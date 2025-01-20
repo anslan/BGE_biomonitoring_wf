@@ -418,9 +418,8 @@ Denoise and merge paired-end reads
             #remove 0 seqs samples from qfilt statistics
             row_sub = apply(qfilt, 1, function(row) all(row !=0 ))
             qfilt = qfilt[row_sub, ]
-            seq_count = cbind(qfilt, sapply(dadaR1, getN), 
-                                sapply(dadaR2, getN), sapply(merge, getN))
-            colnames(seq_count) = c("input", "qualFiltered", "denoised_R1", "denoised_R2", "merged")
+            seq_count = cbind(qfilt, sapply(mergers, getN))
+            colnames(seq_count) = c("input", "qualFiltered", "denoised_and_merged")
             rownames(seq_count) = sample_names
             write.csv(seq_count, file.path(path_results, "seq_count_summary.csv"), 
                                     row.names = TRUE, quote = FALSE)
