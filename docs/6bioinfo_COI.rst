@@ -98,14 +98,14 @@ Dependencies
 .. code-block:: bash
    :caption: get the Docker image
    
-   docker pull pipecraft/bioscanflow:1
+   docker pull pipecraft/bioscanflow:2
 
 .. code-block:: bash
    :caption: example of running the pipeline via Docker image
    
    # run docker 
     # specify the files location with -v flag  ($PWD = the current working directory)
-   docker run -i --tty -v $PWD/:/Files pipecraft/bioscanflow:1 
+   docker run -i --tty -v $PWD/:/Files pipecraft/bioscanflow:2 
 
    # inside the container, the files are accessible in the /Files dir
    cd Files
@@ -116,6 +116,18 @@ Dependencies
    # ready to run the pipe as below ...
     ## make sure that via the shared folder (-v) path you have access also to the reference databases.
 
+
+.. code-block:: bash
+   :caption: convert docker image to apptainer (singularity) image for running the pipeline in HPC
+
+    # pull the docker image and save it as a singularity image
+    apptainer pull --name bioscanflow_2.sif docker://pipecraft/bioscanflow:2
+
+    # test if eg cutadapt is available
+    apptainer exec bioscanflow_2.sif cutadapt -h
+
+    # run the script via singularity image
+    apptainer exec --bind $PWD:/Files bioscanflow_2.sif /Files/run_pipe.sh
 
 
 Data structure
