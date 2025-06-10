@@ -840,13 +840,13 @@ Taxonomy assignment
     ASV_fasta="ASVs_TagJumpFiltered.fasta"
     ASV_fasta_tmp="ASVs_TagJumpFiltered_minmax.fasta"
 
-    # select by size
+    # select by size to only retain ASVs that are within the range of expected variation. In this case we set it to 400 up to 430 bps
     vsearch --fastx_filter $ASV_fasta \
             --fastq_minlen 400 \
             --fastq_maxlen 430 \
-            --fastaout $ASV_size_filtered
+            --fastaout $ASV_fasta_tmp
 
-    mv $ASV_size_filtered $ASV_fasta
+    mv $ASV_fasta_tmp $ASV_fasta
 
     # Run RDP-classifier
     time rdp_classifier \
