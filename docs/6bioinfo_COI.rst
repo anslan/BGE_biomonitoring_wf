@@ -838,6 +838,15 @@ Taxonomy assignment
     # specify input fasta file
     cd ASV_table
     ASV_fasta="ASVs_TagJumpFiltered.fasta"
+    ASV_fasta_tmp="ASVs_TagJumpFiltered_minmax.fasta"
+
+    # select by size
+    vsearch --fastx_filter $ASV_fasta \
+            --fastq_minlen 400 \
+            --fastq_maxlen 430 \
+            --fastaout $ASV_size_filtered
+
+    mv $ASV_size_filtered $ASV_fasta
 
     # Run RDP-classifier
     time rdp_classifier \
@@ -1043,7 +1052,7 @@ Remove NUMTs
 ~~~~~~~~~~~~
 
 | Remove putative NUMTs with metaMATE. 
-| This follows the workflow to automatically filter the ASVs by retaining maximum of 5% of estimated non-authentic-ASVs (nonauthentic_retained_estimate_p < 0.05).
+| This follows the workflow to automatically filter the ASVs by retaining maximum of 5% of estimated non-authentic-ASVs (verifiednonauthentic_retained_p < 0.05).
 
 
 .. important::
@@ -1087,6 +1096,26 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
 
 
 .. code-block:: bash
+   :caption: cluster ASVs at a 90% similarity threshold for abundance filtering
+   :linenos:
+
+    #!/bin/bash
+    ## run metaMATE-find
+
+    # cluster with 10% threshold
+    vsearch --cluster_fast ASVs_TagJumpFiltered_tax_filt.fasta --id 0.9 \
+    --uc ASVs_TagJumpFiltered_tax_filt_clustered.uc
+    
+    # select only H & S
+    cat ASVs_TagJumpFiltered_tax_filt_clustered.uc | grep -v "^C" \ 
+    > ASVs_TagJumpFiltered_tax_filt_clustered_onlyHS.uc
+    
+    # now extract the information to match the input requirements from metamate
+    awk -F'\t' 'BEGIN {OFS=","} {print $9, $2}' ASVs_TagJumpFiltered_tax_filt_clustered_onlyHS.uc \
+    > ASV_to_cluster_map.csv
+
+
+.. code-block:: bash
    :caption: run metaMATE-find
    :linenos:
 
@@ -1098,18 +1127,19 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     # specify input ASVs table and fasta
     ASV_table="ASV_table_TagJumpFiltered_tax_filt.txt" # make sure that the 2nd col is not "Sequence"
     ASV_fasta="ASVs_TagJumpFiltered_tax_filt.fasta"    # specify ASVs fasta file 
+    taxgroups="ASV_to_cluster_map.csv"                 # comment out or change filename if sequence binning is done in another way  
 
     # specify variables
     genetic_code="5"        # the standard genetic code. 5 is invertebrate mitochondrial code
-    length="313"            # the expected length of an amplicon
+    length="418"            # the expected length of an amplicon
     basesvariation="9"      # allowed length variation (bp) from the expected length of an amplicon
     taxgroups="undefined"   # (optional); if sequence binning is to be performed on 
                                # a per-taxon basis (as in specifications file) 
                                # then specify the taxon grouping file
-    NA_abund_thresh="0.05"  # nonauthentic_retained_estimate_p < 0.05 (value from mateMATE results);
+    NA_abund_thresh="0.05"  # verifiednonauthentic_retained_p < 0.05 (value from mateMATE results);
                                # the allowed abundance threshold of 
                                # non-validated OTUs/ASVs in the filtered dataset.
-    abundance_filt="FALSE"  # TRUE/FALSE; if FALSE, then NA_abund_thresh is ineffective, 
+    abundance_filt="TRUE"  # TRUE/FALSE; if FALSE, then NA_abund_thresh is ineffective, 
                                # and no filtering is done based on the ASV abundances,
                                # i.e., filter only based on length, basesvariation and genetic_code.
                                # FALSE may be used when the seq-depth for the target taxa is low.
@@ -1165,7 +1195,8 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
         --table $genetic_code \
         --threads 8 \
         --output $output_dir \
-        --overwrite $taxgroups
+        --overwrite $taxgroups \
+        --realign
 
     # check for the presence of "metamate_out" dir and "resultcache" file (did metaMATE-find finish)
     if [[ -d $output_dir ]] && [[ -e $output_dir/resultcache ]] && [[ -e $output_dir/results.csv ]]; then
@@ -1207,7 +1238,7 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     if (abundance_filt != "FALSE"){
         NA_abund_thresh = as.numeric(Sys.getenv('NA_abund_thresh'))
         filtered_data = find_results[
-                        find_results$nonauthentic_retained_estimate_p <= NA_abund_thresh, ] 
+                        find_results$verifiednonauthentic_retained_p <= NA_abund_thresh, ] 
 
         # if no results correspond with the NA_abund_thresh, then get the next best
             # else, just select the result_index that corresponds to 
@@ -1217,9 +1248,9 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
             "\n no results correspond with the NA_abund_thresh of", NA_abund_thresh, "; 
             getting the next best setting\n"
             )
-            next_best = min(find_results$nonauthentic_retained_estimate_p)
+            next_best = min(find_results$verifiednonauthentic_retained_p)
             filtered_data = find_results[
-                            find_results$nonauthentic_retained_estimate_p <= next_best, ] 
+                            find_results$verifiednonauthentic_retained_p <= next_best, ] 
             # sort based on accuracy_score
             sorted_filtered = filtered_data[order(-filtered_data$accuracy_score), ]
             # get the result with the highest accuracy_score
