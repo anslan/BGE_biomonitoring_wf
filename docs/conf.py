@@ -38,6 +38,10 @@ exclude_patterns = ['_build', '_local_docs']
 # a list of builtin themes.
 html_theme = 'sphinx_rtd_theme'
 
+html_js_files = [
+    'js/downloadbutton.js',
+]
+
 html_theme_options = {
     'sidebarwidth': 300,
     'collapse_navigation': True

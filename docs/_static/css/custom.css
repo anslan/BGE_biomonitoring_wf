@@ -1,0 +1,6 @@
+.downloadbtn {
+  float: right;
+  margin: 2px;
+  font-size: 0.8em;
+  cursor: pointer;
+}
