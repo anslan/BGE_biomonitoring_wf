@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let blob = new Blob([code], { type: "text/plain" });
       let link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "script.py"; // default
+      link.download = "script.txt";
       link.click();
     });
 
