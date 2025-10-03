@@ -1,6 +1,22 @@
 .downloadbtn {
-  float: right;
-  margin: 2px;
-  font-size: 0.8em;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 4px 6px;
+  font-size: 14px;
+  line-height: 1;
+  border: none;
+  border-radius: 4px;
+  background: #eee;
   cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out, background 0.2s;
+}
+
+.downloadbtn:hover {
+  background: #ddd;
+}
+
+div.highlight:hover .downloadbtn {
+  opacity: 1; /* only show on hover */
 }
