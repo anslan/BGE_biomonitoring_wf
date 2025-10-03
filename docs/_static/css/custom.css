@@ -3,8 +3,8 @@
   top: 6px;
   right: 34px;  /* push it left so copy button has space */
   padding: 2px 4px;
-  background: #eee;
-  border: none;
+  background: #f6f8fa;
+  border: #1b1f2426 1px solid;
   border-radius: 4px;
   cursor: pointer;
   opacity: 0;
