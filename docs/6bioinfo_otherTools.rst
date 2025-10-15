@@ -143,6 +143,7 @@ BLAST
 
 
 Taxonomy assignment with the RDP-classifier
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 | Taxonomy assignment with the RDP-classifier against `CO1Classifier v5.1.0 database. <https://github.com/terrimporter/CO1Classifier>`_ 
 | **---** `Download the CO1Classifier v5.1.0 for RDP here (click) <https://github.com/terrimporter/CO1Classifier/releases/download/RDP-COI-v5.1.0/RDP_COIv5.1.0.zip>`_ **---**
