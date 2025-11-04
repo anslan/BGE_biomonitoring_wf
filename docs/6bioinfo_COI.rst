@@ -816,8 +816,8 @@ ____________________________________________________
 Taxonomy assignment
 ~~~~~~~~~~~~~~~~~~~
 
-| Taxonomy assignment with SINTAX against `CO1Classifier v5.1.0 database. <https://github.com/terrimporter/CO1Classifier>`_ 
-| **---** `Download the CO1Classifier v5.1.0 for SINTAX here (click) <https://github.com/terrimporter/CO1Classifier/releases/download/SINTAX-COI-v5.1.0-ref/SINTAX_COIv5.1.0_ref.zip>`_ **---**
+| Taxonomy assignment with SINTAX against `BOLDistilled database. <https://boldsystems.org/data/BOLDistilled/>`_ 
+| **---** `Download the latest BOLDistilled database for SINTAX here (click) <https://us-sea-1.linodeobjects.com/boldistilled/sintax.zip>`_ **---**
 
 .. code-block:: bash
    :caption: assign taxonomy with SINTAX
@@ -825,14 +825,14 @@ Taxonomy assignment
 
     #!/bin/bash
 
-    # download the CO1Classifier reference database
+    # download the BOLDistilled reference database
     wget \
-      "https://github.com/terrimporter/CO1Classifier/releases/download/SINTAX-COI-v5.1.0-ref/SINTAX_COIv5.1.0_ref.zip"
+      "https://us-sea-1.linodeobjects.com/boldistilled/sintax.zip"
     # unzip the database
-    unzip SINTAX_COIv5.1.0_ref.zip
+    unzip sintax.zip
     
     # specify reference database for SINTAX
-    reference_database="SINTAX_COIv5.1.0_ref/training/sintax.fasta"
+    reference_database="sintax/BOLDistilled_COI_Oct2025_SEQUENCES_sintax.fasta"
     reference_database=$(realpath $reference_database) # get database names with full path
 
     # specify input fasta file
@@ -875,7 +875,7 @@ Get target taxa
     ### Filter dataset based on SINTAX results to include target taxa 
 
     # specify taxon and threshold
-    taxon="Metazoa"  # target taxonomic group(s); 
+    taxon="Animalia"  # target taxonomic group(s); 
                          # multiple groups should be from the same taxonomic level
                          # separator is "," (e.g., "Hymenoptera, Lepidoptera")
     tax_level="kingdom"  # allowed levels: kingdom | phylum | class | order | family | genus
@@ -1164,9 +1164,9 @@ Remove NUMTs
   1. metaMATE expects specifications file that states the filtering strategies. See `more info here. <https://github.com/tjcreedy/metamate?tab=readme-ov-file#specifications>`_ 
   Here, we will be using the metaMATE's `default specifications.txt file. <https://github.com/tjcreedy/metamate/blob/main/specifications.txt>`_ 
 
-  1. metaMATE requires a reference COI database to determine verified-authentic ASVs. Herein using `CO1Classifier v5.1.0 database. <https://github.com/terrimporter/CO1Classifier>`_ 
+  1. metaMATE requires a reference COI database to determine verified-authentic ASVs. Herein using `BOLDistilled database. <https://boldsystems.org/data/BOLDistilled/>`_ 
   
-  --- `Download the CO1Classifier v5.1.0 database here (click) <https://github.com/terrimporter/CO1Classifier/releases/download/SINTAX-COI-v5.1.0-ref/SINTAX_COIv5.1.0_ref.zip>`_ ---
+  --- `Download the latest BOLDistilled database here (click) <https://us-sea-1.linodeobjects.com/boldistilled/sintax.zip>`_ ---
 
   If you have your own set of reference sequences, then use those; or merge those with the other databases (such as the above one) to extend the ref. database.
 
@@ -1187,15 +1187,14 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     specifications=$(realpath $specifications) # get full directory path
 
 
-    # download the CO1Classifier reference databse
+    # download the BOLDistilled reference databse
     wget \
-     "https://github.com/terrimporter/CO1Classifier/releases/download/SINTAX-COI-v5.1.0-ref/SINTAX_COIv5.1.0_ref.zip"
+     "https://us-sea-1.linodeobjects.com/boldistilled/sintax.zip"
     # unzip the database and edit name
-    unzip SINTAX_COIv5.1.0_ref.zip && mv training CO1Classifier_v5.1.0 
-    mv CO1Classifier_v5.1.0/sintax.fasta CO1Classifier_v5.1.0/CO1Classifier_v5.1.0.fasta
+    unzip sintax.zip
     
     # specify reference database for metaMATE
-    reference_database="CO1Classifier_v5.1.0/CO1Classifier_v5.1.0.fasta"
+    reference_database="sintax/BOLDistilled_COI_Oct2025_SEQUENCES_sintax.fasta"
     reference_database=$(realpath $reference_database) # get full directory path
 
 
