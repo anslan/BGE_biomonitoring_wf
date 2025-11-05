@@ -209,8 +209,8 @@ Remove primers
     read_R1="_R1"
 
     # specify primers 
-    fwd_primer=$"GGWACWGGWTGAACWGTWTAYCCYCC"    #this is primer mlCOIintF
-    rev_primer=$"TANACYTCNGGRTGNCCRAARAAYCA"    #this is primer jgHCO2198
+    fwd_primer=$"CCHGAYATRGCHTTYCCHCG" # this is the forward primer BF3
+    rev_primer=$"CDGGRTGNCCRAARAAYCA"   # this is the reverse primer BR2
 
     # edit primer trimming settings
     mismatches="2"    # Numer of allowed mismatches in primer string search;
