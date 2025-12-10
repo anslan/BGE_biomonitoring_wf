@@ -73,7 +73,7 @@ Dependencies
 +-----------------------------------------------------+----------+---------+
 | :ref:`Merge sequencing runs* <mergeRunsCOI>`        | DADA2    | 1.30    |
 +-----------------------------------------------------+----------+---------+
-| :ref:`Taxonomy assignment <taxAssignCOI>`           | RDP      | 2.13    |
+| :ref:`Taxonomy assignment <taxAssignCOI>`           | vsearch  | 2.28.1  |
 +-----------------------------------------------------+----------+---------+
 | :ref:`Get target taxa <sorttaxaCOI>`                | R        |         |
 +-----------------------------------------------------+----------+---------+
@@ -816,7 +816,7 @@ ____________________________________________________
 Taxonomy assignment
 ~~~~~~~~~~~~~~~~~~~
 
-| Taxonomy assignment with SINTAX against `BOLDistilled database. <https://boldsystems.org/data/BOLDistilled/>`_ 
+| Taxonomy assignment with SINTAX (vsearch) against `BOLDistilled database. <https://boldsystems.org/data/BOLDistilled/>`_ 
 | **---** `Download the latest BOLDistilled database for SINTAX here (click) <https://us-sea-1.linodeobjects.com/boldistilled/sintax.zip>`_ **---**
 
 .. code-block:: bash
@@ -886,7 +886,7 @@ Get target taxa
     ASV_fasta = "ASVs_TagJumpFiltered.fasta"
     ASV_table = "ASV_table_TagJumpFiltered.txt"
 
-    # specify the RDP-classifier output file (taxonomy file)
+    # specify the SINTAX-classifier output file (taxonomy file)
     taxtab="SINTAX.taxonomy.txt"
     
     #--------------------------------------#
@@ -1407,10 +1407,10 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
             "grep -Fwf "var"_metaMATE.filt.list"}' $ASV_table > \
              $output_dir/${ASV_table%.*}_metaMATE.filt.txt
 
-    # filter the RDP.taxonomy.filt.txt file to include only ASVs retained by metaMATE
+    # filter the sintax.taxonomy.filt.txt file to include only ASVs retained by metaMATE
     awk -v var="$output_dir/${ASV_fasta%.*}" 'NR==1; NR>1 {print $0 | \
-            "grep -Fwf "var"_metaMATE.filt.list"}' RDP.taxonomy.filt.txt > \
-            $output_dir/RDP.taxonomy.metaMATE.filt.txt
+            "grep -Fwf "var"_metaMATE.filt.list"}' sintax.taxonomy.filt.txt > \
+            $output_dir/sintax.taxonomy.metaMATE.filt.txt
                                                                               
                                                                               
     # write discarded ASVs list
@@ -1425,18 +1425,18 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
 
     #!/bin/bash
     
-    # get discarded ASVs (RDP taxonomy list)
-    grep -Fwf $output_dir/metaMATE.discarded.list RDP.taxonomy.filt.txt \
-    > $output_dir/metaMATE.discarded.RDP.taxonomy.txt
+    # get discarded ASVs (sintax taxonomy list)
+    grep -Fwf $output_dir/metaMATE.discarded.list sintax.taxonomy.filt.txt \
+    > $output_dir/metaMATE.discarded.sintax.taxonomy.txt
 
     # get the rescued ASVs that have GENUS level bootstrap value >= 0.9
-    awk -F'\t' '$26 >= 0.9' $output_dir/metaMATE.discarded.RDP.taxonomy.txt \
+    awk -F'\t' '$26 >= 0.9' $output_dir/metaMATE.discarded.sintax.taxonomy.txt \
     > $output_dir/rescued.txt
 
     # check if rescued.txt exists and is not empty
     if [[ -s $output_dir/rescued.txt ]]; then
-        # add the rescued ASVs to $output_dir/RDP.taxonomy.metaMATE.filt.txt
-        cat $output_dir/rescued.txt >> $output_dir/RDP.taxonomy.metaMATE.filt.txt
+        # add the rescued ASVs to $output_dir/sintax.taxonomy.metaMATE.filt.txt
+        cat $output_dir/rescued.txt >> $output_dir/sintax.taxonomy.metaMATE.filt.txt
 
         # add the rescued ASVs to $output_dir/${ASV_fasta%.*}_metaMATE.filt.fasta
         seqkit grep -w 0 -f <(awk -F'\t' '{print $1}' $output_dir/rescued.txt) $ASV_fasta \
@@ -1455,7 +1455,7 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
 .. note:: 
 
     Herein case, the final filtered data is ``ASV_table_tax_filt_metaMATE.filt.txt`` and ``ASVs_tax_filt_metaMATE.filt.fasta`` in the ``metamate_out`` directory.
-    The filtered RDP-classifier results (matching the ASVs in the latter files) is ``RDP.taxonomy.metaMATE.filt.txt`` in the ``metamate_out`` dir.
+    The filtered SINTAX-classifier results (matching the ASVs in the latter files) is ``sintax.taxonomy.metaMATE.filt.txt`` in the ``metamate_out`` dir.
     
     If deemed relevant, then you may proceed with the below workflow below that includes clustering ASVs to OTUs. 
 
@@ -1658,10 +1658,10 @@ Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
     cat $OTUs_fasta | \
       seqkit grep -w 0 -f OTUs_LULU.list > OTUs_LULU.fasta
 
-    # get matching RDP taxonomy results
-    head -n 1 ../RDP.taxonomy.metaMATE.filt.txt > RDP.taxonomy.txt
-    cat ../RDP.taxonomy.metaMATE.filt.txt | \
-      grep -wf OTUs_LULU.list >> RDP.taxonomy.txt
+    # get matching sintax taxonomy results
+    head -n 1 ../sintax.taxonomy.metaMATE.filt.txt > sintax.taxonomy.txt
+    cat ../sintax.taxonomy.metaMATE.filt.txt | \
+      grep -wf OTUs_LULU.list >> sintax.taxonomy.txt
 
     # remove unnecessary files
     rm OTUs.fasta.n*
@@ -1675,7 +1675,7 @@ Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
 
     The final OTUs data is ``OTU_table_LULU.txt`` and ``OTUs_LULU.fasta`` in the ``OTU_table`` directory.
 
-    The matching RDP taxonomy files are ``RDP.taxonomy.txt`` in the ``OTU_table`` directory.
+    The matching SINTAX taxonomy files are ``sintax.taxonomy.txt`` in the ``OTU_table`` directory.
 
 ____________________________________________________
 
