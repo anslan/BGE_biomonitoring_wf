@@ -9,8 +9,9 @@ __________________________
 __________________________
 
 # For developers
-The page https://bioscanflow.readthedocs.io/en/latest/index.html# is built throuh 'Read the Docs', an open-sourced software documentation hosting platform. 
-Requirements: git, sphinx (documentation generator).
+The [documentation](https://bioscanflow.readthedocs.io/en/latest/index.html#) is built throuh 'Read the Docs', an open-sourced software documentation hosting platform. 
+
+Requirements: git, python, sphinx (documentation generator).
 
 1. Check if git is installed (through command line)
 ```bash
@@ -26,33 +27,34 @@ git clone https://github.com/anslan/BGE_biomonitoring_wf.git
 ```
 
 3. Install sphinx and rtd-theme:
- (make sure python is installed)
+   (make sure python is installed)
 
-```bash
-cd C:/Users/user/Desktop/BGE_biomonitoring_wf/docs  # go to downloaded github repo
-python -m pip install -U sphinx
-python -m pip install -r requirements.txt
-python -m pip install sphinxcontrib.youtube # for youtube videos
-```
+   ```bash
+   cd C:/Users/user/Desktop/BGE_biomonitoring_wf/docs  # go to downloaded github repo
+   python -m pip install -U sphinx
+   python -m pip install -r requirements.txt
+   ```
 
-  3.1 If you have problems installing then try: 
-  ```bash
-  cd C:/Users/user/Desktop/BGE_biomonitoring_wf/docs  # go to downloaded github repo
-  python -m pip install --user sphinx
-  python -m pip install -r requirements.txt
-  python -m pip install sphinxcontrib.youtube # for youtube videos
-  ```
+      If you have problems installing as an admin then try:
+
+      ```bash
+      cd C:/Users/user/Desktop/BGE_biomonitoring_wf/docs  # go to github repo
+      python -m pip install --user sphinx
+      python -m pip install --user -r requirements.txt
+      ```
 
 4. Build local page for testing
-
-```bash
-cd C:/Users/user/Desktop/BGE_biomonitoring_wf/docs  # go to 'docs'
-```
+*(in BGE_biomonitoring_wf/docs)*
 
 For Windows:
 ```bash
 .\make.bat html
 ```
+
+   If you installed sphinx with `--user` and `make.bat` doesn't work, use:
+   ```bash
+   python -m sphinx -M html . _build
+   ```
 
 For Linux and macOS:
 
