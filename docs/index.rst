@@ -134,7 +134,6 @@ Contents
    6bioinfo
    7interpret
    8additional_resources
-   changelog
 
 ____________________________________________________
 
