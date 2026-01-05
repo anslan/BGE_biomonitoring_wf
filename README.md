@@ -13,7 +13,7 @@ This [documentation](https://bioscanflow.readthedocs.io/en/latest/index.html#) i
 
 **Requirements**: git, python, sphinx (documentation generator).
 
-**1. Check if git is installed (through command line)**
+**1. Check if git is installed** (through command line)
 ```bash
 git --version
 ```
