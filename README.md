@@ -27,6 +27,9 @@ For MacOS: git --version (it will prompt the install)
 ```bash
 cd C:/Users/user/Desktop  # go to directory where you want to place the github repo
 git clone https://github.com/anslan/BGE_biomonitoring_wf.git
+
+cd C:/Users/user/Desktop/BGE_biomonitoring_wf/docs  # go to downloaded github repo
+git checkout develop # Switch to the develop branch!
 ```
 
 **3. Install sphinx and other requirements:**
