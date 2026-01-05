@@ -23,7 +23,7 @@ version = '1.0b'
 release = version
 
 # -- General configuration ---------------------------------------------------
-extensions = ['sphinx_design']
+extensions = ['sphinx_design', 'sphinx_copybutton']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -37,6 +37,9 @@ exclude_patterns = ['_build', '_local_docs']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = 'sphinx_rtd_theme'
+
+html_js_files = ["js/downloadbutton.js"]
+html_css_files = ["css/custom.css"]
 
 html_theme_options = {
     'sidebarwidth': 300,

@@ -73,7 +73,7 @@ Dependencies
 +-----------------------------------------------------+----------+---------+
 | :ref:`Merge sequencing runs* <mergeRunsCOI>`        | DADA2    | 1.30    |
 +-----------------------------------------------------+----------+---------+
-| :ref:`Taxonomy assignment <taxAssignCOI>`           | RDP      | 2.13    |
+| :ref:`Taxonomy assignment <taxAssignCOI>`           | vsearch  | 2.28.1  |
 +-----------------------------------------------------+----------+---------+
 | :ref:`Get target taxa <sorttaxaCOI>`                | R        |         |
 +-----------------------------------------------------+----------+---------+
@@ -209,8 +209,8 @@ Remove primers
     read_R1="_R1"
 
     # specify primers 
-    fwd_primer=$"GGWACWGGWTGAACWGTWTAYCCYCC"    #this is primer mlCOIintF
-    rev_primer=$"TANACYTCNGGRTGNCCRAARAAYCA"    #this is primer jgHCO2198
+    fwd_primer=$"CCHGAYATRGCHTTYCCHCG" # this is the forward primer BF3
+    rev_primer=$"CDGGRTGNCCRAARAAYCA"   # this is the reverse primer BR2
 
     # edit primer trimming settings
     mismatches="2"    # Numer of allowed mismatches in primer string search;
@@ -816,37 +816,44 @@ ____________________________________________________
 Taxonomy assignment
 ~~~~~~~~~~~~~~~~~~~
 
-| Taxonomy assignment with the RDP-classifier against `CO1Classifier v5.1.0 database. <https://github.com/terrimporter/CO1Classifier>`_ 
-| **---** `Download the CO1Classifier v5.1.0 for RDP here (click) <https://github.com/terrimporter/CO1Classifier/releases/download/RDP-COI-v5.1.0/RDP_COIv5.1.0.zip>`_ **---**
+| Taxonomy assignment with SINTAX (vsearch) against `BOLDistilled database. <https://boldsystems.org/data/BOLDistilled/>`_ 
+| **---** `Download the latest BOLDistilled database for SINTAX here (click) <https://us-sea-1.linodeobjects.com/boldistilled/sintax.zip>`_ **---**
 
 .. code-block:: bash
-   :caption: assign taxonomy with RDP-classifier
+   :caption: assign taxonomy with SINTAX
    :linenos:
 
     #!/bin/bash
 
-    # download the CO1Classifier reference databse
+    # download the BOLDistilled reference database
     wget \
-      "https://github.com/terrimporter/CO1Classifier/releases/download/RDP-COI-v5.1.0/RDP_COIv5.1.0.zip"
-    # unzip the database and edit name
-    unzip RDP_COIv5.1.0.zip && mv mydata CO1Classifier_v5.1.0_RDP
+      "https://us-sea-1.linodeobjects.com/boldistilled/sintax.zip"
+    # unzip the database
+    unzip sintax.zip
     
-    # specify reference database for RDP
-    reference_database="CO1Classifier_v5.1.0_RDP/rRNAClassifier.properties"
+    # specify reference database for SINTAX
+    reference_database="sintax/BOLDistilled_COI_Oct2025_SEQUENCES_sintax.fasta"
     reference_database=$(realpath $reference_database) # get database names with full path
 
     # specify input fasta file
     cd ASV_table
     ASV_fasta="ASVs_TagJumpFiltered.fasta"
+    ASV_fasta_tmp="ASVs_TagJumpFiltered_minmax.fasta"
 
-    # Run RDP-classifier
-    time rdp_classifier \
-            -Xmx12g \
-            classify \
-            -t $reference_database \
-            -f allrank \
-            -o RDP.taxonomy.txt \
-            -q $ASV_fasta
+    # select by size to only retain ASVs that are within the range of expected variation. In this case we set it to 400 up to 430 bps
+    vsearch --fastx_filter $ASV_fasta \
+            --fastq_minlen 400 \
+            --fastq_maxlen 430 \
+            --fastaout $ASV_fasta_tmp
+
+    mv $ASV_fasta_tmp $ASV_fasta
+
+    # Run SINTAX classification
+    time vsearch --sintax $ASV_fasta \
+        --db $reference_database \
+        --tabbedout SINTAX.taxonomy.txt \
+        --sintax_cutoff 0.8 \
+        --threads 16
 
 ____________________________________________________
 
@@ -865,92 +872,192 @@ Get target taxa
    :linenos:
 
     #!/usr/bin/env Rscript
-    ### Filter dataset based on RDP classifier results to include target taxa 
+    ### Filter dataset based on SINTAX results to include target taxa 
 
     # specify taxon and threshold
-    taxon="Metazoa"  # target taxonomic group(s); 
+    taxon="Animalia"  # target taxonomic group(s); 
                          # multiple groups should be from the same taxonomic level
                          # separator is "," (e.g., "Hymenoptera, Lepidoptera")
     tax_level="kingdom"  # allowed levels: kingdom | phylum | class | order | family | genus
     threshold="0.8"      # threshold for considering an ASV as a target taxon
+    class_threshold = 0.8  # threshold for class level identification
 
     # specify the ASV table and ASVs.fasta file that would be filtered to include only target taxa 
     ASV_fasta = "ASVs_TagJumpFiltered.fasta"
     ASV_table = "ASV_table_TagJumpFiltered.txt"
 
-    # specify the RDP-classifier output file (taxonomy file)
-    taxtab="RDP.taxonomy.txt"
+    # specify the SINTAX-classifier output file (taxonomy file)
+    taxtab="SINTAX.taxonomy.txt"
     
     #--------------------------------------#
     library(stringr)
     library(dplyr)
+    library(Biostrings)
+
+    # Function to parse SINTAX taxonomy format from vsearch output
+    parse_sintax = function(tax_string) {
+    # Initialize result with NAs
+    result = list(
+        kingdom = NA, kingdom_conf = 0,
+        phylum = NA, phylum_conf = 0,
+        class = NA, class_conf = 0,
+        order = NA, order_conf = 0,
+        family = NA, family_conf = 0,
+        genus = NA, genus_conf = 0,
+        species = NA, species_conf = 0
+    )
+    
+    if (is.na(tax_string) || tax_string == "" || tax_string == "*") {
+        return(result)
+    }
+    
+    # Split by comma
+    ranks = strsplit(tax_string, ",")[[1]]
+    
+    for (rank in ranks) {
+        # Extract rank prefix (d:, k:, p:, c:, o:, f:, g:, s:)
+        if (grepl("^d:", rank)) {
+        # Domain (skip, not used)
+        next
+        } else if (grepl("^k:", rank)) {
+        # Kingdom
+        match = regmatches(rank, regexec("k:([^(]+)\\(([0-9.]+)\\)", rank))[[1]]
+        if (length(match) == 3) {
+            result$kingdom = match[2]
+            result$kingdom_conf = as.numeric(match[3])
+        }
+        } else if (grepl("^p:", rank)) {
+        # Phylum
+        match = regmatches(rank, regexec("p:([^(]+)\\(([0-9.]+)\\)", rank))[[1]]
+        if (length(match) == 3) {
+            result$phylum = match[2]
+            result$phylum_conf = as.numeric(match[3])
+        }
+        } else if (grepl("^c:", rank)) {
+        # Class
+        match = regmatches(rank, regexec("c:([^(]+)\\(([0-9.]+)\\)", rank))[[1]]
+        if (length(match) == 3) {
+            result$class = match[2]
+            result$class_conf = as.numeric(match[3])
+        }
+        } else if (grepl("^o:", rank)) {
+        # Order
+        match = regmatches(rank, regexec("o:([^(]+)\\(([0-9.]+)\\)", rank))[[1]]
+        if (length(match) == 3) {
+            result$order = match[2]
+            result$order_conf = as.numeric(match[3])
+        }
+        } else if (grepl("^f:", rank)) {
+        # Family
+        match = regmatches(rank, regexec("f:([^(]+)\\(([0-9.]+)\\)", rank))[[1]]
+        if (length(match) == 3) {
+            result$family = match[2]
+            result$family_conf = as.numeric(match[3])
+        }
+        } else if (grepl("^g:", rank)) {
+        # Genus
+        match = regmatches(rank, regexec("g:([^(]+)\\(([0-9.]+)\\)", rank))[[1]]
+        if (length(match) == 3) {
+            result$genus = match[2]
+            result$genus_conf = as.numeric(match[3])
+        }
+        } else if (grepl("^s:", rank)) {
+        # Species
+        match = regmatches(rank, regexec("s:([^(]+)\\(([0-9.]+)\\)", rank))[[1]]
+        if (length(match) == 3) {
+            result$species = match[2]
+            result$species_conf = as.numeric(match[3])
+        }
+        }
+    }
+    
+    return(result)
+    }
 
     # read ASV table
     table = read.table(ASV_table, sep = "\t", check.names = F, header = T, row.names = 1)
-    
-    # read taxonomy table
-    tax = read.table(taxtab, sep = "\t", check.names = F, row.names = 1)
-    cat("\n Input =", nrow(tax), "features.\n")
-    # remove not needed columns from tax dataframe
-    tax = tax[, -c(1, 2, 3, 4, 6, 9, 12, 15, 18, 21, 24, 27)]
-    # assign colnames for tax
-    colnames(tax) = c("superkingdom", "superkingdom_BootS",
-                    "kingdom", "kingdom_BootS",
-                    "phylum","phylum_BootS",
-                    "class", "class_BootS",
-                    "order", "order_BootS",
-                    "family", "family_BootS",
-                    "genus", "genus_BootS",
-                    "species", "species_BootS")
+
+    # read SINTAX taxonomy table (vsearch --sintax output format)
+    # Format: ASV_ID \t taxonomy_string \t strand \t other_columns
+    tax_raw = read.table(taxtab, sep = "\t", check.names = F, header = F, 
+                        stringsAsFactors = F, quote = "", comment.char = "", fill = TRUE)
+
+    # Take first two columns only (ASV_ID and taxonomy)
+    tax_raw = tax_raw[, 1:2]
+    colnames(tax_raw) = c("ASV", "taxonomy")
+    rownames(tax_raw) = tax_raw$ASV
+
+    cat("\n Input =", nrow(tax_raw), "features.\n")
+
+    # Parse SINTAX taxonomy strings
+    tax_list = lapply(tax_raw$taxonomy, parse_sintax)
+    tax = do.call(rbind, lapply(tax_list, as.data.frame))
+    rownames(tax) = tax_raw$ASV
 
     # taxon list
     taxon_list = strsplit(taxon, ", ")[[1]]
- 
-    ### extract only target-taxon ASVs from the 'raw' RDP results
+
+    ### extract only target-taxon ASVs from the 'raw' SINTAX results
     tax_filtered = tax %>%
         filter(.data[[tax_level]] %in% taxon_list)
 
-    ### change all tax ranks to "unclassified_*" when 
-        # the bootstrap values is less than the specified threshold
-    #kingdom
-    tax_filtered = tax_filtered %>% mutate(kingdom = ifelse(kingdom_BootS < 
-        threshold, paste0("unclassified_", superkingdom), as.character(kingdom)))
-    #phylum
-    tax_filtered = tax_filtered %>% mutate(phylum = ifelse(phylum_BootS < 
-        threshold, paste0("unclassified_", kingdom), as.character(phylum)))
-    #replace potential "unclassified_unclassified_" with "unclassified_"
-    tax_filtered$class = stringr::str_replace(tax_filtered$class, "unclassified_unclassified_", 
-                                                                            "unclassified_")
-    #class
-    tax_filtered = tax_filtered %>% mutate(class = ifelse(class_BootS < 
-        threshold, paste0("unclassified_", phylum), as.character(class)))
-    #replace potential "unclassified_unclassified_" with "unclassified_"
-    tax_filtered$class = stringr::str_replace(tax_filtered$class, "unclassified_unclassified_", 
-                                                                            "unclassified_")
-    #order
-    tax_filtered = tax_filtered %>% mutate(order = ifelse(order_BootS < 
-        threshold, paste0("unclassified_", class), as.character(order)))
-    #replace potential "unclassified_unclassified_" with "unclassified_"
-    tax_filtered$order = stringr::str_replace(tax_filtered$order, "unclassified_unclassified_", 
-                                                                            "unclassified_")
-    #family
-    tax_filtered = tax_filtered %>% mutate(family = ifelse(family_BootS < 
-        threshold, paste0("unclassified_", order), as.character(family)))
-    #replace potential "unclassified_unclassified_" with "unclassified_"
-    tax_filtered$family = stringr::str_replace(tax_filtered$family, "unclassified_unclassified_", 
-                                                                            "unclassified_")
-    #genus
-    tax_filtered = tax_filtered %>% mutate(genus = ifelse(genus_BootS < 
-        threshold, paste0("unclassified_", family), as.character(genus)))
-    #replace potential "unclassified_unclassified_" with "unclassified_"
-    tax_filtered$genus = stringr::str_replace(tax_filtered$genus, "unclassified_unclassified_", 
-                                                                            "unclassified_")
+    cat("\n Found", nrow(tax_filtered), "ASVs matching", taxon, "at", tax_level, "level.\n")
 
-    # species to genus_sp when the bootstrap values is < 0.9
-    tax_filtered = tax_filtered %>% mutate(species = ifelse(species_BootS < 0.9, 
-                                                        paste0(genus, "_sp"), species))
-   
-    ### count occurrences of each taxon in df (RDP results)
+    ### Apply additional filter: class must be identified (confidence >= class_threshold)
+    tax_filtered = tax_filtered %>%
+        filter(class_conf >= class_threshold & !is.na(class))
+
+    cat(" After filtering for class identification (threshold >=", class_threshold, "):", 
+        nrow(tax_filtered), "ASVs retained.\n")
+
+    ### change all tax ranks to "unclassified_*" when
+        # the confidence values is less than the specified threshold
+    # kingdom
+    tax_filtered = tax_filtered %>% 
+        mutate(kingdom = ifelse(kingdom_conf < threshold | is.na(kingdom), 
+                                "unclassified_root", as.character(kingdom)))
+
+    # phylum
+    tax_filtered = tax_filtered %>% 
+        mutate(phylum = ifelse(phylum_conf < threshold | is.na(phylum), 
+                            paste0("unclassified_", kingdom), as.character(phylum)))
+    tax_filtered$phylum = stringr::str_replace(tax_filtered$phylum, "unclassified_unclassified_", 
+                                            "unclassified_")
+
+    # class
+    tax_filtered = tax_filtered %>% 
+        mutate(class = ifelse(class_conf < threshold | is.na(class), 
+                            paste0("unclassified_", phylum), as.character(class)))
+    tax_filtered$class = stringr::str_replace(tax_filtered$class, "unclassified_unclassified_", 
+                                            "unclassified_")
+
+    # order
+    tax_filtered = tax_filtered %>% 
+        mutate(order = ifelse(order_conf < threshold | is.na(order), 
+                            paste0("unclassified_", class), as.character(order)))
+    tax_filtered$order = stringr::str_replace(tax_filtered$order, "unclassified_unclassified_", 
+                                            "unclassified_")
+
+    # family
+    tax_filtered = tax_filtered %>% 
+        mutate(family = ifelse(family_conf < threshold | is.na(family), 
+                            paste0("unclassified_", order), as.character(family)))
+    tax_filtered$family = stringr::str_replace(tax_filtered$family, "unclassified_unclassified_", 
+                                            "unclassified_")
+
+    # genus
+    tax_filtered = tax_filtered %>% 
+        mutate(genus = ifelse(genus_conf < threshold | is.na(genus), 
+                            paste0("unclassified_", family), as.character(genus)))
+    tax_filtered$genus = stringr::str_replace(tax_filtered$genus, "unclassified_unclassified_", 
+                                            "unclassified_")
+
+    # species to genus_sp when the confidence values is < 0.9
+    tax_filtered = tax_filtered %>% 
+        mutate(species = ifelse(species_conf < 0.9 | is.na(species),
+                                paste0(genus, "_sp"), as.character(species)))
+
+    ### count occurrences of each taxon in df (SINTAX results)
     count_taxa = function(df, taxa) {
     sapply(taxa, function(taxon) sum(apply(df, 1, function(row) any(row == taxon))))
     }
@@ -958,49 +1065,55 @@ Get target taxa
 
     # Check the counts
     if (all(taxon_counts == 0)) {
-        print("ERROR: None of the specified taxa are present in the RDP results.")
+        print("ERROR: None of the specified taxa are present in the SINTAX results.")
     } else {
         if (any(taxon_counts == 0)) {
-        warning("One or more of the specified taxa are not present in the RDP results.")
+            warning("One or more of the specified taxa are not present in the SINTAX results.")
         }
+        cat("\n Taxon counts:\n")
         print(taxon_counts)
     }
 
-    ### extract only target-taxon ASVs from the 'threshold filtered' RDP results
+    ### extract only target-taxon ASVs from the 'threshold filtered' SINTAX results
     tax_filtered_thresh = tax_filtered %>%
         filter(.data[[tax_level]] %in% taxon_list)
-    # write filtered RDP taxonomy table
-    tax_filtered_thresh = cbind(ASV = rownames(tax_filtered_thresh), tax_filtered_thresh)
-    write.table(tax_filtered_thresh, 
-                file = "RDP.taxonomy.filt.txt",  
-                quote = F, 
-    	        row.names = F,
+
+    # Remove confidence columns for output
+    tax_filtered_output = tax_filtered_thresh %>%
+        select(kingdom, phylum, class, order, family, genus, species)
+
+    # write filtered SINTAX taxonomy table
+    tax_filtered_output = cbind(ASV = rownames(tax_filtered_output), tax_filtered_output)
+    write.table(tax_filtered_output,
+                file = "SINTAX.taxonomy.filt.txt",
+                quote = F,
+                row.names = F,
                 sep = "\t")
-    
+
     ### filter the ASV table to match ASVs that were kept in the tax_filtered table
     table_filt = table[rownames(table) %in% rownames(tax_filtered_thresh), ]
 
     ### check ASV table; if 1st col is sequence, then remove it for metaMATE
     if (colnames(table_filt)[1] == "Sequence") {
-        cat(";; 2nd column was 'Sequence', removing this ... \n")
+        cat("\n;; 1st column was 'Sequence', removing this ... \n")
         table_filt = table_filt[, -1]
     }
 
     # write filtered table
     table_filt = cbind(ASV = rownames(table_filt), table_filt)
-    write.table(table_filt, 
-                file = paste0(sub("\\.[^.]*$", "_tax_filt.txt", ASV_table)),  
-                quote = F, 
-    	        row.names = F,
+    write.table(table_filt,
+                file = paste0(sub("\\.[^.]*$", "_tax_filt.txt", ASV_table)),
+                quote = F,
+                row.names = F,
                 sep = "\t")
 
     # filter ASV_fasta
-    library(Biostrings)
     fasta = readDNAStringSet(ASV_fasta)
     fasta.tax_filt = fasta[names(fasta) %in% rownames(table_filt)]
+
     # write filtered ASV_fasta
-    writeXStringSet(fasta.tax_filt, 
-                    paste0(sub("\\.[^.]*$", "_tax_filt.fasta", ASV_fasta)), 
+    writeXStringSet(fasta.tax_filt,
+                    paste0(sub("\\.[^.]*$", "_tax_filt.fasta", ASV_fasta)),
                     width = max(width(fasta.tax_filt)))
 
     
@@ -1043,7 +1156,7 @@ Remove NUMTs
 ~~~~~~~~~~~~
 
 | Remove putative NUMTs with metaMATE. 
-| This follows the workflow to automatically filter the ASVs by retaining maximum of 5% of estimated non-authentic-ASVs (nonauthentic_retained_estimate_p < 0.05).
+| This follows the workflow to automatically filter the ASVs by retaining maximum of 5% of estimated non-authentic-ASVs (verifiednonauthentic_retained_p < 0.05).
 
 
 .. important::
@@ -1051,9 +1164,9 @@ Remove NUMTs
   1. metaMATE expects specifications file that states the filtering strategies. See `more info here. <https://github.com/tjcreedy/metamate?tab=readme-ov-file#specifications>`_ 
   Here, we will be using the metaMATE's `default specifications.txt file. <https://github.com/tjcreedy/metamate/blob/main/specifications.txt>`_ 
 
-  1. metaMATE requires a reference COI database to determine verified-authentic ASVs. Herein using `CO1Classifier v5.1.0 database. <https://github.com/terrimporter/CO1Classifier>`_ 
+  1. metaMATE requires a reference COI database to determine verified-authentic ASVs. Herein using `BOLDistilled database. <https://boldsystems.org/data/BOLDistilled/>`_ 
   
-  --- `Download the CO1Classifier v5.1.0 database here (click) <https://github.com/terrimporter/CO1Classifier/releases/download/SINTAX-COI-v5.1.0-ref/SINTAX_COIv5.1.0_ref.zip>`_ ---
+  --- `Download the latest BOLDistilled database here (click) <https://us-sea-1.linodeobjects.com/boldistilled/sintax.zip>`_ ---
 
   If you have your own set of reference sequences, then use those; or merge those with the other databases (such as the above one) to extend the ref. database.
 
@@ -1074,16 +1187,35 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     specifications=$(realpath $specifications) # get full directory path
 
 
-    # download the CO1Classifier reference databse
+    # download the BOLDistilled reference databse
     wget \
-     "https://github.com/terrimporter/CO1Classifier/releases/download/SINTAX-COI-v5.1.0-ref/SINTAX_COIv5.1.0_ref.zip"
+     "https://us-sea-1.linodeobjects.com/boldistilled/sintax.zip"
     # unzip the database and edit name
-    unzip SINTAX_COIv5.1.0_ref.zip && mv training CO1Classifier_v5.1.0 
-    mv CO1Classifier_v5.1.0/sintax.fasta CO1Classifier_v5.1.0/CO1Classifier_v5.1.0.fasta
+    unzip sintax.zip
     
     # specify reference database for metaMATE
-    reference_database="CO1Classifier_v5.1.0/CO1Classifier_v5.1.0.fasta"
+    reference_database="sintax/BOLDistilled_COI_Oct2025_SEQUENCES_sintax.fasta"
     reference_database=$(realpath $reference_database) # get full directory path
+
+
+.. code-block:: bash
+   :caption: cluster ASVs at a 90% similarity threshold for abundance filtering
+   :linenos:
+
+    #!/bin/bash
+    ## run metaMATE-find
+
+    # cluster with 10% threshold
+    vsearch --cluster_fast ASVs_TagJumpFiltered_tax_filt.fasta --id 0.9 \
+    --uc ASVs_TagJumpFiltered_tax_filt_clustered.uc
+    
+    # select only H & S
+    cat ASVs_TagJumpFiltered_tax_filt_clustered.uc | grep -v "^C" \ 
+    > ASVs_TagJumpFiltered_tax_filt_clustered_onlyHS.uc
+    
+    # now extract the information to match the input requirements from metamate
+    awk -F'\t' 'BEGIN {OFS=","} {print $9, $2}' ASVs_TagJumpFiltered_tax_filt_clustered_onlyHS.uc \
+    > ASV_to_cluster_map.csv
 
 
 .. code-block:: bash
@@ -1098,18 +1230,19 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     # specify input ASVs table and fasta
     ASV_table="ASV_table_TagJumpFiltered_tax_filt.txt" # make sure that the 2nd col is not "Sequence"
     ASV_fasta="ASVs_TagJumpFiltered_tax_filt.fasta"    # specify ASVs fasta file 
+    taxgroups="ASV_to_cluster_map.csv"                 # comment out or change filename if sequence binning is done in another way  
 
     # specify variables
     genetic_code="5"        # the standard genetic code. 5 is invertebrate mitochondrial code
-    length="313"            # the expected length of an amplicon
+    length="418"            # the expected length of an amplicon
     basesvariation="9"      # allowed length variation (bp) from the expected length of an amplicon
     taxgroups="undefined"   # (optional); if sequence binning is to be performed on 
                                # a per-taxon basis (as in specifications file) 
                                # then specify the taxon grouping file
-    NA_abund_thresh="0.05"  # nonauthentic_retained_estimate_p < 0.05 (value from mateMATE results);
+    NA_abund_thresh="0.05"  # verifiednonauthentic_retained_p < 0.05 (value from mateMATE results);
                                # the allowed abundance threshold of 
                                # non-validated OTUs/ASVs in the filtered dataset.
-    abundance_filt="FALSE"  # TRUE/FALSE; if FALSE, then NA_abund_thresh is ineffective, 
+    abundance_filt="TRUE"  # TRUE/FALSE; if FALSE, then NA_abund_thresh is ineffective, 
                                # and no filtering is done based on the ASV abundances,
                                # i.e., filter only based on length, basesvariation and genetic_code.
                                # FALSE may be used when the seq-depth for the target taxa is low.
@@ -1165,7 +1298,8 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
         --table $genetic_code \
         --threads 8 \
         --output $output_dir \
-        --overwrite $taxgroups
+        --overwrite $taxgroups \
+        --realign
 
     # check for the presence of "metamate_out" dir and "resultcache" file (did metaMATE-find finish)
     if [[ -d $output_dir ]] && [[ -e $output_dir/resultcache ]] && [[ -e $output_dir/results.csv ]]; then
@@ -1207,7 +1341,7 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
     if (abundance_filt != "FALSE"){
         NA_abund_thresh = as.numeric(Sys.getenv('NA_abund_thresh'))
         filtered_data = find_results[
-                        find_results$nonauthentic_retained_estimate_p <= NA_abund_thresh, ] 
+                        find_results$verifiednonauthentic_retained_p <= NA_abund_thresh, ] 
 
         # if no results correspond with the NA_abund_thresh, then get the next best
             # else, just select the result_index that corresponds to 
@@ -1217,9 +1351,9 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
             "\n no results correspond with the NA_abund_thresh of", NA_abund_thresh, "; 
             getting the next best setting\n"
             )
-            next_best = min(find_results$nonauthentic_retained_estimate_p)
+            next_best = min(find_results$verifiednonauthentic_retained_p)
             filtered_data = find_results[
-                            find_results$nonauthentic_retained_estimate_p <= next_best, ] 
+                            find_results$verifiednonauthentic_retained_p <= next_best, ] 
             # sort based on accuracy_score
             sorted_filtered = filtered_data[order(-filtered_data$accuracy_score), ]
             # get the result with the highest accuracy_score
@@ -1273,10 +1407,10 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
             "grep -Fwf "var"_metaMATE.filt.list"}' $ASV_table > \
              $output_dir/${ASV_table%.*}_metaMATE.filt.txt
 
-    # filter the RDP.taxonomy.filt.txt file to include only ASVs retained by metaMATE
+    # filter the sintax.taxonomy.filt.txt file to include only ASVs retained by metaMATE
     awk -v var="$output_dir/${ASV_fasta%.*}" 'NR==1; NR>1 {print $0 | \
-            "grep -Fwf "var"_metaMATE.filt.list"}' RDP.taxonomy.filt.txt > \
-            $output_dir/RDP.taxonomy.metaMATE.filt.txt
+            "grep -Fwf "var"_metaMATE.filt.list"}' sintax.taxonomy.filt.txt > \
+            $output_dir/sintax.taxonomy.metaMATE.filt.txt
                                                                               
                                                                               
     # write discarded ASVs list
@@ -1291,18 +1425,18 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
 
     #!/bin/bash
     
-    # get discarded ASVs (RDP taxonomy list)
-    grep -Fwf $output_dir/metaMATE.discarded.list RDP.taxonomy.filt.txt \
-    > $output_dir/metaMATE.discarded.RDP.taxonomy.txt
+    # get discarded ASVs (sintax taxonomy list)
+    grep -Fwf $output_dir/metaMATE.discarded.list sintax.taxonomy.filt.txt \
+    > $output_dir/metaMATE.discarded.sintax.taxonomy.txt
 
     # get the rescued ASVs that have GENUS level bootstrap value >= 0.9
-    awk -F'\t' '$26 >= 0.9' $output_dir/metaMATE.discarded.RDP.taxonomy.txt \
+    awk -F'\t' '$26 >= 0.9' $output_dir/metaMATE.discarded.sintax.taxonomy.txt \
     > $output_dir/rescued.txt
 
     # check if rescued.txt exists and is not empty
     if [[ -s $output_dir/rescued.txt ]]; then
-        # add the rescued ASVs to $output_dir/RDP.taxonomy.metaMATE.filt.txt
-        cat $output_dir/rescued.txt >> $output_dir/RDP.taxonomy.metaMATE.filt.txt
+        # add the rescued ASVs to $output_dir/sintax.taxonomy.metaMATE.filt.txt
+        cat $output_dir/rescued.txt >> $output_dir/sintax.taxonomy.metaMATE.filt.txt
 
         # add the rescued ASVs to $output_dir/${ASV_fasta%.*}_metaMATE.filt.fasta
         seqkit grep -w 0 -f <(awk -F'\t' '{print $1}' $output_dir/rescued.txt) $ASV_fasta \
@@ -1321,7 +1455,7 @@ Check `standard genetic codes here <https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/
 .. note:: 
 
     Herein case, the final filtered data is ``ASV_table_tax_filt_metaMATE.filt.txt`` and ``ASVs_tax_filt_metaMATE.filt.fasta`` in the ``metamate_out`` directory.
-    The filtered RDP-classifier results (matching the ASVs in the latter files) is ``RDP.taxonomy.metaMATE.filt.txt`` in the ``metamate_out`` dir.
+    The filtered SINTAX-classifier results (matching the ASVs in the latter files) is ``sintax.taxonomy.metaMATE.filt.txt`` in the ``metamate_out`` dir.
     
     If deemed relevant, then you may proceed with the below workflow below that includes clustering ASVs to OTUs. 
 
@@ -1524,10 +1658,10 @@ Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
     cat $OTUs_fasta | \
       seqkit grep -w 0 -f OTUs_LULU.list > OTUs_LULU.fasta
 
-    # get matching RDP taxonomy results
-    head -n 1 ../RDP.taxonomy.metaMATE.filt.txt > RDP.taxonomy.txt
-    cat ../RDP.taxonomy.metaMATE.filt.txt | \
-      grep -wf OTUs_LULU.list >> RDP.taxonomy.txt
+    # get matching sintax taxonomy results
+    head -n 1 ../sintax.taxonomy.metaMATE.filt.txt > sintax.taxonomy.txt
+    cat ../sintax.taxonomy.metaMATE.filt.txt | \
+      grep -wf OTUs_LULU.list >> sintax.taxonomy.txt
 
     # remove unnecessary files
     rm OTUs.fasta.n*
@@ -1541,7 +1675,7 @@ Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
 
     The final OTUs data is ``OTU_table_LULU.txt`` and ``OTUs_LULU.fasta`` in the ``OTU_table`` directory.
 
-    The matching RDP taxonomy files are ``RDP.taxonomy.txt`` in the ``OTU_table`` directory.
+    The matching SINTAX taxonomy files are ``sintax.taxonomy.txt`` in the ``OTU_table`` directory.
 
 ____________________________________________________
 
