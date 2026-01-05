@@ -368,7 +368,7 @@ Denoise and merge paired-end reads
 
 .. code-block:: R
    :caption: denoise and merge paired-end reads in DADA2
-   :emphasize-lines: 7-13, 74-78
+   :emphasize-lines: 7-13, 73-77
    :linenos:
 
     #!/usr/bin/Rscript

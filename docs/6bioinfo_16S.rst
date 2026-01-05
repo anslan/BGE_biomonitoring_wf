@@ -347,7 +347,7 @@ Denoise and merge paired-end reads
 
 .. code-block:: R
    :caption: denoise and merge paired-end reads in DADA2
-   :emphasize-lines: 7-13, 74-78
+   :emphasize-lines: 7-13, 73-77
    :linenos:
 
     #!/usr/bin/Rscript
@@ -405,6 +405,11 @@ Denoise and merge paired-end reads
             rm(derepF); rm(derepR)
             gc()
             saveRDS(mergers, (file.path(path_results, "mergers.rds")))
+
+            # make sequence table
+            ASV_tab = makeSequenceTable(mergers)
+            #write RDS object
+            saveRDS(ASV_tab, (file.path(path_results, "rawASV_table.rds")))
 
             # make sequence count report
             getN = function(x) sum(getUniques(x))
