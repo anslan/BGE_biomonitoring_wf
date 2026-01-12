@@ -18,11 +18,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Click handler → download content
     button.addEventListener("click", () => {
-      let code = pre.innerText;
+      let code = "";
+      
+      // Check if line numbers are in a separate table column (Sphinx table format)
+      let table = block.querySelector("table.highlighttable");
+      if (table) {
+        // Get code from the code cell (not the line numbers column)
+        let codeCell = table.querySelector("td.code pre");
+        if (codeCell) {
+          code = codeCell.innerText;
+        } else {
+          code = pre.innerText;
+        }
+      } else {
+        // Line numbers are inline - clone the pre and remove line number elements
+        let preClone = pre.cloneNode(true);
+        
+        // Remove all line number spans/elements (Sphinx uses span.linenos for line numbers)
+        // This includes: .lineno, .linenos, .linenodiv, and any span with these classes
+        preClone.querySelectorAll("span.linenos, span.lineno, .lineno, .linenos, .linenodiv").forEach(el => {
+          el.remove();
+        });
+        
+        // Extract text content - this preserves the original code structure and indentation
+        // innerText handles whitespace correctly and excludes removed elements
+        code = preClone.innerText || preClone.textContent;
+      }
+      
+      // Determine file extension
+      let filename = "script.txt";
+      let trimmedCode = code.trimStart();
+      if (trimmedCode.startsWith("#!/bin/bash") || trimmedCode.startsWith("#!/usr/bin/bash") || trimmedCode.startsWith("#!/bin/sh")) {
+        filename = "script.sh";
+      } else if (trimmedCode.startsWith("#!/usr/bin/Rscript")) {
+        filename = "script.R";
+      }
+      
       let blob = new Blob([code], { type: "text/plain" });
       let link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "script.txt";
+      link.download = filename;
       link.click();
     });
 
