@@ -72,6 +72,13 @@ Open any html file in the "BGE_biomonitoring_wf/docs/_build/html" directory to c
 
 **6.** Edit the *.rst files as needed. Then build locally (point 4 above) to check the page before pushing. 
 
+If changes do not appear, **then remove the "_build" folder and build again: **
+
+```bash
+rm -r _build
+.\make.bat html
+```
+
 **7.** When edis are done, then push changes to github
 ```bash
 git add .    # adds all changes 
