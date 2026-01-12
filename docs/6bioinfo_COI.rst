@@ -210,7 +210,7 @@ Remove primers
 
     # specify primers 
     fwd_primer=$"CCHGAYATRGCHTTYCCHCG" # this is the forward primer BF3
-    rev_primer=$"CDGGRTGNCCRAARAAYCA"   # this is the reverse primer BR2
+    rev_primer=$"CDGGRTGNCCRAARAAYCA"  # this is the reverse primer BR2
 
     # edit primer trimming settings
     mismatches="2"    # Numer of allowed mismatches in primer string search;
