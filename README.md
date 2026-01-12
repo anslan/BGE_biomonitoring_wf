@@ -54,17 +54,21 @@ git checkout develop # Switch to the develop branch!
 
 For Windows:
 ```bash
+# in docs dir
 .\make.bat html
 ```
 
-   If you installed sphinx with `--user` and `make.bat` doesn't work, use:
-   ```bash
-   python -m sphinx -M html . _build
-   ```
+If you installed sphinx with `--user` and `make.bat` doesn't work, use:
+
+```bash
+# in docs dir
+python -m sphinx -M html . _build
+```
 
 For Linux and macOS:
 
 ```bash
+# in docs dir
 make html
 ```
 
@@ -75,6 +79,7 @@ Open any html file in the "BGE_biomonitoring_wf/docs/_build/html" directory to c
 If changes do not appear, **then remove the "_build" folder and build again:**
 
 ```bash
+# in docs dir
 rm -r _build
 .\make.bat html
 ```
