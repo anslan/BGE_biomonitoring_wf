@@ -39,11 +39,9 @@ git checkout develop # Switch to the develop branch!
    cd C:/Users/user/Desktop/BGE_biomonitoring_wf/docs  # go to downloaded github repo
    python -m pip install -U sphinx
    python -m pip install -r requirements.txt
-   ```
 
-      If you have problems installing as an admin then try:
 
-   ```bash
+   ### If you have problems installing as an admin then try:
    cd C:/Users/user/Desktop/BGE_biomonitoring_wf/docs  # go to github repo
    python -m pip install --user sphinx
    python -m pip install --user -r requirements.txt
