@@ -1047,7 +1047,7 @@ Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
 
 
 .. code-block:: bash
-   :caption: match OTUs.fasta with post-clustered table (OTU_table_LULU)
+   :caption: match OTUs.fasta and taxonomy table with post-clustered table (OTU_table_LULU)
    :linenos:
 
     #!/bin/bash
