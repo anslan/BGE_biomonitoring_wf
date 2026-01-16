@@ -127,6 +127,7 @@ Contents
 .. toctree::
    :maxdepth: 2
 
+   0what_is_metabarcoding
    1sampling
    2sample_prep
    3DNA_extraction
