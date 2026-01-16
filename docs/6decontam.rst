@@ -138,6 +138,12 @@ More information about that here: `decontam vignette <https://benjjneb.github.io
 and in the `decontam paper <https://doi.org/10.1186/s40168-018-0605-2>`_. 
 
 
+.. note::
+
+    Below workflow is for a single sequencing run/per batch processed simultaneously. 
+    **If there are multiple sequencing runs with corresponding control samples, then those sequencing runs should be decontaminated independently.**
+
+
 .. code-block:: R
    :caption: decontamination
    :linenos:
