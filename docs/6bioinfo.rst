@@ -41,6 +41,7 @@ Descriptions on how to process Illumina paired-end data of different amplicons.
    6bioinfo_COI
    6bioinfo_ITS
    6bioinfo_16S
+   6decontam
    6bioinfo_otherTools
 
 ____________________________________________________
