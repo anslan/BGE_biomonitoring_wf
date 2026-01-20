@@ -33,7 +33,7 @@
 Additional resources
 ********************
 
-The list af additional resources for eDNA based (biomonitoring) surveys
+The list of some additional resources for eDNA based (biomonitoring) surveys:
 
 * Jerney, Jacqueline, et al. `DNA metabarcoding: Guidelines to monitor phytoplankton diversity and distribution in marine and brackish waters <https://pub.norden.org/temanord2023-505/>`_. Nordic Council of Ministers, **2023**. 
 
@@ -41,12 +41,20 @@ The list af additional resources for eDNA based (biomonitoring) surveys
   
 | 
 
-* Bruce, Kat, et al. `A practical guide to DNA-based methods for biodiversity assessment <https://ab.pensoft.net/book/68634/list/9/>`_. Pensoft Advanced Books, **2021**. 
+* DNAquaNet Practical Guide:Bruce, Kat, et al. `A practical guide to DNA-based methods for biodiversity assessment <https://ab.pensoft.net/book/68634/list/9/>`_. Pensoft Advanced Books, **2021**. 
   
   * ``aquatic eDNA``
   * ``bulk invertebrates``
   * ``benthic periphytic diatoms``
   * ``sediments/soils``
+
+| 
+
+* `Environmental DNA Society <https://ednasociety.org/en/manuals/>`_
+
+  * ``aquatic eDNA``
+
+
 
 ____________________________________________________
 

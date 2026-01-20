@@ -58,41 +58,61 @@ The workflow is composed of several key steps:
 
    - During bioinformatics processing, unreliable and off-target sequences are removed, grouped into metabarcoding features: Amplicon Sequence Variants (ASVs) and/or clustered into Operational Taxonomic Units (OTUs).
    - Metabarcoding features are matched to a reference database to assign taxonomic identities.
+
+___________________________________________________
+
+.. _outputs:
+
+Outputs
+=======
+
+The typical output of a full metabarcoding workflow is 
+a metabarcoding **feature table** (ASV/OTU table) by sample matrix with sequence abundances 
+and **taxonomy** table.
+
+.. admonition:: metabarcoding feature table
+
+  The metabarcoding feature table (ASV/OTU table) is a matrix of **sequence abundances** by **sample** and **feature (ASV/OTU)**.
+  Here, it is a wide format table with **samples in columns** and **features (OTUs) in rows**.
   
-|
-| Standard output of a full metabarcoding workflow is a metabarcoding feature table by sample matrix with sequence abundances accompanied by taxonomic information table.
+  "sample1", "sample2", "sample3" are biological samples and :red:`"control"` is a control sample. 
+  The control samples are necessary to assess potential contamination of the metabarcoding workflow. 
 
-**Metabarcoding feature table by sample matrix with sequence abundances:**
+  +------------+-------------+-------------+-------------+----------------+-----+
+  |            | **sample1** | **sample2** | **sample3** | :red:`control` | ... |
+  +------------+-------------+-------------+-------------+----------------+-----+
+  | **OTU_01** | 4290        | 40550       | 3902        | 0              | ... |
+  +------------+-------------+-------------+-------------+----------------+-----+
+  | **OTU_02** | 550         | 34501       | 2           | 0              | ... |
+  +------------+-------------+-------------+-------------+----------------+-----+
+  | **OTU_03** | 2010        | 110         | 0           | :red:`1306`    | ... |
+  +------------+-------------+-------------+-------------+----------------+-----+
+  | **OTU_04** | 3061        | 0           | 3465        | :red:`1`       | ... |
+  +------------+-------------+-------------+-------------+----------------+-----+
+  | ...        | ...         | ...         | ...         | ...            | ... |
+  +------------+-------------+-------------+-------------+----------------+-----+
 
-+------------+---------+---------+---------+----------------+-----+
-|            | sample1 | sample2 | sample3 | :red:`control` | ... |
-+------------+---------+---------+---------+----------------+-----+
-| **OTU_01** | 4290    | 40550   | 3902    | 0              | ... |
-+------------+---------+---------+---------+----------------+-----+
-| **OTU_02** | 550     | 34501   | 2       | 0              | ... |
-+------------+---------+---------+---------+----------------+-----+
-| **OTU_03** | 2010    | 110     | 0       | :red:`1306`    | ... |
-+------------+---------+---------+---------+----------------+-----+
-| **OTU_04** | 3061    | 0       | 3465    | :red:`1`       | ... |
-+------------+---------+---------+---------+----------------+-----+
-| ...        | ...     | ...     | ...     | ...            | ... |
-+------------+---------+---------+---------+----------------+-----+
 
-**Taxonomy table:**
+.. admonition:: taxonomy table
 
-+------------+-----+----------------+---------------+------------------+---------------------+
-|            | ... | Order          | Family        | Genus            | species             |
-+------------+-----+----------------+---------------+------------------+---------------------+
-| **OTU_01** | ... | Lepidoptera    | Nymphalidae   | Aglais           | Aglais urticae      |
-+------------+-----+----------------+---------------+------------------+---------------------+
-| **OTU_02** | ... | Lepidoptera    | Nymphalidae   | Genus_0022       | Genus_0022_sp       |
-+------------+-----+----------------+---------------+------------------+---------------------+
-| **OTU_03** | ... | Carnivora      | Felidae       | Felis            | Felis catus         |
-+------------+-----+----------------+---------------+------------------+---------------------+
-| **OTU_04** | ... | Sarcoptiformes | Pyroglyphidae | Dermatophagoides | Dermatophagoides_sp |
-+------------+-----+----------------+---------------+------------------+---------------------+
-| ...        | ... | ...            | ...           | ...              | ...                 |
-+------------+-----+----------------+---------------+------------------+---------------------+
+  The taxonomy table is a matrix of **taxonomic information** by **feature**.
+  Here, it is a table with **features (OTUs) in rows** and **taxonomic information in columns**.
+
+  +------------+----------------+---------------+------------------+---------------------+
+  |            | **Order**      | **Family**    | **Genus**        | **Species**         |
+  +------------+----------------+---------------+------------------+---------------------+
+  | **OTU_01** | Lepidoptera    | Nymphalidae   | Aglais           | Aglais_urticae      |
+  +------------+----------------+---------------+------------------+---------------------+
+  | **OTU_02** | Lepidoptera    | Nymphalidae   | Genus_0022       | Genus_0022_sp       |
+  +------------+----------------+---------------+------------------+---------------------+
+  | **OTU_03** | Carnivora      | Felidae       | Felis            | Felis_catus         |
+  +------------+----------------+---------------+------------------+---------------------+
+  | **OTU_04** | Sarcoptiformes | Pyroglyphidae | Dermatophagoides | Dermatophagoides_sp |
+  +------------+----------------+---------------+------------------+---------------------+
+  | ...        | ...            | ...           | ...              | ...                 |
+  +------------+----------------+---------------+------------------+---------------------+
+
+___________________________________________________
 
 Reading the outputs
 ===================
@@ -106,8 +126,9 @@ Reading the outputs
 In the example metabarcoding feature table (OTU table), we can see that:
 
 - **OTU_01** is present in all samples (except the control sample) with varying abundances.
-  In the taxonomy table, OTU_01 corresponds to Aglais urticae (butterfly, small tortoiseshell). 
-  It is highly likeley that this butterfly represents a real occurrence in the samples.
+  In the taxonomy table, OTU_01 corresponds to *Aglais urticae* (a butterfly, small tortoiseshell). 
+  It is highly likeley that this butterfly represents a real occurrence in the samples 
+  because it is representedy by decent sequence abundances in all biological samples and is absent from the control sample.
   
 - **OTU_02** is present in sample2 with 34501 sequences, but **only with 2 sequences in sample3**. 
   It is likely that this OTU is present in the sample2, but it is uncertain whether it is also really present in sample3. 
@@ -154,7 +175,7 @@ Metabarcoding data is **compositional**, meaning that sequence abundances reflec
 
 Sequence counts are influenced by multiple factors beyond true biological abundance, thus if 
 OTU_01 has 40,550 sequences in sample2 but only 4,290 sequences in sample1, we cannot conclude (without additional information) that OTU_01 
-(that is, small tortoiseshell butterfly) was more abundant is our sampling location where sample2 was collected. 
+(that is, a small tortoiseshell butterfly) was more abundant is our sampling location where sample2 was collected. 
 From a compositional perspective, OTU_01 did not change in dominance relative to the rest of the community (OTUs) in both samples. 
 
 
@@ -174,8 +195,8 @@ If the focus is on species occurrences, then **presence/absence data can be used
 | ...        | ...     | ...     | ...      | ... |
 +------------+---------+---------+----------+-----+
 
-However, prior transforming the sequence abundance data to presence/absence data, appropriate filtering steps (e.g., tag-jump 
-removal, minimum read count thresholds) should be applied to distinguish likely biological signals from technical artifacts.
+However, prior transforming the sequence abundance data to presence/absence data, appropriate filtering steps (e.g., :ref:`tag-jump 
+removal <tagjumpsCOI>`, :doc:`decontammination <6decontam>`, minimum read count thresholds) should be applied to distinguish likely biological signals from technical artifacts.
 Here, note that in the feature table above (sequence abundance table), **OTU_02 is present in sample3, but removed in 
 presence/absence table because it was likely a tag-jump error**. 
 

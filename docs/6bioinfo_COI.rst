@@ -46,11 +46,15 @@
 Arthropods/COI
 **************
 
-| This is executable step-by-step pipeline for **COI** amplicon data from Illumina sequencing machine.
-|  
-| The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/>`_ (v1.1.0; releasing this soon, with a tutorial), which implemets also various error handling processes and sequence summary statistics (lacking here in step-by-step code). 
-| 
-| The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
+This is executable step-by-step pipeline for **COI** amplicon data from Illumina sequencing machine.
+The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
+
+.. note::
+
+    The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/index.html>`_, 
+    a software package with a graphical user interface to bioinformatically process metabarcoding data. 
+    See the example workflow `here <https://pipecraft2-manual.readthedocs.io/en/latest/example_analyses_DADA2_COI.html>`_.
+
 
 
 Dependencies
