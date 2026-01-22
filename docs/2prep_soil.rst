@@ -37,7 +37,7 @@
 Soil
 ****
 
-General guidelines for preparing soil samples :ref:`for DNA extraction <DNAex_soil>`.
+General guidelines for preparing soil samples for metabarcoding studies :ref:`for DNA extraction <DNAex_soil>`.
 
 1. After collection (or if soil samples are frozen), transfer soil into a clean paper 
    bag and active thaw/dry the samples in an oven at ~37ºC.
