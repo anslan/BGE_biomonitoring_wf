@@ -47,10 +47,18 @@
 |logo_BGE_alpha|
 
 
-Ampolicon lib. prep.
-********************
+Amplicon library preparation
+****************************
 
-Amplicon library preparations for high-throughput sequencing using Illumina platform.
+Guidelines for amplicon library preparation for high-throughput sequencing on the **Illumina** platform.
+The documentation provides **marker-specific** protocols for **16S** (bacteria), 
+**ITS2** (fungi), and **COI** (arthropods).
+Each protocol uses a **2-step PCR** design: 
+a first PCR amplifies the target region with primers carrying 
+Illumina sequencing adaptor sites and shifters; a second PCR adds P5/P7 indexing for multiplexing.
+Consumables, thermocycling conditions, and cleanup steps are described in detail for each marker; 
+the overall workflow is shared across markers, 
+with differences mainly in primer pairs and 1st PCR annealing temperatures.
 
 .. grid:: 3
 
