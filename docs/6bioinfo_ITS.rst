@@ -20,6 +20,11 @@
   :alt: Alternative text
   :target: https://biodiversitygenomics.eu/
 
+.. |main_interface| image:: _static/main_interface.png
+  :width: 2000
+  :alt: Alternative text
+
+
 .. raw:: html
 
     <style> .red {color:#ff0000; font-weight:bold; font-size:16px} </style>
@@ -45,11 +50,21 @@
 Fungi/ITS
 *********
 
-| This is executable step-by-step pipeline for **rRNA ITS1/ITS2** amplicon data from Illumina sequencing machine.
-|  
-| The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/>`_ (v1.1.0; releasing this soon, with a tutorial), which implemets also various error handling processes and sequence summary statistics (lacking here in step-by-step code). 
-| 
-| The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
+This is executable step-by-step pipeline for **ITS2** amplicon data from Illumina sequencing machine.
+The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
+
+.. note::
+
+    The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/index.html>`_, 
+    a software package which represents a graphical user interface 
+    wrapper for all the bioinformatic steps below. 
+    `See the example workflow for ITS2 <https://pipecraft2-manual.readthedocs.io/en/latest/example_analyses_DADA2_ITS.html>`_.
+
+    |main_interface|
+    
+
+Dependencies
+~~~~~~~~~~~~
 
 +-----------------------------------------------------+----------+---------+
 | Process                                             | Software | Version |
@@ -74,7 +89,9 @@ Fungi/ITS
 +-----------------------------------------------------+----------+---------+
 | :ref:`Clustering ASVs to OTUs <clusteringITS>`      | vsearch  | 2.28.1  |
 +-----------------------------------------------------+----------+---------+
-| :ref:`Post-clusteringlustering <postclusteringITS>` | LULU     | 0.1.0   |
+| :ref:`Post-clusteringlustering <postclustering16S>` | BLAST    | 2.12.0+ |
++-----------------------------------------------------+----------+---------+
+| :ref:`Post-clusteringlustering <postclustering16S>` | LULU     | 0.1.0+  |
 +-----------------------------------------------------+----------+---------+
 
 \*only applicable when there are multiple sequencing runs per study. 
@@ -91,14 +108,14 @@ Fungi/ITS
 .. code-block:: bash
    :caption: get the Docker image
    
-   docker pull pipecraft/bioscanflow:1
+   docker pull pipecraft/bioscanflow:2
 
 .. code-block:: bash
    :caption: example of running the pipeline via Docker image
    
    # run docker 
     # specify the files location with -v flag  ($PWD = the current working directory)
-   docker run -i --tty -v $PWD/:/Files pipecraft/bioscanflow:1 
+   docker run -i --tty -v $PWD/:/Files pipecraft/bioscanflow:2 
 
    # inside the container, the files are accessible in the /Files dir
    cd Files

@@ -20,6 +20,11 @@
   :alt: Alternative text
   :target: https://biodiversitygenomics.eu/
 
+.. |main_interface| image:: _static/main_interface.png
+  :width: 2000
+  :alt: Alternative text
+
+
 .. raw:: html
 
     <style> .red {color:#ff0000; font-weight:bold; font-size:16px} </style>
@@ -54,7 +59,9 @@ The bioinformatic workflow results in amplicon sequence variants (ASVs) and well
     The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/index.html>`_, 
     a software package which represents a graphical user interface 
     wrapper for all the bioinformatic steps below. 
-    `See the example workflow for 16S <https://pipecraft2-manual.readthedocs.io/en/latest/example_analyses_DADA2.html>`_.
+    `See the example workflow for 16S <https://pipecraft2-manual.readthedocs.io/en/latest/example_analyses_DADA2_16S.html>`_.
+
+    |main_interface|
 
 
 Dependencies

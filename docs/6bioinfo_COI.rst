@@ -20,6 +20,10 @@
   :alt: Alternative text
   :target: https://biodiversitygenomics.eu/
 
+.. |main_interface| image:: _static/main_interface.png
+  :width: 2000
+  :alt: Alternative text
+
 .. raw:: html
 
     <style> .red {color:#ff0000; font-weight:bold; font-size:16px} </style>
@@ -52,9 +56,11 @@ The bioinformatic workflow results in amplicon sequence variants (ASVs) and well
 .. note::
 
     The **full bioinformatics workflow can be automatically run through** `PipeCraft2 <https://pipecraft2-manual.readthedocs.io/en/latest/index.html>`_, 
-    a software package with a graphical user interface to bioinformatically process metabarcoding data. 
-    See the example workflow `here <https://pipecraft2-manual.readthedocs.io/en/latest/example_analyses_DADA2_COI.html>`_.
+    a software package which represents a graphical user interface 
+    wrapper for all the bioinformatic steps below. 
+    `See the example workflow for COI <https://pipecraft2-manual.readthedocs.io/en/latest/example_analyses_DADA2_COI.html>`_.
 
+    |main_interface|
 
 
 Dependencies
@@ -85,7 +91,9 @@ Dependencies
 +-----------------------------------------------------+----------+---------+
 | :ref:`Clustering ASVs to OTUs <clusteringCOI>`      | vsearch  | 2.28.1  |
 +-----------------------------------------------------+----------+---------+
-| :ref:`Post-clusteringlustering <postclusteringCOI>` | LULU     | 0.1.0   |
+| :ref:`Post-clusteringlustering <postclustering16S>` | BLAST    | 2.12.0+ |
++-----------------------------------------------------+----------+---------+
+| :ref:`Post-clusteringlustering <postclustering16S>` | LULU     | 0.1.0+  |
 +-----------------------------------------------------+----------+---------+
 
 \*only applicable when there are multiple sequencing runs per study. 
@@ -821,7 +829,7 @@ Taxonomy assignment
 ~~~~~~~~~~~~~~~~~~~
 
 | Taxonomy assignment with SINTAX (vsearch) against `BOLDistilled database. <https://boldsystems.org/data/BOLDistilled/>`_ 
-| **---** `Download the latest BOLDistilled database for SINTAX here (click) <https://us-sea-1.linodeobjects.com/boldistilled/sintax.zip>`_ **---**
+| **---** `Download the latest BOLDistilled database for SINTAX here <https://us-sea-1.linodeobjects.com/boldistilled/sintax.zip>`_ **---**
 
 .. code-block:: bash
    :caption: assign taxonomy with SINTAX
