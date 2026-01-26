@@ -61,6 +61,15 @@ The bioinformatic workflow results in amplicon sequence variants (ASVs) and well
     `See the example workflow for ITS2 <https://pipecraft2-manual.readthedocs.io/en/latest/example_analyses_DADA2_ITS.html>`_.
 
     |main_interface|
+
+.. admonition:: Citation of the pipeline
+
+    When using this pipeline, please cite as:
+    Anslan, S, Bahram, M, Hiiesalu, I, Tedersoo, L. 
+    PipeCraft: Flexible open-source toolkit for bioinformatics analysis of custom high-throughput amplicon sequencing data.
+    Mol Ecol Resour. 2017; 17: e234-e240. https://doi.org/10.1111/1755-0998.12692
+
+   Also, please **cite the original resources of the wrapped software**.
     
 
 Dependencies
