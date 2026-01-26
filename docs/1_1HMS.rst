@@ -22,8 +22,8 @@
 .. role:: red
 
 
-High mountain systems
-*********************
+High Mountain Systems - Arthropods
+***********************************
 
 The SOP for the 'High Mountain Systems - Arthropod sampling with Malaise traps' within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project.
 This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.17.3>`_

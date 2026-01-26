@@ -73,12 +73,13 @@
 
 .. _registering_samples_in_plutof:
 
-Registering samples in PlutoF GO 
-********************************
+Registering samples in PlutoF and PlutoF GO 
+*******************************************
 
-`PlutoF GO <https://plutof.ut.ee/go>`_ is data collection tool for biodiversity data - observations, specimens, material samples.
-A handy **phone application** that can be used to record samples during fieldwork.
-The collected data is stored in `PlutoF Biodiversity Data Management Platform <https://plutof.ut.ee/en>`_. 
+The `PlutoF Biodiversity Data Management Platform <https://plutof.ut.ee/en>`_ (Abarenkov et al., 2010)
+is an open access data management platform for biodiversity data - observations, specimens, material samples, sequences and related data. 
+
+`PlutoF GO <https://plutof.ut.ee/go>`_ is data collection tool for biodiversity data in a handy **phone application** that can be used to record samples during fieldwork, and upload them to the PlutoF platform.
 
 |plutoFgo_phone|
 
@@ -140,6 +141,27 @@ Note that **images, videos, audio and other sample associated files** can be als
 
 | |upload|
 | Once the records are in PlutoF, they can be further edited only in `PlutoF web platform <https://plutof.ut.ee/en>`_.
+
+**Note:** Examples of "material sample" data entry using PlutoF GO for soil (Najera-Cortazar et al., 2024a), and malaise trap samples (Najera-Cortazar et al., 2024b; 2024c) are available in the BGE case studies section.
+
+**References**
+
+Abarenkov, K., Tedersoo, L., Nilsson, R. H., Vellak, K., Saar, I., Veldre, V., Parmasto, E., Prous,  M., Aan, A., Ots, M., Kurina, O., Ostonen, I., Jõgeva, J., Halapuu, S., Põldmaa, K., Toots, M., Truu, J., Larsson, K-H., and Kõljalg, U. (2010).
+PlutoF - a web based workbench for ecological and taxonomic research, with an online implementation for Fungal ITS sequences. Evolutionary Bioinformatics, 6, 189 - 196. https://doi.org/10.4137/EBO.S6271
+An improved Malaise trap. Pacific insects, 4(1), 87-90.
+
+Najera-Cortazar, L., Ferreira, S., Mata, V., & Beja, P. (2024).
+Biodiversity Genomics Europe | High Mountain Systems - Arthropod sampling with Malaise traps. WorkflowHub. https://doi.org/10.48546/WORKFLOWHUB.SOP.17.3 
+
+Najera-Cortazar, L. A., Beja-Pereira, A., & Beja, P. (2024a). 
+Biodiversity Genomics Europe | Ecological Restoration - Soil sampling. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.19.1 
+
+Najera-Cortazar, L. A., Ferreira, S., & Beja, P. (2024b). 
+Biodiversity Genomics Europe | Pollinator Communities - Malaise trap sampling. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.18.1
+
+Najera-Cortazar, L. A., Ferreira, S., Mata, V., & Beja, P. (2024c). 
+Biodiversity Genomics Europe | High Mountain Systems - Arthropod sampling with Malaise traps. WorkflowHub, https://doi.org/10.48546/workflowhub.sop.17.3
+
 
 ___________________________________________________
 

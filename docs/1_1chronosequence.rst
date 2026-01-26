@@ -22,7 +22,7 @@
 .. role:: red
 
 
-Chronosequence of ecological restoration sites
+Soil Chronosequence of ecological restoration sites
 **********************************************
 
 The SOP for the 'Ecological Restoration - Soil sampling' within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project.

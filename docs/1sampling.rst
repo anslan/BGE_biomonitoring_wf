@@ -53,7 +53,7 @@
 Sampling
 ********
 
-Standard operation procedures (SOP) for sampling schemes within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project
+Standard operation procedures (SOP) for sampling schemes within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project for metabarcoding-based biodiversity assessments.
 
 
 .. grid:: 3

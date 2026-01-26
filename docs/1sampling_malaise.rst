@@ -56,9 +56,9 @@ Herein, **Townes style Malaise traps with a white roof** are used.
 List of equipment
 ~~~~~~~~~~~~~~~~~
 
-#.	Malaise trap (including all the set-up cords and pegs)
+#.	Malaise trap (including extra set-up cords and pegs)
 #.	500 mL sterile collection bottle (`'Wide-Mouth LDPE Bottles with Closure' <https://www.fishersci.no/shop/products/nalgene-wide-mouth-ldpe-bottles-closure/10116230?emb_id=pp_euorderconfirmation_producttitle>`_)
-#.	95% or stronger ethanol (EtOH), **not** denatured (to ensure good DNA preservation)
+#.	96% or stronger ethanol (EtOH), **not** denatured (to ensure good DNA preservation)
 #.	Labels for the samples (collection bottles), and the means to fix the lable (e.g. transparent tape)
 #.	Hammer (*may be needed for fixing the trap with pegs*)
 #.  Device with a global positioning system (GPS)
@@ -66,12 +66,26 @@ List of equipment
 
 |Malaise_trap_equipment|
 
+General considerations
+~~~~~~~~~~~~~~~~~~~~~~
+
+**Trap characteristics.** There are different models of Malaise traps available, 
+but the most commonly used is the Townes style Malaise trap. It is needed to standardize the trap type
+used across sites within a project, as different trap types may have different collection efficiencies for different arthropod groups 
+
+**Remove grid from trap.** Some models include plastic grids/filters that prevent larger arthropods to fall in the trap. In order to sample all arthropod groups, the grid should be removed.
+
+**Sample labels** Preparing a robust labelling system is essential to avoid sample misidentification and 
+loss of metadata. It will improve the speed of processing samples on-site and in the lab. Labels can be generated 
+prior fieldwork, using individual QR codes (see PlutoF section), waterproof paper and ink, or printed on regular paper and laminated.
+
 First time set-up
 ~~~~~~~~~~~~~~~~~~
 
 #. Select a suitable spot (see :ref:`below, 'Placement of the Malaise trap' <placement>`).
-#. Set up the trap. `See the video of how to set up a Malaise trap. <https://www.youtube.com/watch?v=sU9rW71f5ZA&t=2s&ab_channel=CBG_Collections>`_
-#. Attach the collecion bottle to the trap. 
+#. Set up the trap. `See the video of how to set up a Malaise trap, <https://www.youtube.com/watch?v=sU9rW71f5ZA&t=2s&ab_channel=CBG_Collections>`_ and/or follow the instructions provided 
+in the `Malaise trapping SOPs <https://workflowhub.eu/sops/17>`_ (Najera-Cortazar et al., 2024) from the BGE case studies sections.
+#. Attach the collecion bottle to the trap.
 #. Make sure to store the bottle lid in a way it will not be contaminated (store in e.g. clean zip-lock bag).
 #. Let the trap do its job.
 
@@ -112,7 +126,7 @@ Collecting samples
 #. Collect the collection bottle,
 #. add more ethanol (if needed) to ensure **all individuals are submerged**, and attach the lid.
 #. If placing a new collection bottle, then use a clean paper tissue to **clean the trap head** to remove dead arthropods.
-#. The specimens in ethanol may be preserved at room temperature (but -20˚ C is advisable for long term storage).
+#. The specimens in ethanol may be preserved at room temperature, avoiding light exposure (but -20˚ C is advisable for long term storage).
 
 ____________________________________________________
 
@@ -121,6 +135,9 @@ ____________________________________________________
 
 Gressitt, J. L., & Gressitt, M. K. (1962). 
 An improved Malaise trap. Pacific insects, 4(1), 87-90.
+
+Najera-Cortazar, L., Ferreira, S., Mata, V., & Beja, P. (2024).
+Biodiversity Genomics Europe | High Mountain Systems - Arthropod sampling with Malaise traps. WorkflowHub. https://doi.org/10.48546/WORKFLOWHUB.SOP.17.3 
 
 van Achterberg, K. (2009). 
 Can Townes type Malaise traps be improved? Some recent developments. Entomologische berichten, 69(4), 129-135.

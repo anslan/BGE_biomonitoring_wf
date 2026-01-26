@@ -22,7 +22,7 @@
 .. role:: red
 
 
-Pollinator communities
+Pollinator Communities
 **********************
 
 The SOP for the 'Pollinator Communities - Malaise trap sampling' within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
