@@ -43,14 +43,46 @@
 |logo_BGE_alpha|
 
 
-Other tools
-***********
+Other taxonomy assignment tools
+*******************************
+
+`BOLDdigger3 <https://github.com/DominikBuchner/BOLDigger3>`_
+=============================================================
+
+BOLDigger3 automates the taxonomic 
+identification of DNA sequences against the Barcode of Life Data System (BOLD v5) databases, 
+using BOLD's identification service.
 
 
-BLAST
-~~~~~
+.. code-block:: bash
+   :caption: BOLDdigger3
+   :linenos:
 
-| Assign taxonomy with `BLAST <https://pubmed.ncbi.nlm.nih.gov/2231712/>`_. 
+    #!/bin/bash
+
+    # specify the query fasta file
+    fasta=$"ASVs.fasta"
+
+    # run BOLDdigger3
+    boldigger3 identify $fasta --db 2 --mode 3 --thresholds 97 95 90 85
+
+    ## Or run BOLDdigger3 by specifying the python version if you have multiple ones installed
+    # py -3.13 -m boldigger3 identify cox1renamedkoopia.fasta --db 2 --mode 3 --thresholds 97 95
+
+
+| ``--db`` **2** specifies the BOLD v5 database of "**ANIMAL SPECIES-LEVEL LIBRARY (PUBLIC + PRIVATE)**",
+| ``--mode`` **3** specifies the mode of identification if "**Exhaustive Search**".
+| ``--thresholds`` **97 95 90 85** specify the thresholds for Species-, Genus-, Family-, and Order-level identifications.
+
+Check the `BOLDdigger3 documentation <https://github.com/DominikBuchner/BOLDigger3?tab=readme-ov-file#databases>`_ for more details
+about the options.
+
+___________________________________________________
+
+
+`BLAST <https://doi.org/10.1016/S0022-2836(05)80360-2>`_
+========================================================
+
 | Reference database is a fasta file; no special formatting is required.
 
 .. code-block:: bash
@@ -142,8 +174,8 @@ BLAST
     rm *.names
 
 
-Taxonomy assignment with the RDP-classifier
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`RDP-classifier <https://sourceforge.net/projects/rdp-classifier/>`_
+====================================================================
 
 | Taxonomy assignment with the RDP-classifier against `CO1Classifier v5.1.0 database. <https://github.com/terrimporter/CO1Classifier>`_ 
 | **---** `Download the CO1Classifier v5.1.0 for RDP here (click) <https://github.com/terrimporter/CO1Classifier/releases/download/RDP-COI-v5.1.0/RDP_COIv5.1.0.zip>`_ **---**
@@ -169,7 +201,8 @@ Taxonomy assignment with the RDP-classifier
     ASV_fasta="ASVs_TagJumpFiltered.fasta"
     ASV_fasta_tmp="ASVs_TagJumpFiltered_minmax.fasta"
 
-    # select by size to only retain ASVs that are within the range of expected variation. In this case we set it to 400 up to 430 bps
+    # select by size to only retain ASVs that are within the range of 
+    # expected variation. In this case we set it to 400 up to 430 bps
     vsearch --fastx_filter $ASV_fasta \
             --fastq_minlen 400 \
             --fastq_maxlen 430 \
@@ -189,11 +222,11 @@ Taxonomy assignment with the RDP-classifier
 ____________________________________________________
 
 
-Get target taxa
-~~~~~~~~~~~~~~~
+Get target taxa from RDP-classifier results
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 | This part filters the ASV dataset to include only target taxonomic group for the following analyses. 
-| For example, if you are interested in Hymenoptera, then discard all ASVs that do not match to the target taxon based on the user defined threshold (default = 0.8). 
+| For example, if you are interested in Metazoa, then discard all ASVs that do not match to the target taxon based on the user defined threshold (default = 0.8). 
 
 
 .. code-block:: R
@@ -204,11 +237,15 @@ Get target taxa
     ### Filter dataset based on RDP classifier results to include target taxa 
 
     # specify taxon and threshold
-    taxon="Metazoa"  # target taxonomic group(s); 
-                         # multiple groups should be from the same taxonomic level
-                         # separator is "," (e.g., "Hymenoptera, Lepidoptera")
+    taxon="Metazoa"      # target taxonomic group(s); 
+                         # when specifying multiple groups, they should be from the same taxonomic 
+                         # level. Separator is "," (e.g., "Hymenoptera, Lepidoptera")
     tax_level="kingdom"  # allowed levels: kingdom | phylum | class | order | family | genus
-    threshold="0.8"      # threshold for considering an ASV as a target taxon
+    threshold="0.8"      # threshold for considering an ASV as a target taxon;
+                         # default is 0.8
+
+    # species_bootstrap = 0.9 # threshold for species-level identification;
+                              # default is 0.9
 
     # specify the ASV table and ASVs.fasta file that would be filtered to include only target taxa 
     ASV_fasta = "ASVs_TagJumpFiltered.fasta"
@@ -282,8 +319,8 @@ Get target taxa
     tax_filtered$genus = stringr::str_replace(tax_filtered$genus, "unclassified_unclassified_", 
                                                                             "unclassified_")
 
-    # species to genus_sp when the bootstrap values is < 0.9
-    tax_filtered = tax_filtered %>% mutate(species = ifelse(species_BootS < 0.9, 
+    # species to genus_sp when the bootstrap values is < "species_bootstrap" threshold
+    tax_filtered = tax_filtered %>% mutate(species = ifelse(species_BootS < species_bootstrap, 
                                                         paste0(genus, "_sp"), species))
    
     ### count occurrences of each taxon in df (RDP results)
@@ -338,7 +375,6 @@ Get target taxa
     writeXStringSet(fasta.tax_filt, 
                     paste0(sub("\\.[^.]*$", "_tax_filt.fasta", ASV_fasta)), 
                     width = max(width(fasta.tax_filt)))
-
 
 
 ____________________________________________________

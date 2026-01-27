@@ -25,7 +25,8 @@
 Examine outputs
 ***************
 
-The outputs of a metabarcoding workflow and their basic reading are described in the :ref:`outputs section <outputs>` of :doc:`"What is a metabarcoding workflow?" <0what_is_metabarcoding>`.
+The outputs of a metabarcoding workflow and their basic reading are described 
+in the :ref:`outputs section <outputs>` of :doc:`"What is a metabarcoding workflow?" <0what_is_metabarcoding>`.
 
 In this section, we will examine the outputs of a metabarcoding workflow in relation to user collected environmental **metadata**
 to inspect basic patterns of species (metabarcoding features) richness and composition across different environments.
@@ -52,6 +53,6 @@ Transform to presence/absence data
 
 
 
-____________________________________________________
+
 
 |logo_BGE_small| |eufund| |chfund| |ukrifund|
