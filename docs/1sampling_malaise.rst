@@ -82,12 +82,13 @@ prior fieldwork, using individual QR codes (see PlutoF section), waterproof pape
 First time set-up
 ~~~~~~~~~~~~~~~~~~
 
-#. Select a suitable spot (see :ref:`below, 'Placement of the Malaise trap' <placement>`).
-#. Set up the trap. `See the video of how to set up a Malaise trap, <https://www.youtube.com/watch?v=sU9rW71f5ZA&t=2s&ab_channel=CBG_Collections>`_ and/or follow the instructions provided 
-in the `Malaise trapping SOPs <https://workflowhub.eu/sops/17>`_ (Najera-Cortazar et al., 2024) from the BGE case studies sections.
-#. Attach the collecion bottle to the trap.
-#. Make sure to store the bottle lid in a way it will not be contaminated (store in e.g. clean zip-lock bag).
-#. Let the trap do its job.
+#. Select a suitable spot (see :ref:`below, 'Placement of the Malaise trap' <placement>`)
+#. Set up the trap. `See the video of how to set up a Malaise trap, <https://www.youtube.com/watch?v=sU9rW71f5ZA&t=2s&ab_channel=CBG_Collections>`_ and/or follow the instructions provided in the `Malaise trapping SOPs <https://workflowhub.eu/sops/17>`_ (Najera-Cortazar et al., 2024) from the BGE case studies sections
+#. Attach the collecion bottle to the trap
+#. Make sure to store the bottle lid in a way it will not be contaminated (store in e.g. clean zip-lock bag)
+#. Let the trap do its job
+
+
 
 .. _placement:
 
@@ -123,10 +124,12 @@ and fix the label to collection bottle (if applicable).
 Collecting samples
 ~~~~~~~~~~~~~~~~~~
 
-#. Collect the collection bottle,
-#. add more ethanol (if needed) to ensure **all individuals are submerged**, and attach the lid.
-#. If placing a new collection bottle, then use a clean paper tissue to **clean the trap head** to remove dead arthropods.
+#. Collect the collection bottle
+#. Add more ethanol (if needed) to ensure **all individuals are submerged**, and attach the lid
+#. If placing a new collection bottle, then use a clean paper tissue to **clean the trap head** to remove dead arthropods
 #. The specimens in ethanol may be preserved at room temperature, avoiding light exposure (but -20˚ C is advisable for long term storage).
+
+
 
 ____________________________________________________
 

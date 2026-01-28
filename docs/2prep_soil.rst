@@ -37,6 +37,11 @@
 Soil
 ****
 
+Herein processes follow lab SOP for the 'Characterization of Prokaryotic and Eukaryotic Biodiversity from Soil Samples' (Chaves et al., 2025a)
+within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
+This is mirror for the workflow hosted in `WorkflowHub <WorkflowHub. <https://doi.org/10.48546/workflowhub.sop.12.2>`_
+*(which hosts the downloadable PDF).*
+
 General guidelines for preparing soil samples for metabarcoding studies :ref:`for DNA extraction <DNAex_soil>`.
 
 1. After collection (or if soil samples are frozen), transfer soil into a clean paper 
@@ -52,6 +57,13 @@ General guidelines for preparing soil samples for metabarcoding studies :ref:`fo
 3. Weigh maximum of **250 mg** (~100 mg for very organic rich sample) of the soil powder to a 2 mL
    PowerBead Pro Tube. Store the PowerBead Pro tubes with the soil at
    -20ºC until further steps. Or proceed immediately with the DNA extraction.
+
+____________________________________________________
+
+
+**References**
+
+   Chaves, C., Najera Cortazar, L. A., Martins, F., Anslan, S., Beja-Pereira, A., Magalhães, M., & Price, B. (2025a). Characterization of Prokaryotic and Eukaryotic Biodiversity from Soil Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.12.2
 
 ____________________________________________________
 

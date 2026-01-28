@@ -88,8 +88,7 @@ Sampling
   Sterilization should be done with with oxidizing agents (e.g., 10% bleach) or flame, and wiping with EtOH. 
   **Sterilization should not be done only with EtOH** as the latter do not denature DNA. 
 * Place samples into sterile zip-lock bags or screw-cap vessels. 
-* To remove site or sampling material contaminants a posteriori, 
-include **field controls** (e.g., empty tubes left opened at the site or extraction of sample storage buffer).
+* To remove site or sampling material contaminants a posteriori, include **field controls** (e.g., empty tubes left opened at the site or extraction of sample storage buffer).
 
 ____________________________________________________
 
@@ -108,7 +107,15 @@ After sampling
 * Prior to DNA extraction, it is important to homogenize the soil sample. 
 * It is important to double check that labels are visible and legible, recorded in a field book (paper or digitally), 
   and properly backed up.
-  
+
 ____________________________________________________
+
+**References**
+
+Najera-Cortazar, L. A., Beja-Pereira, A., & Beja, P. (2024a). 
+Biodiversity Genomics Europe | Ecological Restoration - Soil sampling. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.19.1 
+
+Tedersoo, L., Bahram, M., Polme, S., Koljalg, U., Yorou, N. S., Wijesundera, R., Ruiz, L. V., Vasco-Palacios, A. M., Thu, P. Q., Suija, A., Smith, M. E., Sharp, C., Saluveer, E., Saitta, A., Rosas, M., Riit, T., Ratkowsky, D., Pritsch, K., Poldmaa, K., ... Abarenkov, K. (2022).
+Best practices in metabarcoding of fungi: From experimental design to results. Molecular Ecology, 31(10), 2769-2795. https://doi.org/10.1111/mec.16460
 
 |logo_BGE_small| |eufund| |chfund| |ukrifund|

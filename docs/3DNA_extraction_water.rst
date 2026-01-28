@@ -33,15 +33,15 @@
 Water
 *****
 
+Herein processes follow lab SOP for the 'Detection of Non-Indigenous Marine Species from Port Water Samples' (Chaves et al., 2025b)
+within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
+This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.11.2>`_
+*(which hosts the downloadable PDF).*
+
 .. _DNAex_sylphium_dual_filters:
 
 Sylphium dual filters
 ~~~~~~~~~~~~~~~~~~~~~
-
-Herein processes follow lab SOP for the 'Detection of Non-Indigenous Marine Species from Port Water Samples' 
-within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
-This is mirror for the workflow hosted in `WorkflowHub <https://workflowhub.eu/sops/11?version=1>`_
-*(which hosts the downloadable PDF).*
 
 .. |sylphium_filter2| image:: _static/sylphium_filter2.png
   :width: 200
@@ -123,6 +123,13 @@ Assuming that the samples have been prepared according to :ref:`guidelines here 
 7. Repeat previous two steps above (5-6) using the same 1.5 mL tube to obtain maximum yield. 
 8. Transfer **60 μL** eDNA extract to a 96-well plate (working plate) and archive the remaining at -20ºC or -80ºC. Leave at least two empty wells per plate for the PCR negative control (PNC).   
 9. Quantify the samples by spectrophotometry. Dilute samples with EB buffer into a new 96-well plate (if needed). 
+
+____________________________________________________
+
+
+**References**
+
+   Chaves, C., Najera Cortazar, L. A., Martins, F., Veríssimo, J., Dunshea, G., & Price, B. (2025b). Detection of Non-Indigenous Marine Species from Port Water Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.11.2
 
 ____________________________________________________
 

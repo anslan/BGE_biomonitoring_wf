@@ -41,9 +41,9 @@ Water
 Sylphium dual filters
 ---------------------
 
-Herein processes follow lab SOP for the 'Detection of Non-Indigenous Marine Species from Port Water Samples' 
+Herein processes follow lab SOP for the 'Detection of Non-Indigenous Marine Species from Port Water Samples' (Chaves et al., 2025b)
 within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
-This is mirror for the workflow hosted in `WorkflowHub <https://workflowhub.eu/sops/11?version=1>`_
+This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.11.2>`_
 *(which hosts the downloadable PDF).*
 
 |sylphium_filter|
@@ -86,6 +86,13 @@ Prepare filters for DNA extraction
 
 
 Proceed with :ref:`DNA extraction <DNAex_sylphium_dual_filters>`.
+
+____________________________________________________
+
+
+**References**
+
+   Chaves, C., Najera Cortazar, L. A., Martins, F., Veríssimo, J., Dunshea, G., & Price, B. (2025b). Detection of Non-Indigenous Marine Species from Port Water Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.11.2
 
 ____________________________________________________
 

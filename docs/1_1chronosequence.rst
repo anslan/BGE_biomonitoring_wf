@@ -22,7 +22,7 @@
 .. role:: red
 
 
-Soil Chronosequence of ecological restoration sites
+Ecological Restoration - Soil Chronosequences
 **********************************************
 
 The SOP for the 'Ecological Restoration - Soil sampling' within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project.
@@ -37,7 +37,7 @@ This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546
 
 
 **Citation:**
-Najera Cortazar, L., Ferreira, S., & Beja, P. (2024). Biodiversity Genomics Europe | Pollinator Communities - Malaise trap sampling. WorkflowHub. https://doi.org/10.48546/WORKFLOWHUB.SOP.18.1
+Najera-Cortazar, L., Beja-Pereira, A., & Beja, P. (2024). Biodiversity Genomics Europe | Ecological Restoration - Soil sampling. WorkflowHub. https://doi.org/10.48546/WORKFLOWHUB.SOP.19.1
 
 ____________________________________________________
 

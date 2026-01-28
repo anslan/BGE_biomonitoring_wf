@@ -34,8 +34,9 @@
 Soil
 ****
 
-This DNA extraction procedure follows the SOP within the `BGE <https://biodiversitygenomics.eu/>`_ case study 'Ecological Restoration - Soil sampling'.
-This is mirror for the workflow hosted in `WorkflowHub <https://workflowhub.eu/sops/12>`_
+Herein processes follow lab SOP for the 'Characterization of Prokaryotic and Eukaryotic Biodiversity from Soil Samples' (Chaves et al., 2025a)
+within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
+This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.12.2>`_
 *(which hosts the downloadable PDF).*
 
 
@@ -176,6 +177,13 @@ KingFisher Apex Purification System
 6.  Upon completion of the robotic program, **transfer the eluted DNA** from the KingFisher 96 microplate to a low-bind microplate.
 
 7.  Assess the quantity and quality of DNA using fluorometry (Qubit) and spectrophotometry (Epoch) methods. **Dilute all samples to 10 ng/µL**.
+
+____________________________________________________
+
+
+**References**
+
+   Chaves, C., Najera Cortazar, L. A., Martins, F., Anslan, S., Beja-Pereira, A., Magalhães, M., & Price, B. (2025a). Characterization of Prokaryotic and Eukaryotic Biodiversity from Soil Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.12.2
 
 ____________________________________________________
 

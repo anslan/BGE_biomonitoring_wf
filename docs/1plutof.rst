@@ -144,6 +144,9 @@ Note that **images, videos, audio and other sample associated files** can be als
 
 **Note:** Examples of "material sample" data entry using PlutoF GO for soil (Najera-Cortazar et al., 2024a), and malaise trap samples (Najera-Cortazar et al., 2024b; 2024c) are available in the BGE case studies section.
 
+____________________________________________________
+
+
 **References**
 
 Abarenkov, K., Tedersoo, L., Nilsson, R. H., Vellak, K., Saar, I., Veldre, V., Parmasto, E., Prous,  M., Aan, A., Ots, M., Kurina, O., Ostonen, I., Jõgeva, J., Halapuu, S., Põldmaa, K., Toots, M., Truu, J., Larsson, K-H., and Kõljalg, U. (2010).

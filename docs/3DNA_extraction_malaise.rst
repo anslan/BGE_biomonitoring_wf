@@ -36,10 +36,20 @@
 Malaise trap sample
 *********************
 
-Malaise samples processing within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project
-follow the `FAVIS protocol (hosted in protocols.io) <https://dx.doi.org/10.17504/protocols.io.kqdg36261g25/v2>`_.
+Herein processes follow lab SOP Biodiversity Genomics Europe | Invertebrate characterization from bulk arthropod samples (Najera-Cortazar et al., 2026) laboratory protocol
+(hosted in WorkflowHub), based on the `FAVIS protocol (hosted in protocols.io) <https://dx.doi.org/10.17504/protocols.io.kqdg36261g25/v2>`_, with modifications implemented within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project
+
+This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.26.1>`_
+*(which hosts the downloadable PDF).*
+
 
 |malaise_bottle|
+
+
+**References**
+
+   Najera-Cortazar, L. A., Perez-Delgado, A., & Emerson, B. (2026). Biodiversity Genomics Europe | Invertebrate characterization from bulk arthropod samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.26.1
+
 
 ____________________________________________________
 
