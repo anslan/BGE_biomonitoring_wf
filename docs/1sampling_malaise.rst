@@ -77,7 +77,9 @@ used across sites within a project, as different trap types may have different c
 
 **Sample labels** Preparing a robust labelling system is essential to avoid sample misidentification and 
 loss of metadata. It will improve the speed of processing samples on-site and in the lab. Labels can be generated 
-prior fieldwork, using individual QR codes (see PlutoF section), waterproof paper and ink, or printed on regular paper and laminated.
+prior fieldwork, using individual QR codes (:ref:`See Register samples in PlutoF <registering_samples_in_plutof>`), waterproof paper and ink, or printed on regular paper and laminated.
+
+:`Remove primers <remove_primers16S>`  
 
 First time set-up
 ~~~~~~~~~~~~~~~~~~
