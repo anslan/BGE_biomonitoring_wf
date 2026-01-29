@@ -818,7 +818,7 @@ Taxonomy assignment
 ~~~~~~~~~~~~~~~~~~~
 
 | Assign taxonomy with **RDP classifier** (assignTaxonomy function in DADA2). 
-| Herein using the `SILVA138.1 reference database <https://zenodo.org/records/4587955/files/silva_nr99_v138.1_wSpecies_train_set.fa.gz?download=1>`_ 
+| Herein using the `SILVA138.2 reference database <https://zenodo.org/records/14169026/files/silva_nr99_v138.2_toSpecies_trainset.fa.gz?download=1>`_ 
 
 .. code-block:: bash
    :caption: assignTaxonomy
@@ -829,7 +829,7 @@ Taxonomy assignment
     # specify the query fasta file
     fasta=$"ASVs_TagJumpFiltered.fasta"
     # specify reference database 
-    reference_database="silva_nr99_v138.1_wSpecies_train_set.fa.gz"
+    reference_database="silva_nr99_v138.2_toSpecies_trainset.fa.gz"
 
     # load fasta file
     library("seqinr")
