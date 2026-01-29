@@ -36,11 +36,12 @@
 |logo_BGE_alpha|
 
 
-rRNA 16S
-********
+16S
+***
 
-Amplicon library preparation for 16S V4 region to target **bacterial communities** using **2-step PCR** 
-with primers **515F** (GTGYCAGCMGCCGCGGTAA) and **926R** (CCGYCAATTYMTTTRAGTTT).
+Amplicon library preparation for 16S rRNA V4 region to target **bacterial communities** using **2-step PCR** 
+with primers **515F** (GTGYCAGCMGCCGCGGTAA; `Parada et al., 2016 <http://doi.org/10.1111/1462-2920.13023>`_) 
+and **926R** (CCGYCAATTYMTTTRAGTTT; `Quince et al., 2010 <https://doi.org/10.1186/1471-2105-12-38>`_).
 
 *Besides used primers and the PCR conditions for the 1st PCR, the protocol in identical to* :ref:`ITS2 <ampliconITS2>` *and* :ref:`COI <ampliconCOI>` *library prep.*
 
