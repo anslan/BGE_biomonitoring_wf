@@ -32,7 +32,7 @@ ___________________________________________________
 Starting point 
 ==============
 
-Requred input data: 
+Required input data: 
 
 1. ASVs table
 
@@ -45,7 +45,7 @@ Requred input data:
 5. Sample metadata
 
 
-.. admonition:: example of an ASV taxonomy table
+.. admonition:: example of an ASV table
 
   +-------------+---------+---------+---------+---------+-----+
   |             | sample1 | sample2 | sample3 | sample4 | ... |
@@ -120,12 +120,12 @@ Requred input data:
 
 ___________________________________________________
 
-Calculate EBVs of genetic composition
-=====================================
+Calculate EBVs of genetic composition: genetic richness, nucleotide diversity and genetic differentiation
+=========================================================================================================
 
 
 .. code-block:: R
-    :caption: Calculate Essential Biodiversity Variables (EBV) of genetic composition
+    :caption: Preparing the input
     :linenos:
 
     #!/usr/bin/Rscript
@@ -143,10 +143,10 @@ Calculate EBVs of genetic composition
     ## Input ASV table
     ASV.table = file.path(wd, "data/ASV_table_Arthropoda.csv")
 
-    ## Information of ASV clustering into OTUs (by unique taxonomy, output of OptimOTU)
+    ## ASV taxonomy table. Information of ASV clustering into OTUs (by unique taxonomy, output of OptimOTU)
     ASV.tax = file.path(wd, "data/asv_taxonomy.tsv")
 
-    ## OTU info (all OTUs, the filtered and discarded sets, output of OptimOTU)
+    ## OTU taxonomy table (all OTUs, the filtered and discarded sets, output of OptimOTU)
     all.OTU = file.path(wd, "data/otu_taxonomy.tsv")
 
     ## Sample metadata
@@ -183,14 +183,14 @@ Calculate EBVs of genetic composition
     ##----------------------
 
     ## Load input ASV table:
-    ## This table was obtained after filtering with metaMATE 
-    #                (to obtain reliable haplotype information)
+    ## This table was obtained after a strict filtering with metaMATE 
+    #                	    (to obtain reliable haplotype information)
     ASV_table = fread(file = ASV.table, header = TRUE, sep = ";")
 
-    ## Load ASV taxonomy (ASVs with taxonomic identification)
+    ## Load ASV taxonomy table (ASVs with taxonomic identification)
     ASVtax = fread(file = ASV.tax, header = TRUE)
 
-    ## Load the OTU list
+    ## Load the OTU taxonomy table
     ## This list includes all OTUs detected, 
     #            including those discarded by the strict metaMATE filtering
     OTU_all = fread(file = all.OTU, header = TRUE, sep = "\t")
@@ -283,11 +283,18 @@ Calculate EBVs of genetic composition
 
 
 
+OTU selection
+-------------
+
+We use `iNEXT R package <https://cran.r-project.org/web/packages/iNEXT/index.html>`__ to assess sample completeness (coverage) and expected diversity per OTU.
+All OTUs with a coverage ≥ 0.95 and an expected/observed diversity ratio ≥ 0.8 were kept for calculating EBV of genetic composition.  
 
 
-    ##-----------------------------------------------------------------##
-    ## 2. Calculating EBV: haplotype richness and nucleotide diversity ##
-    ##-----------------------------------------------------------------##
+.. code-block:: R
+    :caption: OTU selection
+    :linenos:
+
+    #!/usr/bin/Rscript
 
     ## Selecting OTUs (species):
     ##--------------------------
@@ -436,7 +443,19 @@ Calculate EBVs of genetic composition
     OTUselected1 <- rownames(results.data)[intersect(which(results.data$coverage>=0.95), which(results.data$obs_est>=0.8))]
 
 
-    ## 3. IntraOTU haplotype richness and nucleotide diversity:
+
+Haplotype richness and nucleotide diversity
+-------------------------------------------
+
+.. code-block:: R
+    :caption: Haplotype richness and nucleotide diversity
+    :linenos:
+
+    #!/usr/bin/Rscript
+
+    ##-----------------------------------------------------------------##
+    ## 2. Calculating EBV: haplotype richness and nucleotide diversity ##
+    ##-----------------------------------------------------------------##
 
     ## Adding to the OTU taxonomy table haplotype richness, nucleotide diversity per OTU,
     ##number of samples where the OTU was found and number of countries where each OTU was found:
@@ -453,6 +472,20 @@ Calculate EBVs of genetic composition
 
 
 
+Genetic differentiation
+-----------------------
+
+Using the `BGE case study of high mountain systems <https://bioscanflow.readthedocs.io/en/latest/1_1HMS.html>`__ as an example, we calculate the genetic differentiation between countries.
+
+In each country, we sampled five elevation points over a 20-week period, resulting in approximately 100 samples per country. 
+For calculating Jost's D and Gst indices, each detection of a haplotype in a sample is treated as a single individual. For instance, if haplotype A is detected in samples 1 and 5 from Germany and in sample 29 from Spain, this corresponds to two individuals of haplotype A in Germany and one in Spain.
+
+
+.. code-block:: R
+    :caption: Genetic differentiation
+    :linenos:
+
+    #!/usr/bin/Rscript
 
     ##---------------------------------------------##
     ## 3. Calculating EBV: genetic differentiation ##
