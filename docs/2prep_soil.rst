@@ -37,9 +37,10 @@
 Soil
 ****
 
-Herein processes follow lab SOP for the 'Characterization of Prokaryotic and Eukaryotic Biodiversity from Soil Samples' (Chaves et al., 2025a)
+Herein processes follow lab SOP for the 'Characterization of Prokaryotic and 
+Eukaryotic Biodiversity from Soil Samples' (Chaves et al., 2025a)
 within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
-This is mirror for the workflow hosted in `WorkflowHub <WorkflowHub. <https://doi.org/10.48546/workflowhub.sop.12.2>`_
+This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.12.2>`_
 *(which hosts the downloadable PDF).*
 
 General guidelines for preparing soil samples for metabarcoding studies :ref:`for DNA extraction <DNAex_soil>`.
