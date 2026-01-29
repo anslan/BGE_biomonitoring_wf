@@ -57,7 +57,7 @@ blank DNA extractions (i.e., no sample substrate added to DNA extraction tubes) 
 blank PCR reactions (i.e., no reaction with template DNA).
 
 In many cases, even if the control samples appear to be clean, they may still contain some sequences in the final feature table.
-For smaller projects, including only few samples, the deconamintion process may be easy via visual inspections. 
+For smaller projects, including only few samples, the decontamination process may be easy via visual inspections. 
 However, **for larger projects, including many samples, the decontamination process may be more challenging, and here tools such as decontam can be very helpful**.
 
 ___________________________________________________
@@ -65,8 +65,8 @@ ___________________________________________________
 Input data
 ==========
 
-The input data for the decontamination process include first **metabarcoding feature table** (with control samples) and **sample metadata**.
-Then, later, the identified contaminanted features can be removed also from the :ref:`taxonomy table and fasta file <taxonomy_table>`.
+The input data for the decontamination process include a **metabarcoding feature table** (ASV or OTU table, with control samples included) and **sample metadata**.
+Then, later, the identified contaminated features can be removed also from the :ref:`taxonomy table and fasta file <taxonomy_table>`.
 
 - The metabarcoding feature table (per sequencing run/per batch processed simultaneously) with sequence abundances (example):
 
@@ -158,8 +158,10 @@ and in the `decontam paper <https://doi.org/10.1186/s40168-018-0605-2>`_.
         as.character(packageVersion("decontam")), "\n")
    }
 
-   # load decontam package
+   # load packages
    library(decontam)
+   library(dplyr)
+   library(ggplot2)
    set.seed(1)
 
    # read OTU table 
@@ -285,7 +287,7 @@ and in the `decontam paper <https://doi.org/10.1186/s40168-018-0605-2>`_.
         "contaminant OTUs\n")
    cat("OTUs left in the table:", number_of_OTUs_after_excluding_controls)
 
-   ### Write decontaminanted OTU table to Excel file
+   ### Write decontaminated OTU table to Excel file
    library(openxlsx)
    write.xlsx(OTU_table_decontam, 
             "OTU_table_decontam.xlsx",
@@ -298,6 +300,7 @@ and in the `decontam paper <https://doi.org/10.1186/s40168-018-0605-2>`_.
             rowNames = FALSE)
 
 **The decontaminated OTU table is written to an Excel file (in your output directory).**
+
 
 .. _taxonomy_table:
 

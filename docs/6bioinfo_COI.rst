@@ -1,28 +1,24 @@
 .. |logo_BGE_alpha| image:: _static/logo_BGE_alpha.png
   :width: 300
-  :alt: Alternative text
   :target: https://biodiversitygenomics.eu/
 
 .. |eufund| image:: _static/eu_co-funded.png
   :width: 200
-  :alt: Alternative text
+
 
 .. |chfund| image:: _static/ch-logo-200x50.png
   :width: 210
-  :alt: Alternative text
+
 
 .. |ukrifund| image:: _static/ukri-logo-200x59.png
   :width: 150
-  :alt: Alternative text
 
 .. |logo_BGE_small| image:: _static/logo_BGE_alpha.png
   :width: 120
-  :alt: Alternative text
   :target: https://biodiversitygenomics.eu/
 
 .. |main_interface| image:: _static/main_interface.png
   :width: 2000
-  :alt: Alternative text
 
 .. raw:: html
 
