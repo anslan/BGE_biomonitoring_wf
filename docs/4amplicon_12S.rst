@@ -39,11 +39,19 @@
 12S
 ***
 
-Amplicon library preparation for mitochondrial 12S rRNA region (~208 bp) to target **vertebrates** using **2-step PCR** 
+Amplicon library preparation for mitochondrial 12S rRNA region (~208 bp) 
+to target **vertebrates** using **2-step PCR** 
 with vertebrate-universal primer pair V12S-U (fwd: GTGCCAGCNRCCGCGGTYANAC; 
 rev: ATAGTRGGGTATCTAATCCYAGT; `Wang et al., 2023 <https://doi.org/10.3389/fevo.2023.1164206>`_).
 
-*Besides used primers and the PCR conditions for the 1st PCR, the protocol in identical to* :ref:`ITS2 <ampliconITS2>` *and* :ref:`COI <ampliconCOI>` *library prep.*
+Herein processes follow lab SOP for the 'Detection of Non-Indigenous 
+Marine Species from Port Water Samples' (Chaves et al., 2025)
+within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
+The below workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.11.2>`_
+*(hosts the downloadable PDF)*. 
+**The WorkflowHub protocol includes also COI amplicons prep. protocol 
+(for ~205 bp and ~313 bp COI fragments)**. 
+
 
 .. admonition:: Primer constructs for 1st PCR
 
@@ -117,7 +125,7 @@ Total volum per PCR reaction = **10µL**.
 | 95ºC for 15 minutes  |            |
 +----------------------+------------+
 || 94ºC for 30 seconds ||           |
-|| 50ºC for 45 seconds || 38 cycles |
+|| 50ºC for 60 seconds || 40 cycles |
 || 72ºC for 30 seconds ||           |
 +----------------------+------------+
 | 60ºC for 10 minutes  |            |
@@ -125,7 +133,7 @@ Total volum per PCR reaction = **10µL**.
 | Hold at 10ºC         |            |
 +----------------------+------------+
 
-**Expected amplicon size = 584 bp** *(insert length (~472 bp) + primer lengths + 6bp NNs (avg.) + 67bp overhangs).*
+**Expected amplicon size = 320 bp** (with primers).
 
 
 ● Test the PCR success of all samples through electrophoresis of 2 µL using 2% agarose gel.
@@ -180,7 +188,7 @@ ___________________________________________________
 +----------------------+-----------+
 | 95ºC for 3 minutes   |           |
 +----------------------+-----------+
-|| 94ºC for 30 seconds ||          |
+|| 95ºC for 30 seconds ||          |
 || 55ºC for 30 seconds || 8 cycles |
 || 72ºC for 30 seconds ||          |
 +----------------------+-----------+
@@ -189,7 +197,7 @@ ___________________________________________________
 | Hold at 10ºC         |           |
 +----------------------+-----------+
 
-6. Test size shift between PCR1 and PCR2 amplicons of 15% of samples (e.g. 4 sets of 4 samples selected from random rows) through electrophoresis in 2% agarose gel.
+6. Test size shift between PCR1 and PCR2 amplicons of ~15% of samples (e.g. 4 sets of 4 samples selected from random rows) through electrophoresis in 2% agarose gel.
 
 ___________________________________________________
 
@@ -226,12 +234,12 @@ This step uses magnetic beads to purify PCR products from free primers and prime
 
 **Preparation:**
 
-- Bring the **AMPure XP beads** to room temperature for **30min** prior
+- Bring the **KAPA HyperPure beads** to room temperature for **30min** prior
   to usage;
 
 - Prepare **fresh 80% ethanol**;
 
-- Prepare a 50mL tube with EB Buffer and protect from any direct light
+- Aliquot the EB Buffer and protect from any direct light
   source;
 
 - Short spin the Amplicon PCR plate to collect condensation;
@@ -247,7 +255,9 @@ This step uses magnetic beads to purify PCR products from free primers and prime
    96-well plates (*U-plate 1*).
 
 
-   *Note: The volume of beads may depend on the ratio choosen, this varies according to library quality and size. A standard ratio of 0,8x is used, adding 8 µL of beads for 10 µL of sample.*
+   *Note: The volume of beads may depend on the ratio choosen, 
+   this varies according to library quality and size. 
+   A standard ratio of 0,8x is used, adding 8 µL of beads for 10 µL of sample.*
 
 2. Transfer the full PCR volume (10 µL) into the plate containing the
    KAPA HyperPure Beads, carefully pipetting the entire volume **up and
@@ -257,10 +267,10 @@ This step uses magnetic beads to purify PCR products from free primers and prime
 
 4. While in waiting, prepare three more U-bottom 96-well plates as
    following: two plates with **150µL 80% ethanol** and one plate with
-   **25µL EB Buffer**.
+   **40µL EB Buffer**.
 
 5. Gently place a 96-well PCR plate on the plate from step 2 and attach
-   the magnetic bead separation extractor for **2min** or until the
+   the magnetic bead separation extractor for **2 minutes** or until the
    supernatant is cleared.
 
 6. Carefully remove the extractor and submerge the beads into one of the
@@ -276,12 +286,12 @@ This step uses magnetic beads to purify PCR products from free primers and prime
    Note: Do not over-dry the beads, if they start to appear cracked
    immediately proceed to the next step.
 
-9.  Carefully immerse the beads into the EB buffer (*U-plate 4*) and
+9.  Carefully immerse the beads into the Tris buffer (*U-plate 4*) and
     release the PCR plate from the extractor.
 
-10. Carefully resuspend the beads in EB buffer.
+10. Carefully resuspend the beads in Tris.
 
-11. Attach the magnetic extractor to the PCR plate for **2min** or until
+11. Attach the magnetic extractor to the PCR plate for **2 minutes** or until
     the supernatant is cleared.
 
 12. Carefully remove the magnetic extractor and seal the U-bottom plate
@@ -314,13 +324,13 @@ Pooling & quantification
 
 1. Quantify each library using spectrophotometry (e.g Nanodrop) to estimate average library concentration (ng/µL).
 
-2. Pool libraries equimolarly at 50 ng by taking the corresponding uL
+2. Pool libraries equimolarly at 45 ng by taking the corresponding uL
    from each library. The negative controls should be added at a maximum
    volume than any other single library (up to 20 µL).
 
-   *Note: In cases where the sample does not have volume to take 50ng, use the smallest common concentration available*
+   *Note: In cases where the sample does not have volume to take 45 ng, use the smallest common concentration available*
 
-3. Clean the pool with KAPA HyperPure Beads.
+3. Clean the pool with KAPA HyperPure Beads (optional).
 
    *Note: The volume of beads may depend on the ratio choosen, this varies according to library quality and size. A standard ratio of 0,7x is used, adding 75 µL of beads for 100 µL of sample.*
 
@@ -329,6 +339,14 @@ Pooling & quantification
 5. Dilute each library pool using Buffer EB according to specifications by sequencing provider (if needed).
 
 6. Verify the final concentration of a library pool using *KAPA Library Quantification Kit* in qPCR.
+
+___________________________________________________
+
+
+**References**
+
+   Chaves, C., Najera Cortazar, L. A., Martins, F., Veríssimo, J., Dunshea, G., & Price, B. (2025). Detection of Non-Indigenous Marine Species from Port Water Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.11.2
+
 
 ___________________________________________________
 

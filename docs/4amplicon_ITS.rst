@@ -35,13 +35,20 @@
 
 |logo_BGE_alpha|
 
-rRNA ITS2
-*********
+ITS2
+****
 
-Amplicon library preparation for ITS2 region to target **fungal communities** using **2-step PCR** 
-with primers **gITS7ngs** (GTGARTCATCRARTYTTTG) and **ITS4ngsUni** (CCTSCSCTTANTDATATGC).
+Amplicon library preparation for nuclear ribosomal internal transcribed spacer 2 (ITS2) 
+region to target **fungal communities** using **2-step PCR** 
+with primers **gITS7ngs** (GTGARTCATCRARTYTTTG) and **ITS4ngsUni** (CCTSCSCTTANTDATATGC) [`Tedersoo & Lindahl 2016 <https://doi.org/10.1111/1758-2229.12438>`_].
 
-*Besides used primers and the PCR conditions for the 1st PCR, the protocol in identical to* :ref:`COI <ampliconCOI>` *and* :ref:`16S <amplicon16S>` *library prep.*
+Herein processes follow lab SOP for the 'Characterization of Prokaryotic and 
+Eukaryotic Biodiversity from Soil Samples' (Chaves et al., 2025); 
+the workflow is hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.12.2>`_
+*(hosts the downloadable PDF).*
+
+*Besides used primers and the PCR conditions for the 1st PCR, the protocol in identical to* 
+:ref:`COI <ampliconCOI>` *and* :ref:`16S <amplicon16S>` *library prep.*
 
 .. admonition:: Primer constructs for 1st PCR
 
@@ -327,6 +334,13 @@ Pooling & quantification
 5. Dilute each library pool using Buffer EB according to specifications by sequencing provider (if needed).
 
 6. Verify the final concentration of a library pool using *KAPA Library Quantification Kit* in qPCR.
+
+___________________________________________________
+
+
+**References**
+
+   Chaves, C., Najera Cortazar, L. A., Martins, F., Anslan, S., Beja-Pereira, A., Magalhães, M., & Price, B. (2025). Characterization of Prokaryotic and Eukaryotic Biodiversity from Soil Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.12.2
 
 ___________________________________________________
 

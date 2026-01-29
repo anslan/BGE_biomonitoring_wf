@@ -121,8 +121,11 @@ Assuming that the samples have been prepared according to :ref:`guidelines here 
    to the centre of the column membrane.  
 6. Incubate for **10 min** at room temperature. Centrifuge at **6,000 x g for 1 min**.  
 7. Repeat previous two steps above (5-6) using the same 1.5 mL tube to obtain maximum yield. 
-8. Transfer **60 μL** eDNA extract to a 96-well plate (working plate) and archive the remaining at -20ºC or -80ºC. Leave at least two empty wells per plate for the PCR negative control (PNC).   
-9. Quantify the samples by spectrophotometry. Dilute samples with EB buffer into a new 96-well plate (if needed). 
+8. Transfer **50 μL** eDNA extract to a 96-well plate (working plate) and archive the remaining at -20ºC or -80ºC. 
+   Leave at least two empty wells per plate for the PCR negative control (PNC).   
+9.  Quantify the samples by spectrophotometry. Dilute samples with EB buffer into a new 96-well plate (if needed). 
+
+Proceed with :ref:`amplicon library preparation <amplicon_library_preparation>`.
 
 ____________________________________________________
 

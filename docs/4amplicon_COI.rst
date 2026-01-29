@@ -36,13 +36,20 @@
 |logo_BGE_alpha|
 
 
-mtDNA COI
-*********
+COI
+***
 
-Amplicon library preparation for COI region to target **arthropod communities** using **2-step PCR** 
+Amplicon library preparation for mitochondrial 
+cytochrome c oxidase subunit I (COI) region to target **arthropod communities** using **2-step PCR** 
 with primers **mICOIintF-XT** (GGWACWRGWTGRACWITITAYCCYCC) and **jgHCO2198** (TAIACYTCIGGRTGICCRAARAAYCA).
 
-*Besides used primers and the PCR conditions for the 1st PCR, the protocol in identical to* :ref:`ITS2 <ampliconITS2>` *and* :ref:`16S <amplicon16S>` *library prep.*
+Herein processes follow lab SOP for the 'Characterization of Prokaryotic and 
+Eukaryotic Biodiversity from Soil Samples' (Chaves et al., 2025); 
+the workflow is hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.12.2>`_
+*(hosts the downloadable PDF).*
+
+*Besides used primers and the PCR conditions for the 1st PCR, the protocol in identical to* 
+:ref:`ITS2 <ampliconITS2>` *and* :ref:`16S <amplicon16S>` *library prep.*
 
 
 .. admonition:: Primer constructs for 1st PCR
@@ -329,6 +336,13 @@ Pooling & quantification
 5. Dilute each library pool using Buffer EB according to specifications by sequencing provider (if needed).
 
 6. Verify the final concentration of a library pool using *KAPA Library Quantification Kit* in qPCR.
+
+___________________________________________________
+
+
+**References**
+
+   Chaves, C., Najera Cortazar, L. A., Martins, F., Anslan, S., Beja-Pereira, A., Magalhães, M., & Price, B. (2025a). Characterization of Prokaryotic and Eukaryotic Biodiversity from Soil Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.12.2
 
 ___________________________________________________
 

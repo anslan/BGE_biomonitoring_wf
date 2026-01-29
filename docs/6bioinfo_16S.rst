@@ -47,11 +47,10 @@
 
 |logo_BGE_alpha|
 
+16S/18S/12S
+***********
 
-Bacteria/16S
-************
-
-This is executable step-by-step pipeline for **16S** amplicon data from Illumina sequencing machine.
+This is executable step-by-step pipeline for **16S/18S/12S** amplicon data from Illumina sequencing machine.
 The bioinformatic workflow results in amplicon sequence variants (ASVs) and well as operational taxonomic units (OTUs).
 
 .. note::
@@ -202,6 +201,11 @@ Remove primers
 
   | - Paired-end files must contain "R1" and "R2" strings (not just _1 and _2)!
   | - Sample names must not contain "R1" and "R2" strings (i.e. not FR123_001_R1.fastq/FR123_001_R2.fastq)
+
+
+Below, the script is specifying the primers for the 16S data analyses.
+**For 18S and 12S, just replace the primer strings and run the script**.
+
 
 .. code-block:: bash
    :caption: remove primers with cutadapt
@@ -819,6 +823,11 @@ Taxonomy assignment
 
 | Assign taxonomy with **RDP classifier** (assignTaxonomy function in DADA2). 
 | Herein using the `SILVA138.2 reference database <https://zenodo.org/records/14169026/files/silva_nr99_v138.2_toSpecies_trainset.fa.gz?download=1>`_ 
+
+.. note::
+
+  Below, the script is specifying the database used for the 16S data analyses.
+  **For 18S and 12S, replace the reference database.**
 
 .. code-block:: bash
    :caption: assignTaxonomy

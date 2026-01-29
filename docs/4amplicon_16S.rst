@@ -43,6 +43,11 @@ Amplicon library preparation for 16S rRNA V4 region to target **bacterial commun
 with primers **515F** (GTGYCAGCMGCCGCGGTAA; `Parada et al., 2016 <http://doi.org/10.1111/1462-2920.13023>`_) 
 and **926R** (CCGYCAATTYMTTTRAGTTT; `Quince et al., 2010 <https://doi.org/10.1186/1471-2105-12-38>`_).
 
+Herein processes follow lab SOP for the 'Characterization of Prokaryotic and 
+Eukaryotic Biodiversity from Soil Samples' (Chaves et al., 2025); 
+the workflow is hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.12.2>`_
+*(hosts the downloadable PDF).*
+
 *Besides used primers and the PCR conditions for the 1st PCR, the protocol in identical to* :ref:`ITS2 <ampliconITS2>` *and* :ref:`COI <ampliconCOI>` *library prep.*
 
 .. admonition:: Primer constructs for 1st PCR
@@ -329,6 +334,13 @@ Pooling & quantification
 5. Dilute each library pool using Buffer EB according to specifications by sequencing provider (if needed).
 
 6. Verify the final concentration of a library pool using *KAPA Library Quantification Kit* in qPCR.
+
+___________________________________________________
+
+
+**References**
+
+   Chaves, C., Najera Cortazar, L. A., Martins, F., Anslan, S., Beja-Pereira, A., Magalhães, M., & Price, B. (2025). Characterization of Prokaryotic and Eukaryotic Biodiversity from Soil Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.12.2
 
 ___________________________________________________
 

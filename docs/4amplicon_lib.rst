@@ -1,40 +1,37 @@
 .. |logo_BGE_alpha| image:: _static/logo_BGE_alpha.png
   :width: 300
-  :alt: Alternative text
   :target: https://biodiversitygenomics.eu/
 
 .. |eufund| image:: _static/eu_co-funded.png
   :width: 200
-  :alt: Alternative text
 
 .. |chfund| image:: _static/ch-logo-200x50.png
   :width: 210
-  :alt: Alternative text
 
 .. |ukrifund| image:: _static/ukri-logo-200x59.png
   :width: 150
-  :alt: Alternative text
 
 .. |lab| image:: _static/lab.jpg
   :width: 650
-  :alt: Alternative text
   :class: center
 
 .. |bacteria| image:: _static/google_fonts/bacteria.png
   :width: 50
-  :alt: Alternative text
 
 .. |fungi| image:: _static/google_fonts/fungi.png
   :width: 50
-  :alt: Alternative text
+
+.. |eukaryotes| image:: _static/eukaryotes.png
+  :width: 80
+
+.. |fish| image:: _static/fish.svg
+  :width: 50
 
 .. |insect| image:: _static/google_fonts/insect.png
   :width: 50
-  :alt: Alternative text
 
 .. |logo_BGE_small| image:: _static/logo_BGE_alpha.png
   :width: 120
-  :alt: Alternative text
   :target: https://biodiversitygenomics.eu/
 
 .. raw:: html
@@ -46,6 +43,8 @@
 
 |logo_BGE_alpha|
 
+
+.. _amplicon_library_preparation:
 
 Amplicon library preparation
 ****************************
@@ -86,6 +85,24 @@ with differences mainly in primer pairs and 1st PCR annealing temperatures.
           
         **COI**
 
+.. grid:: 2
+
+    .. grid-item-card::
+        :text-align: center
+        :link: 4amplicon_18S.html
+
+        |eukaryotes|
+
+        **18S**
+
+    .. grid-item-card::
+        :text-align: center
+        :link: 4amplicon_12S.html
+
+        |fish|
+          
+        **12S**
+
 
 |lab|
 
@@ -96,7 +113,10 @@ ___________________________________________________
 
    4amplicon_16S
    4amplicon_ITS
+   4amplicon_18S
+   4amplicon_12S
    4amplicon_COI
+   
 
 
 |logo_BGE_small| |eufund| |chfund| |ukrifund|
