@@ -1103,14 +1103,14 @@ Post-cluster OTUs with LULU to merge consistently co-occurring 'daughter-OTUs'.
     The matching taxonomy file is ``taxonomy.txt`` in the ``OTU_table`` directory.
 
 
-.. admonition:: Check for the non-target OTUs
+Check for the non-target OTUs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Note that it is often the case that universal metabarcoding primers amplify 
-  also non-target DNA regions and/or non-target taxa. 
-  Here, we are interesed only in Bacteria, thus we should get rid of the 
-  off-target noise before proceeding with relevant statistical analyses.
-  For that, `check this section in the PipeCraft2 documentation <https://pipecraft2-manual.readthedocs.io/en/latest/example_analyses_DADA2.html#check-for-the-non-target-hits>`_. 
-
+It is often the case that universal metabarcoding primers amplify 
+also non-target DNA regions and/or non-target taxa. 
+Here, we are interesed only in Bacteria/Archaea, thus we should get rid of the 
+off-target noise before proceeding with relevant statistical analyses.
+For that, `check this section in the PipeCraft2 documentation <https://pipecraft2-manual.readthedocs.io/en/latest/example_analyses_DADA2_16S.html#check-for-the-non-target-hits>`_. 
 
 ____________________________________________________
 
