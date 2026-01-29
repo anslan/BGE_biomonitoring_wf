@@ -38,6 +38,7 @@ Interpretations
 
    7interpret_outputs
    7interpret_EBVs
+   7interpret_VALOTUID
    7interpret_hmsc
 
 
