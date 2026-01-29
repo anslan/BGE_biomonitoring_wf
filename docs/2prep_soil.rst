@@ -57,7 +57,7 @@ General guidelines for preparing soil samples for metabarcoding studies :ref:`fo
 
 3. Weigh maximum of **250 mg** (~100 mg for very organic rich sample) of the soil powder to a 2 mL
    PowerBead Pro Tube. Store the PowerBead Pro tubes with the soil at
-   -20ºC until further steps. Or proceed immediately with the DNA extraction.
+   -20ºC until further steps. Or proceed immediately with the :ref:`DNA extraction <DNAex_soil>`.
 
 ____________________________________________________
 

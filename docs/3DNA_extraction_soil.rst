@@ -34,16 +34,16 @@
 Soil
 ****
 
-Herein processes follow lab SOP for the 'Characterization of Prokaryotic and Eukaryotic Biodiversity from Soil Samples' (Chaves et al., 2025a)
+The DNA extraction procedure follows the lab SOP for the 'Characterization of Prokaryotic and Eukaryotic 
+Biodiversity from Soil Samples' (Chaves et al., 2025a)
 within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
 This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.12.2>`_
 *(which hosts the downloadable PDF).*
 
-
 **Qiagen MagAttract® PowerSoil® Pro DNA Kit** extraction
 method to isolate eDNA from soil samples using the KingFisher Apex
-instrument, following both the provider’s protocol and adjustments from
-the `Earth Microbiome Project’s High Throughput DNA extraction
+instrument, following both the provider's protocol and adjustments from
+the `Earth Microbiome Project's High Throughput DNA extraction
 protocol <https://dx.doi.org/10.17504/protocols.io.pdmdi46>`_.
 
 Equipment and Consumables
