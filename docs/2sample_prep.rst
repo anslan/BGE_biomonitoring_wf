@@ -44,6 +44,9 @@
 Sample prep. for DNA extraction
 *******************************
 
+Guidelines for laboratory pre‑processing of samples used in metabarcoding‑based biodiversity assessments, together with the corresponding standard operating procedures (SOPs) for the `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project can 
+be found within each sample scheme below. 
+
 .. grid:: 3
 
     .. grid-item-card::
@@ -82,14 +85,6 @@ ___________________________________________________
 
 ____________________________________________________
 
-
-**References**
-
-        Chaves, C., Najera Cortazar, L. A., Martins, F., Anslan, S., Beja-Pereira, A., Magalhães, M., & Price, B. (2025a). Characterization of Prokaryotic and Eukaryotic Biodiversity from Soil Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.12.2
-
-        Chaves, C., Najera Cortazar, L. A., Martins, F., Veríssimo, J., Dunshea, G., & Price, B. (2025b). Detection of Non-Indigenous Marine Species from Port Water Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.11.2
-
-        Najera-Cortazar, L. A., Perez-Delgado, A., & Emerson, B. (2026). Biodiversity Genomics Europe | Invertebrate characterization from bulk arthropod samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.26.1
 
 
 |logo_BGE_small| |eufund| |chfund| |ukrifund|
