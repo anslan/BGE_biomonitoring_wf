@@ -56,6 +56,9 @@ Input data
    
 3. Sample metadata
 
+Here, we illustrate the calculation of species richness and composition using the metabarcoding outputs from the `BGE case study of high mountain systems <https://bioscanflow.readthedocs.io/en/latest/1_1HMS.html>`__. We evaluate species richness and composition both overall and across countries.
+
+
 .. code-block:: R
     :caption: Loading the data
     :linenos:
@@ -260,6 +263,8 @@ To assess the taxonomic composition of the OTU retrivered by metabarcoding, we u
     
 |Histograms|
 
+
+
 How does the OTU taxonomic composition vary accross countries? In this case, we plotted the proportion of OTU per country that belong to each of the six main Insect orders detected in the samples.
 
 .. code-block:: R
@@ -313,6 +318,8 @@ How does the OTU taxonomic composition vary accross countries? In this case, we 
        plot = map.order, width = 8, height = 6, dpi = 300)
 
 |Map_OTUcomposition|
+
+
 
 Transform to presence/absence data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
