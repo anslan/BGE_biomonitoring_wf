@@ -130,7 +130,7 @@ In this section we assess the total number of OTUs and the number of OTUs retrie
     ## Convert OTU table to long format
     OTU = melt(data = OTU_table,
            id.vars = "OTU", 
-           variable.name = "sample", value.name = "Abundance") #renames column headers into a new column named "sample", and stores the values from the wide-format table into a new column called "Abundance"
+           variable.name = "sample", value.name = "Abundance") 
     OTU = OTU[Abundance > 0]
     
     ## Adding "country" to OTU dataset
@@ -143,7 +143,8 @@ In this section we assess the total number of OTUs and the number of OTUs retrie
     library(rnaturalearth)
     library(sf)
     
-    mean.coords <- sample_metadata[, .(longitude = mean(unique(longitude)), latitude = mean(unique(latitude))), by=country]
+    mean.coords <- sample_metadata[, .(longitude = mean(unique(longitude)), 
+                          latitude = mean(unique(latitude))), by=country]
     data2map <- merge(x = OTU_country_simple, y = mean.coords, by = "country")
     data2map <- as.data.frame(data2map)
     
@@ -166,7 +167,8 @@ In this section we assess the total number of OTUs and the number of OTUs retrie
     ## Plot
     map <- ggplot(europe_proj) +
     	geom_sf() +
-    	geom_sf(data = data2map_proj, aes(size = N_OTU), pch = 21, fill = alpha("blue", 0.7), col="black") +
+    	geom_sf(data = data2map_proj, aes(size = N_OTU), pch = 21, 
+                fill = alpha("blue", 0.7), color = "black") +
     	coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]),
     		ylim = c(bbox["ymin"], bbox["ymax"]),
     		expand = FALSE) +
@@ -209,47 +211,60 @@ To assess the taxonomic composition of the OTU retrivered by metabarcoding, we u
     
     ## Plotting the frequency of each phylum
     phylumData = OTU_tax[, .(phylum.freq = .N), by = phylum]
-    phylumData$phylum <- factor(phylumData$phylum, levels = phylumData$phylum[order(phylumData$phylum.freq, decreasing = TRUE)])
+    phylumData$phylum <- factor(phylumData$phylum, 
+      levels = phylumData$phylum[order(phylumData$phylum.freq, decreasing = TRUE)])
     ## Plot (not showing those classified as "pseudophylum")
-    phylum_hist <- ggplot(phylumData[!str_detect(phylum, "pseudo")], aes(x = phylum, y = phylum.freq)) +
+    phylum_hist <- ggplot(phylumData[!str_detect(phylum, "pseudo")], 
+      aes(x = phylum, y = phylum.freq)) +
     	geom_bar(stat = "identity", fill = "black", color = "black") +
     	theme_minimal() +
     	theme (axis.text.x = element_text(angle = 90, hjust = 1)) +
     	labs(title = "", x = "Phylum", y = "OTU frequency") +
-    	annotate("rect", xmin = 0.5, xmax = 1.5, ymin = 0, ymax = 17050, color = "red", fill = NA, linetype = "dashed")
+    	annotate("rect", xmin = 0.5, xmax = 1.5, ymin = 0, ymax = 17050, 
+        color = "red", fill = NA, linetype = "dashed")
     ## Arthropoda classes
     classData = OTU_tax[phylum == "Arthropoda", .(class.freq = .N), by = class]
-    classData$class <- factor(classData$class, levels = classData$class[order(classData$class.freq, decreasing = TRUE)])
+    classData$class <- factor(classData$class, 
+      levels = classData$class[order(classData$class.freq, decreasing = TRUE)])
     ## Plot (not showing those classified as "pseudoclass")
-    class_hist <- ggplot(classData[!str_detect(class, "pseudo")], aes(x = class, y = class.freq)) +
+    class_hist <- ggplot(classData[!str_detect(class, "pseudo")], 
+      aes(x = class, y = class.freq)) +
     	geom_bar(stat = "identity", fill = "darkgrey", color = "darkgrey") +
     	theme_minimal() +
     	theme (axis.text.x = element_text(angle = 90, hjust = 1),
-     	    plot.background = element_rect(fill = "white", color = "red", linetype = "dashed", linewidth = 1)) +
+     	    plot.background = element_rect(fill = "white", 
+            color = "red", linetype = "dashed", linewidth = 1)) +
        	labs(title = "", x = "Arthropoda classes", y = "") +
-        annotate("rect", xmin = 0.5, xmax = 1.5, ymin = 0, ymax = 16500, color = "blue", fill = NA, linetype = "dashed")
+        annotate("rect", xmin = 0.5, xmax = 1.5, ymin = 0, 
+        ymax = 16500, color = "blue", fill = NA, linetype = "dashed")
         ## Insecta orders
         orderData = OTU_tax[class == "Insecta", .(order.freq = .N), by = order]
-        orderData$order <- factor(orderData$order, levels = orderData$order[order(orderData$order.freq, decreasing = TRUE)])
+        orderData$order <- factor(orderData$order, 
+          levels = orderData$order[order(orderData$order.freq, decreasing = TRUE)])
         ## Plot (not showing those classified as "pseudorder")
-        order_hist <- ggplot(orderData[!str_detect(order, "pseudo")], aes(x = order, y = order.freq)) +
+        order_hist <- ggplot(orderData[!str_detect(order, "pseudo")], 
+          aes(x = order, y = order.freq)) +
         	geom_bar(stat = "identity", fill = "darkgrey", color = "darkgrey") +
         	theme_minimal() +
         	theme (axis.text.x = element_text(angle = 90, hjust = 1),
-        		plot.background = element_rect(fill = "white", color = "blue", linetype = "dashed", linewidth = 1)) +
+        		plot.background = element_rect(fill = "white", color = "blue", 
+              linetype = "dashed", linewidth = 1)) +
         	labs(title = "", x = "Insecta orders", y = "")
     
     ## Combining and saving the plots:
     ## 1. Creating a grob from the arranged plots
     grob <- arrangeGrob(phylum_hist, 
-                    rectGrob(gp = gpar(col = NA, fill = NA), height = unit(0.3, "cm")), #spacer
+                    rectGrob(gp = gpar(col = NA, fill = NA), 
+                      height = unit(0.3, "cm")), #spacer
                     class_hist, 
-                    rectGrob(gp = gpar(col = NA, fill = NA), height = unit(0.3, "cm")), #spacer
+                    rectGrob(gp = gpar(col = NA, fill = NA), 
+                      height = unit(0.3, "cm")), #spacer
                     order_hist, 
                     nrow = 1, 
                     widths = c(0.8, 0.05, 0.8, 0.05, 1))
     ## 2. Saving the plot in png drawing connector lines
-    png(file.path(results,"PhylumClassOrderFreqs.png"), width = 26, height = 14, units = "cm", res = 300)
+    png(file.path(results,"PhylumClassOrderFreqs.png"), width = 26, height = 14, 
+      units = "cm", res = 300)
     grid.draw(grob)
     grid.segments(x0 = 0.13, y0 = 0.5,  # Right side of first plot
                 x1 = 0.31, y1 = 0.5,  # Left side of second plot
@@ -279,8 +294,10 @@ How does the OTU taxonomic composition vary accross countries? In this case, we 
     library(scatterpie)
 
     ## 1. Adding "order" to OTU_country
-    OTU_country_order <- merge(x=OTU_country, y=OTU_tax[, .(OTU, order)], by="OTU", all.x = TRUE)
-    counts_OTU_country_order <- OTU_country_order[, .(N_OTU = uniqueN(OTU)), by = c("country", "order")]
+    OTU_country_order <- merge(x=OTU_country, y=OTU_tax[, .(OTU, order)], 
+      by="OTU", all.x = TRUE)
+    counts_OTU_country_order <- OTU_country_order[, .(N_OTU = uniqueN(OTU)), 
+      by = c("country", "order")]
     
     ## 2. Selecting the main orders
     orderOTU <- OTU_tax[, .N, by = order][order(N, decreasing = T)]
@@ -295,7 +312,8 @@ How does the OTU taxonomic composition vary accross countries? In this case, we 
     ## 5. Adding & projecting coordinates
     data2plot_map <- merge(x = data2plot, y = mean.coords, by = "country")
     data2plot_map <- as.data.frame(data2plot_map)
-    data2plot_map_sf <- st_as_sf(data2plot_map, coords = c("longitude", "latitude"), crs = 4326)
+    data2plot_map_sf <- st_as_sf(data2plot_map, coords = c("longitude", "latitude"), 
+      crs = 4326)
     data2plot_map_proj <- st_transform(data2plot_map_sf, crs = 3035)
     ## Extract projected coordinates
     data2plot_map$x_proj <- st_coordinates(data2plot_map_proj)[,1]
@@ -330,8 +348,9 @@ Transform to presence/absence data
 
     #!/usr/bin/Rscript 
     
-    sample_cols <- names(OTU_table)[which(str_detect(names(OTU_table), "BGE-HMS"))] #sample columns
-    presabs_OTUtable <- OTU_table[, (sample_cols) := lapply(.SD, function(x) ifelse(x>0, 1, 0)), .SDcols = sample_cols]
+    sample_cols <- names(OTU_table)[which(str_detect(names(OTU_table), "BGE-HMS"))]
+    presabs_OTUtable <- OTU_table[, (sample_cols) := lapply(.SD, function(x) ifelse(x>0, 1, 0)), 
+        .SDcols = sample_cols]
 
 
 

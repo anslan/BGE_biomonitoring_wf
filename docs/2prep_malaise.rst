@@ -22,7 +22,6 @@
 
 .. |malaise_bottle| image:: _static/malaise_bottle.jpg
   :width: 250
-  :alt: Alternative text
 
 .. raw:: html
 
