@@ -29,8 +29,13 @@
 
 |logo_BGE_alpha|
 
-BGE case studies
-****************
+.. _casestudies:
+
+BGE case studies | SOPs
+***********************
+Herein are described the case studies sampling SOPs developed within the `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project, hosted in `WorkflowHub <https://workflowhub.eu/projects/329#sops>`_. 
+Each SOP includes a brief description of the case study along with its sampling design.
+
 
 .. toctree::
    :maxdepth: 1

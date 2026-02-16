@@ -38,13 +38,13 @@ Water
 
 .. _prep_sylphium_dual_filters:
 
+General guidelines for preparing water samples for metabarcoding studies :ref:`for DNA extraction <DNAex_sylphium_dual_filters>`.
+
 Sylphium dual filters
 ---------------------
 
-Herein processes follow lab SOP for the 'Detection of Non-Indigenous Marine Species from Port Water Samples' (Chaves et al., 2025b)
-within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
-This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.11.2>`_
-*(which hosts the downloadable PDF).*
+The `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project uses Sylphium dual filters to ensure efficient and clean filtration of water samples for metabarcoding. 
+These filters are designed to capture a wide range of DNA fragments while minimizing contamination risks. 
 
 |sylphium_filter|
 
@@ -89,10 +89,17 @@ Proceed with :ref:`DNA extraction <DNAex_sylphium_dual_filters>`.
 
 ____________________________________________________
 
+Herein processes follow lab SOP for the 'Detection of Non-Indigenous Marine Species from Port Water Samples' (Chaves et al., 2025b)
+within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
+This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.11.2>`_
+*(which hosts the downloadable PDF).*
+
+____________________________________________________
+
 
 **References**
 
-   Chaves, C., Najera Cortazar, L. A., Martins, F., Veríssimo, J., Dunshea, G., & Price, B. (2025b). Detection of Non-Indigenous Marine Species from Port Water Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.11.2
+   Chaves, C., Najera-Cortazar, L. A., Martins, F., Veríssimo, J., Dunshea, G., & Price, B. (2025b). Detection of Non-Indigenous Marine Species from Port Water Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.11.2
 
 ____________________________________________________
 

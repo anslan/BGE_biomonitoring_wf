@@ -32,9 +32,9 @@
 
 Soil
 *****
+.. _soilsampling:
 
-General guidelines (following `Najera-Cortazar et al. 2024 <https://workflowhub.eu/sops/19>`_, and `Tedersoo et al. 2022 <https://doi.org/10.1111/mec.16460>`_) for sampling soil for identifying soil biological communities via metabarcoding.
-Please consult the references for more detailed information.
+General guidelines (following `Najera-Cortazar et al. 2024a <https://workflowhub.eu/sops/19>`_, and `Tedersoo et al. 2022 <https://doi.org/10.1111/mec.16460>`_) for sampling soil for identifying soil biological communities via metabarcoding. Please consult the references for more detailed information.
 
 ____________________________________________________
 
