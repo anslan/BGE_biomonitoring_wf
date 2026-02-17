@@ -46,7 +46,7 @@ is hosted externally. You can either open it in a new tab or view it embedded be
 
 **Open in new tab:** `VAL_OTU_ID tutorial <https://gdunshea.github.io/VAL_OTU_ID/>`_
 
-**Embedded live tutorial** (content is loaded from the URL above; scroll inside the frame):
+**Embedded tutorial** (content is loaded from the URL above; scroll inside the frame):
 
 .. raw:: html
 
