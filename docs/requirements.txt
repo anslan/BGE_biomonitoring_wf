@@ -2,3 +2,5 @@ sphinx_rtd_theme
 sphinx_design
 sphinx-copybutton
 sphinxcontrib.youtube # for youtube videos
+# pip install git+git://github.com/SuperKogito/sphinxcontrib-pdfembed
+
