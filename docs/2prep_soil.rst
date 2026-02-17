@@ -25,11 +25,6 @@
   :alt: Alternative text
   :target: https://biodiversitygenomics.eu/
 
-.. |soil_coring| image:: _static/soil_coring.png
-  :width: 450
-  :alt: Alternative text
-  :class: center
-
 .. |thawing| image:: _static/thawing.png
   :width: 450
   :alt: Alternative text
@@ -48,38 +43,28 @@
 Soil
 ****
 
-General guidelines for preparing soil samples for metabarcoding studies :ref:`for DNA extraction <DNAex_soil>`.
-
-
-Soil storage and homogenisation after collection
-------------------------------------------------
-
-Soil samples are collected as "soil cores" and generally these cores can be quickly pooled in the field in sterile plastic bags, or stored individually to be pooled later in the lab.
-The samples are then transported to the lab in cool conditions (e.g. in a cooler box with ice packs or dry ice). 
-
-
-|soil_coring|
-
-
 .. note:: 
 
  The `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ followed individual core storage within sterile Falcon tubes, placing each sample 
- immediately on dry ice to prevent microbial overgrowth and external contamination. The soil sampling SOP (`Najera-Cortazar et al. 2024 <https://workflowhub.eu/sops/19>`_) can be found in :ref:`sampling soil <soilsampling>` and in the :ref:`BGE case studies section <casestudies>`
+ immediately on dry ice to halt microbial activity. The soil sampling SOP (`Najera-Cortazar et al. 2024 <https://workflowhub.eu/sops/19>`_) can be found in :ref:`sampling soil <soilsampling>` and in the :ref:`BGE case studies section <casestudies>`
 
 
-**Thawing**
+Thawing
+-------
 
 Pooling individual soil core samples:
 
-1. Take out of the freezer the soil cores that will be processed
-   
-2. Once the soil cores from the same site and depth are thawed, transfer each soil core to a sterile zip-lock plastic bag 
-   
-3. Close the bag and homogenise the soil quckly, avoiding too much manipulation to not warm up the pooled sample
+1. Take the soil cores out of the freezer and let them thaw at room temperature.
+2. If the samples were not homogenised in the field, prior freezing,
+   then, proceed with pooling the samples:
+   2.1. once the soil cores from the same site (and depth) are thawed, 
+   transfer each soil core to a sterile zip-lock plastic bag.
+   2.2 Close the bag and homogenise the soil quickly, 
+   with minimal manipulation to avoid warming the pooled sample [LAURA - how do you homogenise the soil? What to you mean 'warming', the extractions are in room temp anyhow].
 
 |thawing|
 
-4. Weigh maximum of **250 mg** (~100 mg for very organic rich sample) of the soil mixture to a 2 mL
+3. Weigh maximum of **250 mg** (~100 mg for very organic rich sample) of the soil mixture to a 2 mL
    PowerBead Pro Tube. Store the PowerBead Pro tubes with the soil at
    -20ºC until further steps. Or proceed immediately with the :ref:`DNA extraction <DNAex_soil>`.
 
@@ -89,7 +74,8 @@ Pooling individual soil core samples:
  Thawing time can take between 10-30 minutes depending on sample size, water content and type of soil. 
  Take out of the freezer small batches of core samples to avoid multiple freeze-thaw cycles.
 
-**Oven drying**
+Oven drying
+-----------
 
 1. After collection or after thawing and pooling (if soil samples were frozen in individual containers), transfer soil into a clean paper 
    bag and active thaw/dry the samples in an oven at ~37ºC.
@@ -104,6 +90,7 @@ Pooling individual soil core samples:
 3. Weigh maximum of **250 mg** (~100 mg for very organic rich sample) of the soil powder to a 2 mL
    PowerBead Pro Tube. Store the PowerBead Pro tubes with the soil at
    -20ºC until further steps. Or proceed immediately with the :ref:`DNA extraction <DNAex_soil>`.
+
 
 ____________________________________________________
 

@@ -33,8 +33,10 @@
 
 |logo_BGE_alpha|
 
+.. _DNAex_malaise:
+
 Malaise trap sample
-*********************
+*******************
 
 Herein processes follow lab SOP Biodiversity Genomics Europe | Invertebrate characterization from bulk arthropod samples (Najera-Cortazar et al., 2026) laboratory protocol
 (hosted in WorkflowHub), based on the `FAVIS protocol (hosted in protocols.io) <https://dx.doi.org/10.17504/protocols.io.kqdg36261g25/v2>`_, with modifications implemented within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project
