@@ -41,11 +41,14 @@
 
 Water
 ******
+Water sampling with vampire sampler
+===================================
 
 These guidelines provide instructions for aquatic eDNA sampling and analyses 
 used in the `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project
 to detect **marine invasive species** in harbros via collecting water eDNA with **vampire sampler**.
 
+___________________________________________________
 
 List of equipment
 ~~~~~~~~~~~~~~~~~
@@ -97,7 +100,7 @@ At the first sampling site:
 * Place the sampling hose into the mouth of the vampire sampler - use
   the section of the hose pre-prepared with extra hose diameter if
   required. Place the intake end into the water to be sampled and make
-  sure the hose end remains submerged.* Make sure to avoid any contamination of your sampling site (e.g., do not enter the water, avoid sampling at location if there are organic matter than potentially can influence the sample negatively (dead birds, fish, etc.))
+  sure the hose end remains submerged.
 * Make sure to avoid any contamination of your sampling site (e.g., do
   not enter the water, avoid sampling at location if there are organic
   matter than potentially can influence the sample negatively (dead
@@ -160,6 +163,19 @@ After sampling
 
   Place labeled filters in a labeled zip-lock bag and :red:`store at -20 C` 
   freezer until further processing.
+
+
+___________________________________________________
+
+Water sampling with 50 mL syringe
+=================================
+
+The overall procedures are the same as described above. 
+But below, in the instructional video, a 50 mL syringe is used instead of the vampire 
+sampler to pass the water through the water filter. 
+
+.. youtube:: N9_K36hbp0Y
+
 
 ____________________________________________________
 

@@ -33,7 +33,7 @@
 Water
 *****
 
-Herein processes follow lab SOP for the 'Detection of Non-Indigenous Marine Species from Port Water Samples' (Chaves et al., 2025b)
+Herein processes follow lab SOP for the 'Detection of Non-Indigenous Marine Species from Port Water Samples' (Chaves et al., 2025)
 within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
 This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.11.2>`_
 *(which hosts the downloadable PDF).*
@@ -58,21 +58,23 @@ ___________________________________________________
 Equipment and Consumables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-+------------------------------------------+-------------------+---------+
-| Items                                    | quantity          | storage |
-+==========================================+===================+=========+
-| Sylphium capsules filled with ATL buffer | 3.5 mL per sample | -20°C   |
-+------------------------------------------+-------------------+---------+
-| 96% Ethanol (EtOH)                       | 6.6 mL per sample | 15-25ºC |
-+------------------------------------------+-------------------+---------+
-| 50ml Syringes                            | 1 per sample      |         |
-+------------------------------------------+-------------------+---------+
-| Proteinase K (PK)                        | 40 μL per sample  | -20°C   |
-+------------------------------------------+-------------------+---------+
-| Qiagen DNeasy Blood and Tissue kit       |                   | 15-25ºC |
-+------------------------------------------+-------------------+---------+
-| 96-well 0.2 mL PCR plate                 | 1 plate           |         |
-+------------------------------------------+-------------------+---------+
++------------------------------------------+---------------------+---------+
+| Items                                    | quantity            | storage |
++==========================================+=====================+=========+
+| Sylphium capsules filled with ATL buffer | 3 mL per sample     | -20°C   |
++------------------------------------------+---------------------+---------+
+| 96% Ethanol (EtOH)                       | 3 mL per sample     | 15-25ºC |
++------------------------------------------+---------------------+---------+
+| 5ml Syringes                             | 1 per sample        | 15-25ºC |
++------------------------------------------+---------------------+---------+
+| Extension Tubes (3 mL)                   | 1 per sample        | 15-25ºC |
++------------------------------------------+---------------------+---------+
+| Proteinase K (PK)                        | 60 μL per sample    | -20°C   |
++------------------------------------------+---------------------+---------+
+| Qiagen DNeasy Blood and Tissue kit       | 1 column per sample | 15-25ºC |
++------------------------------------------+---------------------+---------+
+| 96-well 0.2 mL PCR plate                 |                     | 15-25ºC |
++------------------------------------------+---------------------+---------+
 
 ___________________________________________________
 
@@ -132,7 +134,9 @@ ____________________________________________________
 
 **References**
 
-   Chaves, C., Najera Cortazar, L. A., Martins, F., Veríssimo, J., Dunshea, G., & Price, B. (2025b). Detection of Non-Indigenous Marine Species from Port Water Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.11.2
+   Chaves, C., Najera Cortazar, L. A., Martins, F., Veríssimo, J., Dunshea, G., & Price, B. (2025). 
+   Detection of Non-Indigenous Marine Species from Port Water Samples. 
+   WorkflowHub. https://doi.org/10.48546/workflowhub.sop.11.2
 
 ____________________________________________________
 

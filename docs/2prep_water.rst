@@ -38,7 +38,12 @@ Water
 
 .. _prep_sylphium_dual_filters:
 
-General guidelines for preparing water samples for metabarcoding studies :ref:`for DNA extraction <DNAex_sylphium_dual_filters>`.
+Herein processes follow lab SOP for the 'Detection of Non-Indigenous Marine Species from Port Water Samples' (Chaves et al., 2025)
+within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
+This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.11.2>`_
+*(which hosts the downloadable PDF).*
+
+___________________________________________________
 
 Sylphium dual filters
 ---------------------
@@ -74,12 +79,12 @@ Prepare filters for DNA extraction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Set the oven at 56ºC
-* Clean the working space and material with disinfectant and ethanol and leave the UV-light on for at least 15 mins;
+* Clean the working space and material with disinfectant and ethanol and leave the UV-light on for at least 15 minutes;
 * Use filtered pipette tips at all steps;
-* For each 23-sample batch, include a negative control (PNC) by preparing a 15-ml tube with 2 mL ATL + 23 μL Proteinase K (20mg/mL).
+* For each 23-sample batch, include a negative control (PNC) by preparing a 15-ml tube with 2 mL ATL + 50 μL Proteinase K (20mg/mL).
 
 #. Thaw  the  capsules and clean the outside of each capsule using a disinfectant solution.  
-#. Fill each capsule with Proteinase K (20mg/mL) and shake it manually. 
+#. Fill each capsule with 60 μL of Proteinase K (20mg/mL) and shake it manually. 
    Adjust the volume of Proteinase K based on the available ATL volume in each capsule, up to a maximum of 40μL
    (e.g. for approximately 2mL of ATL add 23 μL of Proteinase K). 
 #. Seal each capsule cap with parafilm, and incubate at 56ºC overnight in the mechanical shaker. 
@@ -89,17 +94,11 @@ Proceed with :ref:`DNA extraction <DNAex_sylphium_dual_filters>`.
 
 ____________________________________________________
 
-Herein processes follow lab SOP for the 'Detection of Non-Indigenous Marine Species from Port Water Samples' (Chaves et al., 2025b)
-within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project. 
-This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.11.2>`_
-*(which hosts the downloadable PDF).*
-
-____________________________________________________
-
-
 **References**
 
-   Chaves, C., Najera-Cortazar, L. A., Martins, F., Veríssimo, J., Dunshea, G., & Price, B. (2025b). Detection of Non-Indigenous Marine Species from Port Water Samples. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.11.2
+   Chaves, C., Najera-Cortazar, L. A., Martins, F., Veríssimo, J., Dunshea, G., & Price, B. (2025). 
+   Detection of Non-Indigenous Marine Species from Port Water Samples. WorkflowHub. 
+   https://doi.org/10.48546/workflowhub.sop.11.2
 
 ____________________________________________________
 

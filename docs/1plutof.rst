@@ -62,7 +62,7 @@ Registering samples in PlutoF and PlutoF GO
 *******************************************
 
 The `PlutoF Biodiversity Data Management Platform <https://plutof.ut.ee/en>`_ 
-(Abarenkov et al., 2010) is an open access data management platform for biodiversity data 
+(Abarenkov et al., `2010 <https://doi.org/10.4137/EBO.S6271>`_) is an open access data management platform for biodiversity data 
 including observations, specimens, material samples, sequences and related metadata. 
 
 PlutoF supports streamlined, automated submission of curated sample and 
@@ -242,16 +242,6 @@ can be updated later by re-publishing.
   with the samples.**
   See 'How to Submit Raw Reads' `tutorial here <https://ena-docs.readthedocs.io/en/latest/submit/reads.html>`_.
 
-
-
-___________________________________________________
-
-**References**
-
-Abarenkov, K., Tedersoo, L., Nilsson, R. H., Vellak, K., Saar, I., Veldre, V., Parmasto, E., Prous,  M., Aan, A., Ots, M., Kurina, O., Ostonen, I., Jõgeva, J., Halapuu, S., Põldmaa, K., Toots, M., Truu, J., Larsson, K-H., and Kõljalg, U. (2010).
-PlutoF - a web based workbench for ecological and taxonomic research, 
-with an online implementation for Fungal ITS sequences. 
-Evolutionary Bioinformatics, 6, 189 - 196. https://doi.org/10.4137/EBO.S6271
 
 
 ___________________________________________________

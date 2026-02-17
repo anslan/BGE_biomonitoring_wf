@@ -6,6 +6,9 @@
 
 import os
 
+from docutils.parsers.rst import Directive
+from docutils import nodes
+
 # Tell Jinja2 templates the build is running on Read the Docs
 if os.environ.get("READTHEDOCS", "") == "True":
     if "html_context" not in globals():
@@ -54,6 +57,44 @@ html_allow_raw_html = True
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+class YouTube(Directive):
+    required_arguments = 1
+    optional_arguments = 0
+    final_argument_whitespace = True
+    option_spec = {}
+    has_content = False
+
+    def run(self):
+        video_id = self.arguments[0]
+        css_code = """
+        <style>
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        </style>
+        """
+        embed_url = f"https://www.youtube-nocookie.com/embed/{video_id}"
+        embed_code = f"""
+        {css_code}
+        <div class="video-container">
+            <iframe src="{embed_url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="YouTube video"></iframe>
+        </div>
+        """
+        return [nodes.raw('', embed_code, format='html')]
+
+
 def setup(app):
     app.add_css_file('custom.css')
-
+    app.add_directive('youtube', YouTube)

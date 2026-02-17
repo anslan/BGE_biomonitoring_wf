@@ -20,6 +20,11 @@
   :alt: Alternative text
   :target: https://biodiversitygenomics.eu/
 
+.. |soil_coring| image:: _static/soil_coring.png
+  :width: 450
+  :alt: Alternative text
+  :class: center
+
 .. raw:: html
 
     <style> .red {color:#ff0000; font-weight:bold; font-size:16px} </style>
@@ -32,22 +37,40 @@
 
 Soil
 *****
+
 .. _soilsampling:
 
-General guidelines (following `Najera-Cortazar et al. 2024a <https://workflowhub.eu/sops/19>`_, and `Tedersoo et al. 2022 <https://doi.org/10.1111/mec.16460>`_) for sampling soil for identifying soil biological communities via metabarcoding. Please consult the references for more detailed information.
+General guidelines (following `Tedersoo et al. 2022 <https://doi.org/10.1111/mec.16460>`_) 
+for sampling soil for identifying soil biological communities via metabarcoding. 
+The soil sampling SOP within BGE project 
+is hosted in `WorkflowHub <https://workflowhub.eu/sops/19>`_ (Najera-Cortazar et al. 2024). 
 
 ____________________________________________________
 
 Sampling equipment
 ~~~~~~~~~~~~~~~~~~
 
+Soil samples are generally collected as "soil cores" and these cores 
+are pooled in the field into sterile zip-lock bags, 
+or stored individually to be pooled later in the lab.
+The samples are then transported to the lab in cool conditions 
+(e.g. in a cooler box with ice packs or dry ice). 
+
+
+|soil_coring|
+
 | **Minimal required equipment**: 
 
 | 1. Disposable lab gloves, sterile
 | 2. Soil corer, or knife, or gardening shovel
 | 3. Sterile zip-lock bags or screw-cap vessels
-| 4. 10% Bleach solution and/or 70% EtOH for sterilization
-| 5. Tissue or paper towels
+| 4. 5-10% Bleach solution and 70% EtOH for sterilization (if sampling several plots per day)
+| 5. Tissue or paper towels (for cleaning equipment)
+
+.. note:: 
+
+ The `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ followed individual core storage within sterile Falcon tubes, placing each sample 
+ immediately on dry ice to halt microbial activity. The soil sampling SOP (`Najera-Cortazar et al. 2024 <https://workflowhub.eu/sops/19>`_) can be found in :ref:`sampling soil <soilsampling>` and in the :ref:`BGE case studies section <casestudies>`
 
 ____________________________________________________
 
@@ -95,24 +118,27 @@ ____________________________________________________
 After sampling
 ~~~~~~~~~~~~~~
 
-* Maintain the samples at cold temperature during transport to limit biological activity within samples.
+* Maintain the samples at cool temperature during transport to limit biological activity within samples.
 
-* When possible, the best option is to either extract DNA right after sampling or to **rapidly store** the collected materials at -20°C and maintain them at -80°C.
+* When possible, the best option is to either extract DNA right after sampling or to **rapidly freeze** the collected materials in liquid nitrogen and maintain them at -80°C.
   **Pooled subsamples must be well mixed before freezing**, as it is later difficult to homogenize frozen material.
-  When freezing, it is important to **avoid multiple melt-thaw cycles**, which may lead to significant changes in the detected communities.
-* **Rapid drying** methods such as freeze drying with liquid nitrogene and cabinet drying are good alternatives to freezing. 
+  When freezing, it is important to **avoid multple melt-thaw cycles**, which may lead to significant changes in the detected communities.
+
+* Often, freezing is not possible. **Drying of soil samples** 
+  is a viable alternative (`Smenderovac et al 2024 <https://doi.org/10.1038/s41598-023-50541-2>`_).  
   Drying with silica gel is a viable option for few grams of soil. 
   Dried samples can be kept for long time (decades) if kept air-tight in the dark and at constant temperature (room temperature).
 
 * Prior to DNA extraction, it is important to homogenize the soil sample. 
-* It is important to double check that labels are visible and legible, recorded in a field book (paper or digitally), 
-  and properly backed up.
+  
+* It is important to double check that labels are visible and legible, 
+  recorded in a field book (paper or digitally), and properly backed up.
 
 ____________________________________________________
 
 **References**
 
-Najera-Cortazar, L. A., Beja-Pereira, A., & Beja, P. (2024a). 
+Najera-Cortazar, L. A., Beja-Pereira, A., & Beja, P. (2024). 
 Biodiversity Genomics Europe | Ecological Restoration - Soil sampling. WorkflowHub. https://doi.org/10.48546/workflowhub.sop.19.1 
 
 Tedersoo, L., Bahram, M., Polme, S., Koljalg, U., Yorou, N. S., Wijesundera, R., Ruiz, L. V., Vasco-Palacios, A. M., Thu, P. Q., Suija, A., Smith, M. E., Sharp, C., Saluveer, E., Saitta, A., Rosas, M., Riit, T., Ratkowsky, D., Pritsch, K., Poldmaa, K., ... Abarenkov, K. (2022).

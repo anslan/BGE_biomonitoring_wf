@@ -52,6 +52,7 @@ Herein, **Townes style Malaise traps with a white roof** are used.
 |malaise_trap|
 *Townes style Malaise trap with a white roof. Click on the image to open Malaise trap set up instructions video link [at youtube].*
 
+___________________________________________________
 
 List of equipment
 ~~~~~~~~~~~~~~~~~
@@ -66,6 +67,8 @@ List of equipment
 
 |Malaise_trap_equipment|
 
+___________________________________________________
+
 General considerations
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -79,18 +82,23 @@ used across sites within a project, as different trap types may have different c
 loss of metadata. It will improve the speed of processing samples on-site and in the lab. Labels can be generated 
 prior fieldwork, using individual QR codes (:ref:`See Register samples in PlutoF <registering_samples_in_plutof>`), waterproof paper and ink, or printed on regular paper and laminated.
 
-:`Remove primers <remove_primers16S>`  
+___________________________________________________
 
 First time set-up
 ~~~~~~~~~~~~~~~~~~
 
-#. Select a suitable spot (see :ref:`below, 'Placement of the Malaise trap' <placement>`)
-#. Set up the trap. `See the video of how to set up a Malaise trap, <https://www.youtube.com/watch?v=sU9rW71f5ZA&t=2s&ab_channel=CBG_Collections>`_ and/or follow the instructions provided in the `Malaise trapping SOPs <https://workflowhub.eu/sops/17>`_ (Najera-Cortazar et al., 2024) from the BGE case studies sections
-#. Attach the collecion bottle to the trap
-#. Make sure to store the bottle lid in a way it will not be contaminated (store in e.g. clean zip-lock bag)
-#. Let the trap do its job
+1. Select a suitable spot (see :ref:`below, 'Placement of the Malaise trap' <placement>`).
+2. Set up the trap (see video below; instructions provided also in the `Malaise trapping SOPs <https://workflowhub.eu/sops/17>`_ (Najera-Cortazar et al., 2024))
 
+.. youtube:: sU9rW71f5ZA
 
+|
+
+3. Attach the collecion bottle to the trap.
+4. Make sure to store the bottle lid in a way it will not be contaminated (store in e.g. clean zip-lock bag).
+5. Let the trap do its job.
+
+___________________________________________________
 
 .. _placement:
 
