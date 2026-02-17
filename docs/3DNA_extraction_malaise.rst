@@ -49,7 +49,9 @@ use the `WorkflowHub link <https://doi.org/10.48546/workflowhub.sop.26.1>`_.
 
 .. raw:: html
 
-    <iframe src="_static/Invertebrate_characterization_from_bulk_arthropod_samples.pdf" width="100%" height="680" style="border: 1px solid #ccc;"></iframe>
+    <!-- The PDF file must exist at docs/_static/SOPs/Invertebrate_characterization_from_bulk_arthropod_samples.pdf -->
+    <iframe src="_static/SOPs/Invertebrate_characterization_from_bulk_arthropod_samples.pdf" width="100%" height="680" style="border: 1px solid #ccc;">
+    </iframe>
 
 
 **References**
