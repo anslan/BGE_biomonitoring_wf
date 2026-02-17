@@ -94,7 +94,6 @@ Proceed with :ref:`DNA extraction <DNAex_sylphium_dual_filters>`.
 
 ____________________________________________________
 
-
 **References**
 
    Chaves, C., Najera-Cortazar, L. A., Martins, F., Veríssimo, J., Dunshea, G., & Price, B. (2025). 

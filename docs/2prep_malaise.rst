@@ -40,9 +40,9 @@ project
 follow the 'Invertebrate characterization 
 from bulk arthropod samples' SOP (Najera-Cortazar et al., 2026) 
 (`hosted in WorkflowHub <https://doi.org/10.48546/workflowhub.sop.26.1>`_). 
-The core of this SOP is 
-based on the `FAVIS protocol (Iwaszkiewicz-Eggebrecht et al., 2023; hosted in protocols.io) 
-<https://dx.doi.org/10.17504/protocols.io.kqdg36261g25/v2>`_, with modifications.
+*The core of this SOP is 
+based on the* `FAVIS protocol (Iwaszkiewicz-Eggebrecht et al., 2023; hosted in protocols.io) 
+<https://dx.doi.org/10.17504/protocols.io.kqdg36261g25/v2>`_, *with modifications.*
 
 |malaise_bottle|
 
@@ -51,7 +51,7 @@ ___________________________________________________
 Remove EtOH
 -----------
 
-Before the DNA extraction, the EtOH must be removed from the Malaise trap samples. 
+**Before the DNA extraction, the EtOH must be removed from the Malaise trap samples.**
 
 1. Open the Malaise trap bottle.
 2. Place nylon mesh cloth over the opening of the bottle 

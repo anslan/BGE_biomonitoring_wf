@@ -38,14 +38,18 @@
 Malaise trap sample
 *******************
 
-Herein processes follow lab SOP Biodiversity Genomics Europe | Invertebrate characterization from bulk arthropod samples (Najera-Cortazar et al., 2026) laboratory protocol
-(hosted in WorkflowHub), based on the `FAVIS protocol (hosted in protocols.io) <https://dx.doi.org/10.17504/protocols.io.kqdg36261g25/v2>`_, with modifications implemented within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project
+Herein processes follow BGE's lab SOP 
+"Invertebrate characterization from bulk arthropod samples" (Najera-Cortazar et al., 2026) 
+laboratory protocol (hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.26.1>`_. ), 
+based on the `FAVIS protocol (hosted in protocols.io) <https://dx.doi.org/10.17504/protocols.io.kqdg36261g25/v2>`_, with modifications implemented within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project
 
-This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546/workflowhub.sop.26.1>`_
-*(which hosts the downloadable PDF).*
 
+If it does not display inline, 
+use the `WorkflowHub link <https://doi.org/10.48546/workflowhub.sop.26.1>`_. 
 
-|malaise_bottle|
+.. raw:: html
+
+    <iframe src="_static/Invertebrate_characterization_from_bulk_arthropod_samples.pdf" width="100%" height="680" style="border: 1px solid #ccc;"></iframe>
 
 
 **References**
