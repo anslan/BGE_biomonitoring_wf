@@ -40,12 +40,24 @@ COI
 ***
 
 Amplicon library preparation for mitochondrial 
-cytochrome c oxidase subunit I (COI) region to target **arthropod communities** in soil samples using **2-step PCR** 
-with primers **mICOIintF-XT** (GGWACWRGWTGRACWITITAYCCYCC) [`Wangensteen et al 2018 <https://doi.org/10.7717/peerj.4705>`_] and **jgHCO2198** (TAIACYTCIGGRTGICCRAARAAYCA) 
-[`Geller et al 2013 <https://doi.org/10.1111/1755-0998.12138>`_]. For water 
-samples, COI was amplified with primers **FwhF2** (GGDACWGGWTGAACWGTWTAYCCHCC) and **FwhR2n** (GTRATWGCHCCDGCTARWACWGG) [`Vamos et al 2017 <https://doi.org/10.1111/2041-210X.12789>`_].
+cytochrome c oxidase subunit I (COI) 
+region to target **arthropod communities** using **2-step PCR**.
 
+For soil samples, COI was amplified with primers 
+**mICOIintF-XT** (GGWACWRGWTGRACWITITAYCCYCC) 
+[`Wangensteen et al 2018 <https://doi.org/10.7717/peerj.4705>`_] 
+and **jgHCO2198** (TAIACYTCIGGRTGICCRAARAAYCA) 
+[`Geller et al 2013 <https://doi.org/10.1111/1755-0998.12138>`_]. 
 
+For Malaise trap samples, COI was amplified with primers 
+**BF3** (CCHGAYATRGCHTTYCCHCG) 
+and **BR2** (CDGGRTGNCCRAARAAYCA) [`Elbrecht & Leese 2017 <https://doi.org/10.3389/fenvs.2017.00011>`_]. 
+
+For water 
+samples, COI was amplified with primers 
+**FwhF2** (GGDACWGGWTGAACWGTWTAYCCHCC) 
+and **FwhR2n** (GTRATWGCHCCDGCTARWACWGG) 
+[`Vamos et al 2017 <https://doi.org/10.1111/2041-210X.12789>`_].
 
 Herein processes follow lab SOP for the 'Characterization of Prokaryotic and 
 Eukaryotic Biodiversity from Soil Samples' (Chaves et al., 2025); 
@@ -92,7 +104,7 @@ Full construct:
 ___________________________________________________
 
 1st PCR - **mICOIintF-XT** + **jgHCO2198**
--------
+------------------------------------------
 
 **Consumables:**
 
@@ -146,7 +158,7 @@ Total volume per PCR reaction = **10µL**.
 ___________________________________________________
 
 1st PCR -  **FwhF2** + **FwhR2n** 
--------
+---------------------------------
 
 **Consumables:**
 
@@ -166,7 +178,7 @@ ___________________________________________________
 | Qiagen Master Mix      | 5x              | 5 µL per    | -15° to   |
 |                        |                 | sample      | -25°C     |
 +------------------------+-----------------+-------------+-----------+
-| Ultrapure water        |                 | 32.5 µL per  |           |
+| Ultrapure water        |                 | 32.5 µL per |           |
 |                        |                 | sample      |           |
 +------------------------+-----------------+-------------+-----------+
 | 96-well 0.2 mL PCR     |                 | 1 plate     |           |
