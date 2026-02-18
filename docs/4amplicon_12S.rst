@@ -97,26 +97,26 @@ ___________________________________________________
 | Items                  | Initial         | Quantity    | Storage   |
 |                        | Concentration   |             |           |
 +========================+=================+=============+===========+
-| eDNA *(dilution        | 10 ng/µL        | 1 µL per    | -15° to   |
+| eDNA *(dilution        | 10 ng/µL        | 2 µL per    | -15° to   |
 | plate)*                |                 | sample      | -25°C     |
 +------------------------+-----------------+-------------+-----------+
-| Amplicon PCR Forward   | 10 µM           | 0.3 µL per  | -15° to   |
+| Amplicon PCR Forward   | 10 µM           | 0.25 µL per | -15° to   |
 | Primer                 |                 | sample      | -25°C     |
 +------------------------+-----------------+-------------+-----------+
-| Amplicon PCR Reverse   | 10 µM           | 0.3 µL per  | -15° to   |
+| Amplicon PCR Reverse   | 10 µM           | 0.25 µL per | -15° to   |
 | Primer                 |                 | sample      | -25°C     |
 +------------------------+-----------------+-------------+-----------+
 | Qiagen Master Mix      | 5x              | 5 µL per    | -15° to   |
 |                        |                 | sample      | -25°C     |
 +------------------------+-----------------+-------------+-----------+
-| Ultrapure water        |                 | 3.4 µL per  |           |
+| Ultrapure water        |                 | 2.5 µL per  |           |
 |                        |                 | sample      |           |
 +------------------------+-----------------+-------------+-----------+
 | 96-well 0.2 mL PCR     |                 | 1 plate     |           |
 | plate                  |                 |             |           |
 +------------------------+-----------------+-------------+-----------+
 
-Total volum per PCR reaction = **10µL**. 
+Total volume per PCR reaction = **10µL**. 
 
 
 **PCR conditions:**
@@ -124,11 +124,11 @@ Total volum per PCR reaction = **10µL**.
 +----------------------+------------+
 | 95ºC for 15 minutes  |            |
 +----------------------+------------+
-|| 94ºC for 30 seconds ||           |
+|| 95ºC for 30 seconds ||           |
 || 50ºC for 60 seconds || 40 cycles |
 || 72ºC for 30 seconds ||           |
 +----------------------+------------+
-| 60ºC for 10 minutes  |            |
+| 72ºC for 10 minutes  |            |
 +----------------------+------------+
 | Hold at 10ºC         |            |
 +----------------------+------------+
@@ -255,8 +255,8 @@ This step uses magnetic beads to purify PCR products from free primers and prime
    96-well plates (*U-plate 1*).
 
 
-   *Note: The volume of beads may depend on the ratio choosen, 
-   this varies according to library quality and size. 
+   *Note: The volume of beads may depend on the ratio chosen, 
+   which varies according to library size. 
    A standard ratio of 0,8x is used, adding 8 µL of beads for 10 µL of sample.*
 
 2. Transfer the full PCR volume (10 µL) into the plate containing the
@@ -286,10 +286,10 @@ This step uses magnetic beads to purify PCR products from free primers and prime
    Note: Do not over-dry the beads, if they start to appear cracked
    immediately proceed to the next step.
 
-9.  Carefully immerse the beads into the Tris buffer (*U-plate 4*) and
+9.  Carefully immerse the beads into the EB buffer (*U-plate 4*) and
     release the PCR plate from the extractor.
 
-10. Carefully resuspend the beads in Tris.
+10. Carefully resuspend the beads in EB buffer.
 
 11. Attach the magnetic extractor to the PCR plate for **2 minutes** or until
     the supernatant is cleared.
@@ -332,7 +332,8 @@ Pooling & quantification
 
 3. Clean the pool with KAPA HyperPure Beads (optional).
 
-   *Note: The volume of beads may depend on the ratio choosen, this varies according to library quality and size. A standard ratio of 0,7x is used, adding 75 µL of beads for 100 µL of sample.*
+   *Note: The volume of beads may depend on the ratio chosen, 
+   which varies according to library size. A ratio of 0,7x can be used, adding 70 µL of beads for 100 µL of sample.*
 
 4. Quantify library pool using *KAPA Library Quantification Kit* for qPCR, Qubit or Tapestation.
 

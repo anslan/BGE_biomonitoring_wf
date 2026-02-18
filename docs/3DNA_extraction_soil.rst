@@ -66,7 +66,7 @@ Equipment and Consumables
 || Pro Tubes                              || or 1 per sample  ||         |
 +-----------------------------------------+-------------------+----------+
 || Consumables for KingFisher*:           ||                  ||         |
-|| 96 deep-well plates                    || 5 for 96 samples ||         |
+|| 96 deep-well plates                    || 6 for 96 samples ||         |
 || 96-tip combs for deep-well magnets     || 1 for 96 samples ||         |
 || 96 microplates (200 µL)                || 1 for 96 samples ||         |
 +-----------------------------------------+-------------------+----------+
@@ -76,7 +76,7 @@ Equipment and Consumables
 +-----------------------------------------+-------------------+----------+
 | Reservoirs with lid                     | 4                 |          |
 +-----------------------------------------+-------------------+----------+
-| 80% Ethanol                             | 1000µL per sample |          |
+| 80% Ethanol                             | 1500µL per sample |          |
 +-----------------------------------------+-------------------+----------+
 | 100% ethanol                            | for Buffer QSB1   |          |
 +-----------------------------------------+-------------------+----------+
@@ -109,7 +109,7 @@ DNA extraction
 
 .. admonition:: Preparation
 
-  - Turn on the oven at 56ºC;
+  - Turn on the oven at 65ºC or directly to 56ºC if not proceeding with step 2;
   - For each 96-well plate to be processed:
 
     - **add 400 µL RNase A Solution to 80 mL Solution CD1;**
@@ -121,13 +121,16 @@ DNA extraction
    tube (no supernatant left), then lower the amount of soil in this
    sample.*
 
-2. Homogenize samples thoroughly using a vortex with a horizontal tube
-   adapter for **10-15 min at maximum speed**.
+2. Incubate samples at 65ºC for 10 mins.
+   *Note: This step is optional but can improve lysis efficiency*
 
-3. Spin the tubes, add **25 µL of PK** (20 mg/mL) to each tube and
+3. Homogenize samples thoroughly using a vortex with a horizontal tube
+   adapter for **25 min at maximum speed**.
+
+4. Spin the tubes, add **25 µL of PK** (20 mg/mL) to each tube and
    vortex for 30s.
 
-4. Spin the PowerBead Pro Tubes, and incubate at 56ºC for at least 3h (can be incubated overnight).
+5. Spin the PowerBead Pro Tubes, and incubate at 56ºC for at least 3h (can be incubated overnight).
 
 
 .. admonition:: After incubation
@@ -141,23 +144,23 @@ DNA extraction
      extractions.
 
 
-| 5. Centrifuge the PowerBead Pro Tubes **at 15000 x g for 1 min**.
+| 6. Centrifuge the PowerBead Pro Tubes **at 15000 x g for 1 min**.
 |
-| 6. Transfer the supernatant to the CMTRs and add **300 µL Solution CD2** to each well of CMTRs. Pipette up and down 3-5 times to thoroughly mix after supernatant addition to each well.
+| 7. Transfer the supernatant to the CMTRs and add **300 µL Solution CD2** to each well of CMTRs. Pipette up and down 3-5 times to thoroughly mix after supernatant addition to each well.
 |
 |   *Note: Expect 500-600 µL. The supernatant may still contain some soil particles.*
 |
-| 7. Seal the CMTRs with the caps provided and then vortex. Centrifuge the CMTRs at **4500 x g for 6 min** at room temperature.
+| 8. Seal the CMTRs with the caps provided and then vortex. Centrifuge the CMTRs at **4500 x g for 6 min** at room temperature.
 |
-| 8. Taking care to avoid any residual pellet, transfer the supernatant from each well to a clean KingFisher deep-well 96 plate. Expect to recover 650-700µL maximum.
+| 9. Taking care to avoid any residual pellet, transfer the supernatant from each well to a clean KingFisher deep-well 96 plate. Expect to recover 650-700µL maximum.
 |
-| 9. Resuspend MagAttract Suspension G Beads by vortexing. For each 96-well plate to be processed, add **3 mL of the resuspended MagAttract Suspension G Beads to 44 mL Buffer QSB1** and mix well. Immediately transfer to a multichannel pipette reservoir.
+| 10. Resuspend MagAttract Suspension G Beads by vortexing. For each 96-well plate to be processed, add **3 mL of the resuspended MagAttract Suspension G Beads to 44 mL Buffer QSB1** and mix well. Immediately transfer to a multichannel pipette reservoir.
 |
 |   *Note: Maintain the MagAttract Suspension G Beads in suspension (by pipetting up and down several times) to ensure uniform distribution.*
 |
-| 10. Add **470 µL of the MagAttract Suspension G beads/Buffer QSB1 mix** to each well-containing lysate in a KingFisher 96 deep-well plate and mix by pipetting (KF Plate 1).
+| 11. Add **470 µL of the MagAttract Suspension G beads/Buffer QSB1 mix** to each well-containing lysate in a KingFisher 96 deep-well plate and mix by pipetting (KF Plate 1).
 |
-| 11. Transfer up to **650 µL of the MagAttract Suspension G beads/Buffer QSB1/lysate** mix from each sample to another KingFisher 96 deep-well plate (*KF Plate 2*), to be used in the first binding step. Both KF Plates 1&2 will be placed in the machine to improve yield.
+| 12. Transfer up to **650 µL of the MagAttract Suspension G beads/Buffer QSB1/lysate** mix from each sample to another KingFisher 96 deep-well plate (*KF Plate 2*), to be used in the first binding step. Both KF Plates 1&2 will be placed in the machine to improve yield.
 
 ___________________________________________________
 
@@ -166,11 +169,11 @@ KingFisher Apex Purification System
 
 1. Add **500 µL Buffer MW1** (*MW1 Plate*) to each well of one clean KingFisher 96 deep-well plate.
 
-2. Add **500 µL fresh 80% ethanol** to each well of two clean KingFisher 96 deep-well plates (*EtOH Plates 1-2*).
+2. Add **500 µL fresh 80% ethanol** to each well of three clean KingFisher 96 deep-well plates (*EtOH Plates 1-2*).
 
 3.  Add **100 µL** **Solution C6** (*C6 Plate*) to each well of a clean KingFisher 96 microplate.
 
-4.  Turn on the KingFisher Apex Purification System and load the robotic decks in the following order: Tip Comb, *C6 Plate*, *EtOH Plates 1-2*, *MW1 Plate*, *KF Plate 2*, and *KF Plate* 1 as indicated in the program.
+4.  Turn on the KingFisher Apex Purification System and load the robotic decks in the following order: Tip Comb, *C6 Plate*, *EtOH Plates 1-3*, *MW1 Plate*, *KF Plate 2*, and *KF Plate* 1 as indicated in the program.
 
 5.  Initiate the robotic program.
 

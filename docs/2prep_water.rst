@@ -85,8 +85,6 @@ Prepare filters for DNA extraction
 
 #. Thaw  the  capsules and clean the outside of each capsule using a disinfectant solution.  
 #. Fill each capsule with 60 μL of Proteinase K (20mg/mL) and shake it manually. 
-   Adjust the volume of Proteinase K based on the available ATL volume in each capsule, up to a maximum of 40μL
-   (e.g. for approximately 2mL of ATL add 23 μL of Proteinase K). 
 #. Seal each capsule cap with parafilm, and incubate at 56ºC overnight in the mechanical shaker. 
 
 

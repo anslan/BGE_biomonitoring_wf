@@ -30,8 +30,8 @@
 |logo_BGE_alpha|
 
 
-Interpretations
-***************
+Examine metabarcoding outputs
+*****************************
 
 .. toctree::
    :maxdepth: 1

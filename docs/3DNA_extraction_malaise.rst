@@ -44,13 +44,13 @@ laboratory protocol (hosted in `WorkflowHub <https://doi.org/10.48546/workflowhu
 based on the `FAVIS protocol (hosted in protocols.io) <https://dx.doi.org/10.17504/protocols.io.kqdg36261g25/v2>`_, with modifications implemented within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project
 
 
-If it does not display inline, 
+If it does not display here, 
 use the `WorkflowHub link <https://doi.org/10.48546/workflowhub.sop.26.1>`_. 
 
 .. raw:: html
 
     <!-- The PDF file must exist at docs/_static/SOPs/Invertebrate_characterization_from_bulk_arthropod_samples.pdf -->
-    <iframe src="_static/SOPs/Invertebrate_characterization_from_bulk_arthropod_samples.pdf" width="100%" height="680" style="border: 1px solid #ccc;">
+    <iframe src="_static/SOPs/Invertebrate_characterization_from_bulk_arthropod_samples.html" width="100%" height="680" style="border: 1px solid #ccc;">
     </iframe>
 
 

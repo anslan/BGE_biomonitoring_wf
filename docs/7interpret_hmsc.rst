@@ -586,10 +586,8 @@ and that the chains have stabilized.
 
 .. admonition:: check the diagnostics
 
-  We need to confirm that the MCMC chain has converged. If the chaing has not converged, the 
+  We need to confirm that the MCMC chain has converged. If the chains have not converged, the 
   samples privided by the MCMC chain can yield biased parameter estimates. 
-  .................
-
 
 ___________________________________________________
 

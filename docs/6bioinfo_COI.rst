@@ -228,6 +228,14 @@ Remove primers
     fwd_primer=$"CCHGAYATRGCHTTYCCHCG" # this is the forward primer BF3
     rev_primer=$"CDGGRTGNCCRAARAAYCA"  # this is the reverse primer BR2
 
+    # specify primers 
+    #fwd_primer=$"GGWACWRGWTGRACWITITAYCCYCC" # this is the forward primer mICOIintF-XT
+    #rev_primer=$"TAIACYTCIGGRTGICCRAARAAYCA"  # this is the reverse primer jgHCO2198
+
+    # specify primers 
+    #fwd_primer=$"GGDACWGGWTGAACWGTWTAYCCHCC" # this is the forward primer FwhF2
+    #rev_primer=$"GTRATWGCHCCDGCTARWACWGG"  # this is the reverse primer FwhR2n
+
     # edit primer trimming settings
     mismatches="2"    # Numer of allowed mismatches in primer string search;
                         # if set as 1, then allow 1 mismatch;
