@@ -15,18 +15,6 @@
   :alt: Alternative text
   :target: https://biodiversitygenomics.eu/
   
-.. |Histograms| image:: _static/PhylumClassOrderFreqs.png
-  :width: 700
-  :alt: Alternative text
-  
-.. |Map_OTUrichness| image:: _static/OTUrichnessCountry_map.png
-  :width: 700
-  :alt: Alternative text
-  
-.. |Map_OTUcomposition| image:: _static/OTUcompositionCountry_map.png
-  :width: 700
-  :alt: Alternative text
-
 
 .. raw:: html
 
@@ -41,8 +29,23 @@ Examine outputs
 The outputs of a metabarcoding workflow and their basic reading are described 
 in the :ref:`outputs section <outputs>` of :doc:`"What is a metabarcoding workflow?" <0what_is_metabarcoding>`.
 
-In this section, we will examine the outputs of a metabarcoding workflow in relation to user collected environmental **metadata**
-to inspect basic patterns of species (metabarcoding features) richness and composition across different environments.
+In this section, we will examine the outputs of a metabarcoding workflow in relation to user 
+collected environmental **metadata**
+to inspect basic patterns of species (metabarcoding features) 
+richness and composition across different environments.
+
+Here, we illustrate the calculation of **species (OTU) richness** 
+and **composition** using the metabarcoding outputs from the 
+`BGE case study of high mountain systems <https://bioscanflow.readthedocs.io/en/latest/1_1HMS.html>`_ 
+dataset, restricted here to **samples from Norway**, as an example. 
+The data are **Malaise trap** samples collected **weekly in 2023** over 
+**20 weeks** across **5 altitudes**.
+
+We examine:
+
+1. Was sequencing depth sufficient?
+1. The number of OTUs (species) across sampled **altitudinal gradient**.
+2. Do species assemblages differ across altitudinal gradient?
 
 ___________________________________________________
 
@@ -51,306 +54,604 @@ Input data
 ==========
 
 1. OTU table
-
 2. OTU taxonomy table
-   
 3. Sample metadata
 
-Here, we illustrate the calculation of species richness and composition using the metabarcoding outputs from the `BGE case study of high mountain systems <https://bioscanflow.readthedocs.io/en/latest/1_1HMS.html>`__. We evaluate species richness and composition both overall and across countries.
+
+
+.. admonition:: example of an OTU table
+
+  +-------------+---------+---------+---------+---------+-----+
+  |             | sample1 | sample2 | sample3 | sample4 | ... |
+  +-------------+---------+---------+---------+---------+-----+
+  | **OTU_01**  | 579     | 0       | 0       | 0       | ... |
+  +-------------+---------+---------+---------+---------+-----+
+  | **OTU_02**  | 405     | 345     | 449     | 430     | ... |
+  +-------------+---------+---------+---------+---------+-----+
+  | **OTU_03**  | 0       | 0       | 231     | 69      | ... |
+  +-------------+---------+---------+---------+---------+-----+
+  | **OTU_04**  | 0       | 62      | 345     | 0       | ... |
+  +-------------+---------+---------+---------+---------+-----+
+
+
+.. admonition:: example of an OTU taxonomy table
+
+  +------------+-----+------------+------------------+-----------------+---------------+
+  |            | ... | Class      | Order            | Family          | Genus         |
+  +------------+-----+------------+------------------+-----------------+---------------+
+  | **OTU_01** | ... | Collembola | Entomobryomorpha | Entomobryidae   | Entomobrya    |
+  +------------+-----+------------+------------------+-----------------+---------------+
+  | **OTU_02** | ... | Collembola | Entomobryomorpha | **Family_0032** | **Genus_001** |
+  +------------+-----+------------+------------------+-----------------+---------------+
+  | **OTU_03** | ... | Collembola | Entomobryomorpha | Isotomidae      | Parisotoma    |
+  +------------+-----+------------+------------------+-----------------+---------------+
+  | **OTU_04** | ... | Collembola | Entomobryomorpha | **Family_0032** | **Genus_022** |
+  +------------+-----+------------+------------------+-----------------+---------------+
+
+
+.. admonition:: sample metadata
+
+  +-------------+---------+--------------+
+  |             | site    | altitude_(m) |
+  +-------------+---------+--------------+
+  | **sample1** | site_01 | 500          |
+  +-------------+---------+--------------+
+  | **sample2** | site_01 | 500          |
+  +-------------+---------+--------------+
+  | **sample3** | site_02 | 1000         |
+  +-------------+---------+--------------+
+  | **sample4** | site_02 | 1200         |
+  +-------------+---------+--------------+
 
 
 .. code-block:: R
-    :caption: Loading the data
+    :caption: Load data
     :linenos:
 
     #!/usr/bin/Rscript
-
-    ##-----------------------Settings-----------------------##
-    ## Working directory and results directory paths
-    wd = "E:/BGE/EBV_genetic composition"
+    
+    # Working directory and results directory paths
+    wd = "path/to/your/working/directory"
     results = file.path(wd, "results")
 
-    ## OTU taxonomy
-    OTU.tax = file.path(wd, "data/otu_taxonomy_23062025.csv")
+    # OTU table
+    OTU.table = file.path(wd, "OTU_table.csv")
+
+    # OTU taxonomy
+    OTU.tax = file.path(wd, "OTU_taxonomy.csv")
     
-    ## OTU table
-    OTU.table = file.path(wd, "data/otu_table_23062025.csv")
+    # Sample metadata
+    sampleMetadata = file.path(wd, "metadata.csv")
+
+_________________
+
+
+Sequencing depth
+================
+
+Sequencing depth is the total number of sequences in a sample.
+Although the amplicon library is pooled in equimolar concentrations prior to sequencing, 
+there can be still considerable variation in sequencing depth between samples.
+If so, then for the statistical analyses, it is important to account for this variation.
+
+One way to account for this variation is to normalise sequencing depth to a common value, 
+which can be achieved through rarefaction analysis.
+
+Another way to account for this variation is to use sequencing depth per sample as a covariate 
+in the statistical analyses. 
+By including sequence counts per sample as a predictor, 
+differences in species richness or composition are evaluated 
+after statistically adjusting for variation in sequencing depth.
+
+.. note::
+
+  With the bioinformatic processing (and post-processing steps), 
+  we are trying to remove noise from the sequencing data, 
+  but this inherently may filter out some true (low abundance) taxa.
+  Therefore, rarfaction analyses after the bioinformatic processing tries to 
+  answer the question: "was sequencing depth sufficient to capture the taxa that pass our quality filters?", 
+  not "was sequencing depth sufficient to capture all true taxa in the sample".
+
+Here, we are examining if the sequencing depth per samples has been 
+sufficient, i.e., do the OTU accumulation curves flatten out (reach the asymptote)?
+
+
+.. code-block:: R
+    :caption: Sequencing depth per sample
+    :linenos:
+
+    #!/usr/bin/Rscript
     
-    ## Sample metadata
-    sampleMetadata = file.path(wd, "data/Sample_metadata.csv")
-    ##------------------------------------------------------##
-    
-    library(data.table)
-    library(stringr)
-    
-    ## Loading data:
-    ##--------------
-    
-    ## OTU taxonomic information
-    OTU_tax = fread(file = OTU.tax, header = TRUE, sep = ";")
-    
-    ## OTU table
-    OTU_table = fread(file = OTU.table, header = TRUE, sep = ";")
-    
-    ## Sample metadata
-    sample_metadata = fread(file = sampleMetadata, header = TRUE, sep = "\t")
-    
-    
+    # Compute rarefaction curves for each sample
+    set.seed(1)
+    library(vegan)
+    rarecurve_data = rarecurve(
+      t(OTU_table),          # transpose so samples are rows
+      step  = 5000,          # step size (seqs) in rarefaction curves
+      col   = "steelblue",
+      label = FALSE
+    )
+
+    # Convert the list returned by rarecurve() into a tidy data frame
+    library(purrr)
+    library(dplyr)
+    library(tidyr)
+
+    rarecurve_data_to_ggplot = 
+      map_dfr(rarecurve_data, bind_rows) %>%
+      bind_cols(Group = colnames(OTU_table), .) %>% 
+      tidyr::pivot_longer(-Group) %>% 
+      tidyr::drop_na() %>%
+      mutate(
+        n_seqs = as.numeric(stringr::str_replace(name, "N", ""))
+      ) %>%
+      select(-name)
+
+    # Plot rarefaction curves (richness vs sequences) for all samples
+    p_rarefaction =
+      ggplot(data = rarecurve_data_to_ggplot, 
+          aes(x = n_seqs, y = value, group = Group)) +
+      geom_line(alpha = 0.6, color = "steelblue")  +
+      theme_minimal() +
+      labs(x = "Number of sequences", 
+          y = "Number of OTUs",
+          title = "Rarefaction curves per sample") +
+      theme(
+        legend.text  = element_text(size = 12),
+        legend.title = element_text(size = 14),
+        axis.text    = element_text(size = 11),
+        axis.title   = element_text(size = 12),
+        plot.title   = element_text(size = 16)
+      )
+
+    # Save plot
+    ggsave(
+      filename = file.path(results, "rarefaction_curves.png"),
+      plot = p_rarefaction,
+      width = 8, height = 6, dpi = 300)
+
+
+.. image:: _static/rarefaction_curves.png
+  :width: 600
+  :align: center
+
+The resulting plot shows the OTU accumulation curves for each sample. 
+Most curves rise steeply at low read numbers and then level off, 
+indicating that additional sequencing yields 
+few  (or no) new OTUs and that sequencing depth is generally 
+sufficient for capturing the diversity in these samples.
+
+Now, let's confirm this by 
+calculating the slope of the rarefaction curve for each sample.
+A **small slope** means that adding many more sequences yields 
+very few new OTUs (curve is flat), 
+so sequencing depth for that sample is likely sufficient; 
+a **larger slope** indicates the curve is still rising 
+and the sample may be under-sequenced.
+
+
+.. code-block:: R
+    :caption: Check if samples reached the asymptote
+    :linenos:
+
+    #!/usr/bin/Rscript
+
+    ### Calculate the slope of the rarefaction curve
+     # The slope between the last two points of each sample's curve indicates
+     # whether the curve has flattened (asymptote ≈ slope close to 0).
+    asymptote_info = rarecurve_data_to_ggplot %>%
+      group_by(Group) %>%
+      arrange(n_seqs) %>%
+      summarise(
+        last_depth = last(n_seqs),
+        last_richness = last(value),
+        prev_depth = nth(n_seqs, -2),
+        prev_richness = nth(value, -2),
+        slope = (last_richness - prev_richness) / (last_depth - prev_depth)
+      )
+
+    ## Define a slope threshold for asymptote
+    threshold = 0.001  # ≈ 5 new OTUs per 5,000 additional sequences
+    # threshold = 0.0002  # more conservative: ≈ 1 new OTU per 5,000 sequences
+
+    # Mark samples whose curves have effectively reached asymptote
+    asymptote_info = asymptote_info %>%
+      mutate(
+        at_asymptote = abs(slope) < threshold   # or use (last_richness - prev_richness) < 5
+      )
+
+    # How many samples reached asymptote?
+    sum(asymptote_info$at_asymptote)
+      #-> 88 samples reached to asymptote according to our threshold
+
+    # Show samples that did NOT reach asymptote
+    not_at_asymptote = asymptote_info %>%
+      filter(!at_asymptote) %>%
+      select(Group, last_depth, last_richness, slope)
+
+    not_at_asymptote
+      #-> Group         last_depth   last_richness   slope
+      #   BGE-HMS1295       8196           249      0.00108
+
+    # Summary statistics of sequences per sample
+    summary(asymptote_info$last_depth)
+      #-> Min.  1st Qu.  Median   Mean   3rd Qu.   Max. 
+      #   8196  575683   675578  716605  835014   1435769 
+
+Based on our threshold 
+(5 new OTUs per 5,000 additional sequences), 
+sample ``BGE-HMS1295`` fails to reach the asymptote. 
+Indeed, we see that this sample has relatively low sequencing 
+depth (8,196 sequences) 
+compared to the median (675,578 sequences) and mean (716,605 sequences).
+
+Because, the sample ``BGE-HMS1295`` has cleary failed, 
+we will remove it from the analysis.
+
+
+.. code-block:: R
+    :caption: Discard poor samples
+    :linenos:
+
+    #!/usr/bin/Rscript
+
+    # Remove sample BGE-HMS1295 from the analysis
+    remove_samples = c("BGE-HMS1295")
+    OTU_table = OTU_table[, -which(colnames(OTU_table) %in% remove_samples)]
+
+    # Check the dimensions of the OTU table
+    dim(OTU_table)
+      # ->  5839 OTUs, 88 samples (after removing sample BGE-HMS1295)
+
+    # Remove OTUs with zero sequences
+    OTU_table = OTU_table[rowSums(OTU_table) > 0, ]
+    dim(OTU_table)
+      # ->  5834 OTUs (after removing OTUs with zero sequences)
+
+    ## Beause we removed a sample and OTUs with zero sequences, 
+    ## we need to update the sample metadata and the OTU taxonomy table
+    sample_metadata = sample_metadata[colnames(OTU_table), ]
+    OTU_tax = OTU_tax[rownames(OTU_table), ]
+
+    #-------------------------------#
+    ## Sequence summary statistics ##
+    # Assess variability in sequencing depth per sample
+    sequences_per_sample <- colSums(OTU_table) 
+    mean_depth  <- mean(sequences_per_sample)
+    sd    <- sd(sequences_per_sample)
+    cv    <- sd_depth / mean_depth          # coefficient of variation
+    range <- range(sequences_per_sample)
+
+    cat("\nMean depth:", round(mean_depth), "\n")
+      #-> Mean depth: 724655 
+    cat("Standard deviation:",   round(sd),   "\n")
+      #-> Standard deviation: 218800
+    cat("Coefficient of variation:", round(cv, 3), "\n")
+      #-> Coefficient of variation: 0.302 
+    cat("Range (min, max):", paste(range, collapse = " - "), "\n")
+      #-> Range (min, max): 378741 - 1435769 
+
+
+We have removed the sample with low sequencing depth. 
+The remaining samples have a mean sequencing depth of 724,655 sequences.
+The number of sequences per sample range from 378,741 to 1,435,769 sequences, 
+and the coefficient of variation is 0.302. Latter means 
+that the standard deviation of read depth is about 30% 
+of the mean sequencing depth. 
+**Sequencing effort  differs moderately between samples**, thus 
+it would be reasonable to **include sequencing depth as a covariate** 
+in the statistical analyses.
+
+Below, we plot the sequencing depth per sample by sampling week.
+We see that the **sequencing depth decreases with the sampling week** 
+(towards autumn). 
+
+.. code-block:: R
+    :caption: Sequencing depth per sample by sampling week
+    :linenos:
+
+    #!/usr/bin/Rscript
+
+    # Build sample_richness dataframe for downstream analyses
+    library(dplyr)
+    sample_richness <- tibble(
+      sample = colnames(OTU_table),
+      richness = colSums(OTU_table > 0)
+    ) %>%
+      left_join(
+        sample_metadata %>%
+          as.data.frame() %>%
+          tibble::rownames_to_column("sample"),
+        by = "sample"
+      ) %>%
+      mutate(sequencing_depth = as.numeric(colSums(OTU_table)[sample]))
+
+    ## Plot sequencing depth per sample by sampling week
+    p = ggplot(sample_richness, 
+                                  aes(x = week, 
+                                      y = sequencing_depth)) +
+      geom_point(aes(color = sequencing_depth), 
+                size = 2, alpha = 0.8) +
+      scale_color_viridis_c(option = "plasma", 
+                            name = "Sequencing depth") +
+      geom_smooth(method = "lm",
+                  formula = y ~ poly(x, 2),
+                  aes(group = 1),
+                  color = "darkgreen") +
+      labs(
+        title = "Sequencing depth per sample by sampling week",
+        x = "Week",
+        y = "Number of sequences"
+      ) +
+      theme_bw()
+
+
+.. image:: _static/seqDepth_by_week.png
+  :width: 600
+  :align: center
+
+
+If we would like to test if the 
+OTU richness differs between sampling seasons (spring, summer, autumn),
+then we would need to **include sequencing depth as a covariate** 
+in the statistical analyses to 
+**separate the effect of sequencing depth 
+from the effect of sampling season** — even though all samples showed 
+sufficient sequencing depth (rarefaction curves reached asymptote).
+If we would not include sequencing depth as a covariate, 
+then the effect of sampling season would be confounded by 
+the effect of sequencing depth (even when all samples reached asymptote, 
+samples with higher depth can still have slightly higher observed OTU richness, 
+so when depth differs between seasons the raw season effect on richness 
+mixes biology with that technical effect).
+
+_________________
 
 Richness
-========
+=========
 
-In this section we assess the total number of OTUs and the number of OTUs retrieved per country. 
+Let's further examine the number of OTUs across 
+the altitudinal gradient.
 
 
 .. code-block:: R
-    :caption: OTU richness
+    :caption: Total OTU richness per altitude
     :linenos:
 
     #!/usr/bin/Rscript
     
+    library(tidyverse)
+
+    sample_names = colnames(OTU_table)
+
+    # OTU richness for a given altitude
+    richness_for_alt = function(alt) {
+      these_samples = rownames(sample_metadata)[sample_metadata$altitude == alt]
+      these_samples = intersect(these_samples, sample_names)
+
+      if (length(these_samples) == 0) return(0L)
+
+      mat = as.matrix(OTU_table[, these_samples, drop = FALSE])
+      sum(rowSums(mat > 0) > 0)
+    }
+
+    # unique altitudes in sample metadata, sorted for plotting
+    alts = sort(unique(sample_metadata$altitude))
+
+    # create a dataframe with altitude and OTU richness
+    richness_by_altitude = tibble(
+      altitude = alts,
+      n_species = vapply(alts, richness_for_alt, integer(1))
+    )
+
+    # plot total richness vs altitude
+    p_tot = ggplot(richness_by_altitude,
+                    aes(x = altitude, y = n_species, group = 1)) +
+      geom_line(aes(color = "Linear trend (lm)"), linewidth = 1) +
+      geom_smooth(aes(color = "Linear trend (lm)"),
+                  method = "lm", se = TRUE,
+                  linewidth = 0.9, show.legend = FALSE) +
+      geom_point(aes(color = "Altitude-specific richness"), size = 4) +
+      geom_text(aes(label = n_species),
+                vjust = -0.8, size = 3, color = "black") +
+      scale_color_manual(
+        name = "",
+        values = c(
+          "Altitude-specific richness" = "black",
+          "Linear trend (lm)" = "lightblue"
+        )
+      ) +
+      labs(
+        title = "Total OTU richness across altitude",
+        x = "Altitude (m)",
+        y = "OTU richness"
+      ) +
+      theme_bw(base_size = 12) +
+      theme(
+        plot.title = element_text(face = "bold"),
+        panel.grid.minor = element_blank(),
+        legend.position = "bottom"
+      )
+
+    # Save plot
+    ggsave(
+      filename = file.path(results, "richness_by_altitude.png"),
+      plot = p_tot,
+      width = 5, height = 4.5, dpi = 300)
+
+
+.. image:: _static/richness_by_altitude.png
+  :width: 500
+  :align: center
+
+The resulting pattern suggests that total OTU richness 
+tends to decline towards higher elevations.
+This is an expected pattern, 
+as environmental stress increases with altitude, especially in the 
+higher latitude regions (such as Norway in that example dataset).
+
+Let's test this relationship more formally.
+
+.. code-block:: R
+    :caption: Richness by altitude with linear and quadratic fits
+    :linenos:
+
+    #!/usr/bin/Rscript
+    
+    # Use Generalized Linear Model (GLM) with negative binomial 
+    # distribution to model the richness data.
+    # Negative binomial distribution is a common choice for count data 
+    # with overdispersion (variance > mean).
+    library(MASS)
+
+    # log10 transform the sequencing_depth
+    sample_richness$log_sequencing_depth = 
+      log10(sample_richness$sequencing_depth)
+
+    # Fit linear and quadratic models (with altitude and sequencing depth)
+    glm_richness_linear = glm.nb(
+      richness ~ altitude + log_sequencing_depth,
+      data = sample_richness
+    )
+    glm_richness_quad = glm.nb(
+      richness ~ poly(altitude, 2) + log_sequencing_depth,
+      data = sample_richness
+    )
+
+    # Compare: is quadratic better than linear?
+    anova(glm_richness_linear, glm_richness_quad, test = "Chisq")
+      # -> Pr(Chi = 0.0006887357
+
+
+    # Quadratic model summary (coefficients on log(mean richness) scale)
+    summary(glm_richness_quad)
+    #                        Estimate Std. Error z value Pr(>|z|)    
+    #   (Intercept)            0.9717     1.9283   0.504 0.614320    
+    #   poly(altitude, 2)1    -0.8119     0.3778  -2.149 0.031645 *  
+    #   poly(altitude, 2)2    -1.3591     0.3765  -3.610 0.000307 ***
+    #   log_sequencing_depth   0.8727     0.3300   2.645 0.008175 ** 
+
+    ## Deviance-based pseudo-R2
+    pseudo_R2_richness_quad =
+      1 - (glm_richness_quad$deviance / glm_richness_quad$null.deviance)
+    cat("Pseudo-R2 (glm_richness_quad): ", round(pseudo_R2_richness_quad, 4), "\n")
+      #-> Pseudo-R2 (glm_richness_quad):  0.2002 
+
+    # Plot richness vs altitude with linear and quadratic fits
     library(ggplot2)
-    library(grid)
-    library(gridExtra)
-    
-    ## Removing blank samples from OTU_table
-    blank_cols <- names(OTU_table)[which(str_detect(names(OTU_table), "lank"))]
-    OTU_table[, (blank_cols) := NULL]
-    
-    
-    ## Number of OTUs (OTU richness):
-    ##-------------------------------
-    
-    OTU_table[, uniqueN(OTU)]
-    
-    
-    ## OTU richness per country:
-    ##--------------------------
-    
-    ## Convert OTU table to long format
-    OTU = melt(data = OTU_table,
-           id.vars = "OTU", 
-           variable.name = "sample", value.name = "Abundance") 
-    OTU = OTU[Abundance > 0]
-    
-    ## Adding "country" to OTU dataset
-    OTU_country <- merge(x=OTU, y=sample_metadata[, .(country, sample)], by="sample", all.x = TRUE)
-    
-    ## Simplify the table to get the number of OTUs per country
-    OTU_country_simple <- OTU_country[, .(N_OTU = uniqueN(OTU)), by=country]
-    
-    ## Mapping OTU richness in a map
-    library(rnaturalearth)
-    library(sf)
-    
-    mean.coords <- sample_metadata[, .(longitude = mean(unique(longitude)), 
-                          latitude = mean(unique(latitude))), by=country]
-    data2map <- merge(x = OTU_country_simple, y = mean.coords, by = "country")
-    data2map <- as.data.frame(data2map)
-    
-    ## Getting Europe map
-    world <- ne_countries(scale = "medium", returnclass = "sf")
-    europe <- world[which(world$continent == "Europe"),]
-    
-    ## Transform to a projected CRS (ETRS89 / LAEA Europe)
-    europe_proj <- st_transform(europe, crs = 3035)
-    
-    ## Also transform your point coordinates
-    data2map_sf <- st_as_sf(data2map, coords = c("longitude", "latitude"), crs = 4326)
-    data2map_proj <- st_transform(data2map_sf, crs = 3035)
-    
-    ## Transform your limits from lat/lon to projected coordinates
-    bbox <- st_bbox(st_transform(
-    	st_as_sfc(st_bbox(c(xmin = -10, xmax = 45, ymin = 34, ymax = 70), crs = 4326)),	
-    	crs = 3035))
-    	
-    ## Plot
-    map <- ggplot(europe_proj) +
-    	geom_sf() +
-    	geom_sf(data = data2map_proj, aes(size = N_OTU), pch = 21, 
-                fill = alpha("blue", 0.7), color = "black") +
-    	coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]),
-    		ylim = c(bbox["ymin"], bbox["ymax"]),
-    		expand = FALSE) +
-    	labs(size = "Number of OTUs") +
-    	scale_size(range = c(6, 12)) +
-    	theme_minimal() +
-    	theme(plot.background = element_rect(fill = "white", color = "white"))
-    	
-    print(map)
-    ggsave(file.path(results,"OTUrichnessCountry_map.png"),
-       plot = map, width = 8, height = 6, dpi = 300)
-    
-    
-|Map_OTUrichness|
- 
+    p = ggplot(sample_richness, 
+                                  aes(x = altitude, y = richness)) +
+      geom_point(size = 3, alpha = 0.8) +
+      geom_smooth(method = "lm", aes(linetype = "Linear"), 
+                  color = "gray", se = F) +
+      geom_smooth(method = "lm", formula = y ~ poly(x, 2), 
+                  aes(linetype = "Quadratic"), 
+                  color = "darkgreen", se = TRUE) +
+      scale_linetype_manual(name = "Trend", 
+                            values = c(Linear = "dashed", 
+                                      Quadratic = "solid")) +
+      labs(
+        title = "OTU richness by altitude",
+        x = "Altitude (m)",
+        y = "OTU richness"
+      ) +
+      theme_bw()
+
+    ggsave(
+      filename = file.path(results, "richness_by_altitude2.png"),
+      plot = p,
+      width = 6, height = 4.5, dpi = 300
+    )
 
 
-Composition
-===========
+.. image:: _static/richness_by_altitude2.png
+  :width: 600
+  :align: center
 
-To assess the taxonomic composition of the OTU retrivered by metabarcoding, we use the OTU taxonomy table as the main input. 
+A negative-binomial GLM of OTU richness on altitude and sequencing depth
+was significantly improved by adding a quadratic
+altitude term (likelihood-ratio test *p* ≈ 0.0007). 
+That is, **OTU richness changes significantly across the altitudinal gradient**, 
+in a curved rather than linear way. 
+The model explains about 20% of the null deviance in richness 
+(pseudo-R2 = 0.20), 
+so other potential drivers 
+(e.g. habitat, season) are not captured in this model.
+
+As we can notice from the plot above (and below), the per altitude richness 
+is highly variable, and that originates from the sampling 
+across 20 weeks at each altitude. 
+Thus, let's include seasonality into the model.
+
+
+.. image:: _static/seasonal_richness_by_altitude.png
+  :width: 600
+  :align: center
 
 
 .. code-block:: R
-    :caption: OTU taxonomic composition
+    :caption: Model with altitude, sequencing depth, and seasonality
     :linenos:
 
     #!/usr/bin/Rscript
     
-    ## Checking that all OTUs included in OTU_tax are all found in samples
-    OTU_tax <- OTU_tax[OTU %in% OTU_table[, OTU]]
-    
-    
-    ## Overall OTU taxonomic composition:
-    ##-----------------------------------
-    
-    ## Number of phyla, orders, classes, etc. recovered
-    taxcols <- names(OTU_tax)[which(names(OTU_tax)=="domain"):which(names(OTU_tax)=="species")]
-    OTU_tax[, lapply(.SD, function(x) length(unique(x))), .SDcols = taxcols]
-    
-    ## Plotting the frequency of each phylum
-    phylumData = OTU_tax[, .(phylum.freq = .N), by = phylum]
-    phylumData$phylum <- factor(phylumData$phylum, 
-      levels = phylumData$phylum[order(phylumData$phylum.freq, decreasing = TRUE)])
-    ## Plot (not showing those classified as "pseudophylum")
-    phylum_hist <- ggplot(phylumData[!str_detect(phylum, "pseudo")], 
-      aes(x = phylum, y = phylum.freq)) +
-    	geom_bar(stat = "identity", fill = "black", color = "black") +
-    	theme_minimal() +
-    	theme (axis.text.x = element_text(angle = 90, hjust = 1)) +
-    	labs(title = "", x = "Phylum", y = "OTU frequency") +
-    	annotate("rect", xmin = 0.5, xmax = 1.5, ymin = 0, ymax = 17050, 
-        color = "red", fill = NA, linetype = "dashed")
-    ## Arthropoda classes
-    classData = OTU_tax[phylum == "Arthropoda", .(class.freq = .N), by = class]
-    classData$class <- factor(classData$class, 
-      levels = classData$class[order(classData$class.freq, decreasing = TRUE)])
-    ## Plot (not showing those classified as "pseudoclass")
-    class_hist <- ggplot(classData[!str_detect(class, "pseudo")], 
-      aes(x = class, y = class.freq)) +
-    	geom_bar(stat = "identity", fill = "darkgrey", color = "darkgrey") +
-    	theme_minimal() +
-    	theme (axis.text.x = element_text(angle = 90, hjust = 1),
-     	    plot.background = element_rect(fill = "white", 
-            color = "red", linetype = "dashed", linewidth = 1)) +
-       	labs(title = "", x = "Arthropoda classes", y = "") +
-        annotate("rect", xmin = 0.5, xmax = 1.5, ymin = 0, 
-        ymax = 16500, color = "blue", fill = NA, linetype = "dashed")
-        ## Insecta orders
-        orderData = OTU_tax[class == "Insecta", .(order.freq = .N), by = order]
-        orderData$order <- factor(orderData$order, 
-          levels = orderData$order[order(orderData$order.freq, decreasing = TRUE)])
-        ## Plot (not showing those classified as "pseudorder")
-        order_hist <- ggplot(orderData[!str_detect(order, "pseudo")], 
-          aes(x = order, y = order.freq)) +
-        	geom_bar(stat = "identity", fill = "darkgrey", color = "darkgrey") +
-        	theme_minimal() +
-        	theme (axis.text.x = element_text(angle = 90, hjust = 1),
-        		plot.background = element_rect(fill = "white", color = "blue", 
-              linetype = "dashed", linewidth = 1)) +
-        	labs(title = "", x = "Insecta orders", y = "")
-    
-    ## Combining and saving the plots:
-    ## 1. Creating a grob from the arranged plots
-    grob <- arrangeGrob(phylum_hist, 
-                    rectGrob(gp = gpar(col = NA, fill = NA), 
-                      height = unit(0.3, "cm")), #spacer
-                    class_hist, 
-                    rectGrob(gp = gpar(col = NA, fill = NA), 
-                      height = unit(0.3, "cm")), #spacer
-                    order_hist, 
-                    nrow = 1, 
-                    widths = c(0.8, 0.05, 0.8, 0.05, 1))
-    ## 2. Saving the plot in png drawing connector lines
-    png(file.path(results,"PhylumClassOrderFreqs.png"), width = 26, height = 14, 
-      units = "cm", res = 300)
-    grid.draw(grob)
-    grid.segments(x0 = 0.13, y0 = 0.5,  # Right side of first plot
-                x1 = 0.31, y1 = 0.5,  # Left side of second plot
-                gp = gpar(col = "red", lwd = 1),
-                arrow = arrow(length = unit(0.3, "cm"), type = "open"))
-    grid.segments(x0 = 0.44, y0 = 0.5,  # Right side of first plot
-                x1 = 0.63, y1 = 0.5,  # Left side of second plot
-                gp = gpar(col = "blue", lwd = 1),
-                arrow = arrow(length = unit(0.3, "cm"), type = "open"))
-    dev.off()
-    
-|Histograms|
+    library(MASS)
+    # GLM for OTU richness with altitude, sequencing depth, and seasonality
+    glm_season = glm.nb(
+      richness ~ poly(altitude, 2) + 
+        log_sequencing_depth +
+        cos(2 * pi * week / 52) + # annual cycle as a cosine function
+        sin(2 * pi * week / 52),  # annual cycle as a sin function
+      data = sample_richness
+    )
+    summary(glm_season)
+    #->
+    #                          Estimate Std. Error  z value Pr(>|z|)    
+    #   (Intercept)            2.11097    1.45721   1.449   0.147439    
+    #   poly(altitude, 2)1    -1.04241    0.27319  -3.816   0.000136 ***
+    #   poly(altitude, 2)2    -1.30751    0.26214  -4.988   6.11e-07 ***
+    #   log_sequencing_depth   0.47899    0.25160   1.904   0.056946 .  
+    #   cos(2 * pi * week/52) -1.18471    0.11981  -9.888   < 2e-16 ***
+    #   sin(2 * pi * week/52) -0.78676    0.09008  -8.734   < 2e-16 ***
+    # 
+
+
+    ## Compare glm_season to model without seasonal terms 
+    # Deviance-based pseudo-R2:
+    pseudoR2_quad = 1 - (glm_richness_quad$deviance / glm_richness_quad$null.deviance)
+    pseudoR2_season = 1 - (glm_season$deviance / glm_season$null.deviance)
+
+    cat("Pseudo-R2 (quad):", pseudoR2_quad)
+      #-> Pseudo-R2 (quad): 0.2001701
+    cat("Pseudo-R2 (season):", pseudoR2_season)
+      #-> Pseudo-R2 (season): 0.6192453
+
+    ## AIC comparison
+    AIC_quad = AIC(glm_richness_quad)
+    AIC_season = AIC(glm_season)
+    cat("AIC (quad):", AIC_quad)
+      #-> AIC (quad): 1147.558
+    cat("AIC (season):", AIC_season)
+      #-> AIC (season): 1085.174
+
+    ## Compare using anova test (Likelihood Ratio Test)
+    anova(glm_richness_quad, glm_season, test = "Chisq")
+      #-> Pr(Chi) = 3.885781e-15 
 
 
 
-How does the OTU taxonomic composition vary accross countries? In this case, we plotted the proportion of OTU per country that belong to each of the six main Insect orders detected in the samples.
+In addition to altitude,
+the **seasonality** (cosine and sine of week) is a significant driver
+of insect OTU richness (*p* < 0.0001).
+Comapred with model that did not have 
+seasonality terms included, the model with seasonality 
+had much higher pseudo-R2 (0.619 vs 0.200); indicating a substantial 
+**increase in the model's explanatory power**.
+This increase was not simply due to overfitting, as the likelihood-ratio test
+shows that the model with seasonality fits significantly better than 
+the model without it (*p* < 0.0001), had lower AIC (1085 vs 1148). 
 
-.. code-block:: R
-    :caption: OTU taxonomic composition per country - Insect main orders
-    :linenos:
-
-    #!/usr/bin/Rscript  
-    
-    ## Mapping OTU richness of Insect main orders per country:
-    ##--------------------------------------------------------
-    
-    library(scatterpie)
-
-    ## 1. Adding "order" to OTU_country
-    OTU_country_order <- merge(x=OTU_country, y=OTU_tax[, .(OTU, order)], 
-      by="OTU", all.x = TRUE)
-    counts_OTU_country_order <- OTU_country_order[, .(N_OTU = uniqueN(OTU)), 
-      by = c("country", "order")]
-    
-    ## 2. Selecting the main orders
-    orderOTU <- OTU_tax[, .N, by = order][order(N, decreasing = T)]
-    main_orders <- orderOTU[N>600, order]
-    
-    ## 3. Leaving only the main orders in the table
-    data2plot <- counts_OTU_country_order[order %in% main_orders,]
-    
-    ## 4. Transforming the data.table into wide format
-    data2plot <- dcast(data2plot, country~order, value.var = "N_OTU")
-    
-    ## 5. Adding & projecting coordinates
-    data2plot_map <- merge(x = data2plot, y = mean.coords, by = "country")
-    data2plot_map <- as.data.frame(data2plot_map)
-    data2plot_map_sf <- st_as_sf(data2plot_map, coords = c("longitude", "latitude"), 
-      crs = 4326)
-    data2plot_map_proj <- st_transform(data2plot_map_sf, crs = 3035)
-    ## Extract projected coordinates
-    data2plot_map$x_proj <- st_coordinates(data2plot_map_proj)[,1]
-    data2plot_map$y_proj <- st_coordinates(data2plot_map_proj)[,2]
-    
-    ## 6. Plot
-    map.order <- ggplot(europe_proj) +
-    	geom_sf() +
-    	geom_scatterpie(aes(x=x_proj, y=y_proj, group=country), data=data2plot_map,
-    		cols = main_orders, pie_scale = 3) +
-    	coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]),
-    		ylim = c(bbox["ymin"], bbox["ymax"]),
-    		expand = FALSE) +
-    	scale_fill_brewer(name = "Main orders",palette = "Set1") +
-    	theme_minimal() +
-    	theme(plot.background = element_rect(fill = "white", color = "white"))
-    	
-    print(map.order)
-    ggsave(file.path(results,"OTUcompositionCountry_map.png"),
-       plot = map.order, width = 8, height = 6, dpi = 300)
-
-|Map_OTUcomposition|
-
-
-
-Transform to presence/absence data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: R
-    :caption: Transforming the OTU table to presence/absence data
-    :linenos:
-
-    #!/usr/bin/Rscript 
-    
-    sample_cols <- names(OTU_table)[which(str_detect(names(OTU_table), "BGE-HMS"))]
-    presabs_OTUtable <- OTU_table[, (sample_cols) := lapply(.SD, function(x) ifelse(x>0, 1, 0)), 
-        .SDcols = sample_cols]
+_________________
 
 
 

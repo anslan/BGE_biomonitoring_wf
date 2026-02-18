@@ -44,7 +44,7 @@ laboratory protocol (hosted in `WorkflowHub <https://doi.org/10.48546/workflowhu
 based on the `FAVIS protocol (hosted in protocols.io) <https://dx.doi.org/10.17504/protocols.io.kqdg36261g25/v2>`_, with modifications implemented within `Biodiversity Genomics Europe <https://biodiversitygenomics.eu/>`_ project
 
 
-If it does not display inline, 
+If it does not display here, 
 use the `WorkflowHub link <https://doi.org/10.48546/workflowhub.sop.26.1>`_. 
 
 .. raw:: html
