@@ -85,7 +85,7 @@ Assuming that the samples have been prepared according to :ref:`guidelines here 
 
 * Set the thermoblock at 70ºC; 
 * Set the oven at 55ºC; 
-* Clean the working space and material with disinfectant (e.g. 5-10% bleach) and ethanol (to vipe off bleach) and leave the UV light on for at least 15 mins;
+* Clean the working space and material with disinfectant (e.g. 5-10% bleach) and ethanol (to wipe off bleach) and leave the UV light on for at least 15 mins;
 * Use filtered pipette tips at all steps; 
 * If AL buffer has precipitate, heat to 55°C for 5-10 min to dissolve. 
 * Follow the manufacturer's instructions (for Qiagen DNeasy Blood and Tissue kit) to prepare the AW1 and AW2 buffers. 
@@ -108,7 +108,7 @@ Assuming that the samples have been prepared according to :ref:`guidelines here 
 
   **b.** Using the QIAvac 24 Plus vacuum manifold as an alternative: 
 
-    i. Place the Mini Spin Columns in the QIAvac system
+    i. Place the Mini Spin Columns in the QIAvac system.
     ii. Load **650 μL of supernatant** onto a Mini Spin Column.
     iii. Turn on the vacuum pump at -80/-90 kPa. 
     iv. Repeat the previous steps until all the supernatant has been processed. 
@@ -125,7 +125,7 @@ Assuming that the samples have been prepared according to :ref:`guidelines here 
 7. Repeat previous two steps above (5-6) using the same 1.5 mL tube to obtain maximum yield. 
 8. Transfer **50 μL** eDNA extract to a 96-well plate (working plate) and archive the remaining at -20ºC or -80ºC. 
    Leave at least two empty wells per plate for the PCR negative control (PNC).   
-9.  Quantify the samples by spectrophotometry. Dilute samples with EB buffer into a new 96-well plate (if needed). 
+9. Quantify the samples by spectrophotometry. Dilute samples with EB buffer into a new 96-well plate (if needed). 
 
 Proceed with :ref:`amplicon library preparation <amplicon_library_preparation>`.
 

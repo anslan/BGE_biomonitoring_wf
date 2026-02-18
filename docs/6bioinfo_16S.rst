@@ -220,9 +220,17 @@ Below, the script is specifying the primers for the 16S data analyses.
     # specify the identifier string for the R1 files
     read_R1="_R1"
 
-    # specify primers 
-    fwd_primer=$"GTGYCAGCMGCCGCGGTAA"    #this is primer 515F
-    rev_primer=$"GGCCGYCAATTYMTTTRAGTTT" #this is primer 926R
+    # specify 16S primers 
+    fwd_primer=$"GTGYCAGCMGCCGCGGTAA"    #this is primer 515F for 16S
+    rev_primer=$"GGCCGYCAATTYMTTTRAGTTT" #this is primer 926R for 16S
+    
+    # specify 12S primers 
+    #fwd_primer=$"GTGCCAGCNRCCGCGGTYANAC"  #this is primer V16S-U-fw
+    #rev_primer=$"ATAGTRGGGTATCTAATCCYAGT" #this is primer V16S-U-rw
+
+    # specify 18S primers 
+    #fwd_primer=$"CCAGCASCYGCGGTAATTCC" #this is primer TAReuk454FWD1
+    #rev_primer=$"ACTTTCGTTCTTGATYRA"   #this is primer TAReukREV3
 
     # edit primer trimming settings
     maximum_error_rate="2" # Maximum error rate in primer string search;
@@ -826,8 +834,10 @@ Taxonomy assignment
 
 .. note::
 
-  Below, the script is specifying the database used for the 16S data analyses.
+  Below, the script 'assignTaxonomy' is specifying the database used for the 16S data analyses.
   **For 18S and 12S, replace the reference database.**
+  For 12S, if targeting **fish** one can use the `MitoFish database <https://mitofish.aori.u-tokyo.ac.jp/>`_ with Sintax as in the script 'assign Taxonomy with SYNTAX'.
+  For 18S, one can use the `Eukaryome reference database <"https://sisu.ut.ee/wp-content/uploads/sites/643/SINTAX_EUK_SSU_v2.0.zip">`_ with Sintax as in the script 'assign Taxonomy with SYNTAX'.
 
 .. code-block:: bash
    :caption: assignTaxonomy
@@ -873,6 +883,34 @@ Taxonomy assignment
 
     ### output = taxonomy.txt
 
+
+.. code-block:: bash
+   :caption: assign Taxonomy with SYNTAX
+   :linenos:
+
+    #!/bin/bash
+
+    # download the EUKARYOME reference databse
+    wget \
+    "https://sisu.ut.ee/wp-content/uploads/sites/643/SINTAX_EUK_SSU_v2.0.zip"
+    # unzip the database and edit name
+    unzip SINTAX_EUK_ITS_v2.0.zip -d EUKARYOME2.0_sintax
+
+    # specify reference database
+    reference_database="EUKARYOME2.0_sintax/SINTAX_EUK_SSU_v2.0.fasta"
+    reference_database=$(realpath $reference_database) # get database names with full path
+
+    # specify input fasta file
+    cd ASV_table
+    ASV_fasta="ASVs.ITSx.fasta"
+
+    # Run SINTAX classifier
+    vsearch -sintax $ASV_fasta \
+                -db $reference_database \
+                -tabbedout taxonomy.txt \
+                -strand both \
+                -sintax_cutoff 0.8 \
+                --threads 8
 ____________________________________________________
 
 .. note:: 

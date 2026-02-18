@@ -40,8 +40,12 @@ COI
 ***
 
 Amplicon library preparation for mitochondrial 
-cytochrome c oxidase subunit I (COI) region to target **arthropod communities** using **2-step PCR** 
-with primers **mICOIintF-XT** (GGWACWRGWTGRACWITITAYCCYCC) and **jgHCO2198** (TAIACYTCIGGRTGICCRAARAAYCA).
+cytochrome c oxidase subunit I (COI) region to target **arthropod communities** in soil samples using **2-step PCR** 
+with primers **mICOIintF-XT** (GGWACWRGWTGRACWITITAYCCYCC) [`Wangensteen et al 2018 <https://doi.org/10.7717/peerj.4705>`_] and **jgHCO2198** (TAIACYTCIGGRTGICCRAARAAYCA) 
+[`Geller et al 2013 <https://doi.org/10.1111/1755-0998.12138>`_]. For water 
+samples, COI was amplified with primers **FwhF2** (GGDACWGGWTGAACWGTWTAYCCHCC) and **FwhR2n** (GTRATWGCHCCDGCTARWACWGG) [`Vamos et al 2017 <https://doi.org/10.1111/2041-210X.12789>`_].
+
+
 
 Herein processes follow lab SOP for the 'Characterization of Prokaryotic and 
 Eukaryotic Biodiversity from Soil Samples' (Chaves et al., 2025); 
@@ -87,7 +91,7 @@ Full construct:
 
 ___________________________________________________
 
-1st PCR
+1st PCR - **mICOIintF-XT** + **jgHCO2198**
 -------
 
 **Consumables:**
@@ -99,23 +103,23 @@ ___________________________________________________
 | eDNA *(dilution        | 10 ng/µL        | 1 µL per    | -15° to   |
 | plate)*                |                 | sample      | -25°C     |
 +------------------------+-----------------+-------------+-----------+
-| Amplicon PCR Forward   | 10 µM           | 0.3 µL per  | -15° to   |
+| Amplicon PCR Forward   | 10 µM           | 0.25 µL per | -15° to   |
 | Primer                 |                 | sample      | -25°C     |
 +------------------------+-----------------+-------------+-----------+
-| Amplicon PCR Reverse   | 10 µM           | 0.3 µL per  | -15° to   |
+| Amplicon PCR Reverse   | 10 µM           | 0.25 µL per | -15° to   |
 | Primer                 |                 | sample      | -25°C     |
 +------------------------+-----------------+-------------+-----------+
 | Qiagen Master Mix      | 5x              | 5 µL per    | -15° to   |
 |                        |                 | sample      | -25°C     |
 +------------------------+-----------------+-------------+-----------+
-| Ultrapure water        |                 | 3.4 µL per  |           |
+| Ultrapure water        |                 | 3.5 µL per  |           |
 |                        |                 | sample      |           |
 +------------------------+-----------------+-------------+-----------+
 | 96-well 0.2 mL PCR     |                 | 1 plate     |           |
 | plate                  |                 |             |           |
 +------------------------+-----------------+-------------+-----------+
 
-Total volum per PCR reaction = **10µL**. 
+Total volume per PCR reaction = **10µL**. 
 
 
 **PCR conditions:**
@@ -123,16 +127,70 @@ Total volum per PCR reaction = **10µL**.
 +----------------------+------------+
 | 95ºC for 15 minutes  |            |
 +----------------------+------------+
-|| 94ºC for 30 seconds ||           |
+|| 95ºC for 30 seconds ||           |
 || 50ºC for 60 seconds || 38 cycles |
 || 72ºC for 30 seconds ||           |
 +----------------------+------------+
-| 60ºC for 10 minutes  |            |
+| 72ºC for 10 minutes  |            |
 +----------------------+------------+
 | Hold at 10ºC         |            |
 +----------------------+------------+
 
 **Expected amplicon size = 499 bp** *(insert length (313 bp) + primer lengths + 6 bp NNs (avg.) + 67 bp overhangs).*
+
+
+● Test the PCR success of all samples through electrophoresis of 2 µL using 2% agarose gel.
+
+●	Dilute samples 1:4 using ultrapure water.
+
+___________________________________________________
+
+1st PCR -  **FwhF2** + **FwhR2n** 
+-------
+
+**Consumables:**
+
++------------------------+-----------------+-------------+-----------+
+| Items                  | Initial         | Quantity    | Storage   |
+|                        | Concentration   |             |           |
++========================+=================+=============+===========+
+| eDNA *(dilution        | 10 ng/µL        | 2 µL per    | -15° to   |
+| plate)*                |                 | sample      | -25°C     |
++------------------------+-----------------+-------------+-----------+
+| Amplicon PCR Forward   | 10 µM           | 0.25 µL per | -15° to   |
+| Primer                 |                 | sample      | -25°C     |
++------------------------+-----------------+-------------+-----------+
+| Amplicon PCR Reverse   | 10 µM           | 0.25 µL per | -15° to   |
+| Primer                 |                 | sample      | -25°C     |
++------------------------+-----------------+-------------+-----------+
+| Qiagen Master Mix      | 5x              | 5 µL per    | -15° to   |
+|                        |                 | sample      | -25°C     |
++------------------------+-----------------+-------------+-----------+
+| Ultrapure water        |                 | 32.5 µL per  |           |
+|                        |                 | sample      |           |
++------------------------+-----------------+-------------+-----------+
+| 96-well 0.2 mL PCR     |                 | 1 plate     |           |
+| plate                  |                 |             |           |
++------------------------+-----------------+-------------+-----------+
+
+Total volume per PCR reaction = **10µL**. 
+
+
+**PCR conditions:**
+
++----------------------+------------+
+| 95ºC for 15 minutes  |            |
++----------------------+------------+
+|| 95ºC for 30 seconds ||           |
+|| 50ºC for 60 seconds || 35 cycles |
+|| 72ºC for 30 seconds ||           |
++----------------------+------------+
+| 72ºC for 10 minutes  |            |
++----------------------+------------+
+| Hold at 10ºC         |            |
++----------------------+------------+
+
+**Expected amplicon size = 323 bp** *(insert length (205 bp) + primer lengths + 6 bp NNs (avg.) + 67 bp overhangs).*
 
 
 ● Test the PCR success of all samples through electrophoresis of 2 µL using 2% agarose gel.
@@ -187,7 +245,7 @@ ___________________________________________________
 +----------------------+-----------+
 | 95ºC for 3 minutes   |           |
 +----------------------+-----------+
-|| 94ºC for 30 seconds ||          |
+|| 95ºC for 30 seconds ||          |
 || 55ºC for 30 seconds || 8 cycles |
 || 72ºC for 30 seconds ||          |
 +----------------------+-----------+
@@ -233,7 +291,7 @@ This step uses magnetic beads to purify PCR products from free primers and prime
 
 **Preparation:**
 
-- Bring the **AMPure XP beads** to room temperature for **30min** prior
+- Bring the **KAPA HyperPure beads** to room temperature for **30min** prior
   to usage;
 
 - Prepare **fresh 80% ethanol**;
@@ -254,7 +312,9 @@ This step uses magnetic beads to purify PCR products from free primers and prime
    96-well plates (*U-plate 1*).
 
 
-   *Note: The volume of beads may depend on the ratio choosen, this varies according to library quality and size. A standard ratio of 0,8x is used, adding 8 µL of beads for 10 µL of sample.*
+   *Note: The volume of beads may depend on the ratio chosen, 
+   which varies according to library size. 
+   A standard ratio of 0,8x is used, adding 8 µL of beads for 10 µL of sample.*
 
 2. Transfer the full PCR volume (10 µL) into the plate containing the
    KAPA HyperPure Beads, carefully pipetting the entire volume **up and
@@ -329,7 +389,8 @@ Pooling & quantification
 
 3. Clean the pool with KAPA HyperPure Beads.
 
-   *Note: The volume of beads may depend on the ratio choosen, this varies according to library quality and size. A standard ratio of 0,7x is used, adding 75 µL of beads for 100 µL of sample.*
+   *Note: The volume of beads may depend on the ratio chosen, 
+   which varies according to library size. A ratio of 0,7x can be used, adding 70 µL of beads for 100 µL of sample.*
 
 4. Quantify library pool using *KAPA Library Quantification Kit* for qPCR, Qubit or Tapestation.
 
