@@ -911,6 +911,7 @@ Taxonomy assignment
                 -strand both \
                 -sintax_cutoff 0.8 \
                 --threads 8
+                
 ____________________________________________________
 
 .. note:: 

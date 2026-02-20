@@ -44,9 +44,9 @@ The data are **Malaise trap** samples collected **weekly in 2023** over
 We examine:
 
 1. Was sequencing depth sufficient?
-1. The number of OTUs (species) across sampled **altitudinal gradient**.
-2. Do species assemblages differ across altitudinal gradient?
-
+   
+2. OTU richness patterns across sampled **altitudinal gradient** and **sampling season**.
+   
 ___________________________________________________
 
 
@@ -54,8 +54,7 @@ Input data
 ==========
 
 1. OTU table
-2. OTU taxonomy table
-3. Sample metadata
+2. Sample metadata
 
 
 
@@ -72,21 +71,6 @@ Input data
   +-------------+---------+---------+---------+---------+-----+
   | **OTU_04**  | 0       | 62      | 345     | 0       | ... |
   +-------------+---------+---------+---------+---------+-----+
-
-
-.. admonition:: example of an OTU taxonomy table
-
-  +------------+-----+------------+------------------+-----------------+---------------+
-  |            | ... | Class      | Order            | Family          | Genus         |
-  +------------+-----+------------+------------------+-----------------+---------------+
-  | **OTU_01** | ... | Collembola | Entomobryomorpha | Entomobryidae   | Entomobrya    |
-  +------------+-----+------------+------------------+-----------------+---------------+
-  | **OTU_02** | ... | Collembola | Entomobryomorpha | **Family_0032** | **Genus_001** |
-  +------------+-----+------------+------------------+-----------------+---------------+
-  | **OTU_03** | ... | Collembola | Entomobryomorpha | Isotomidae      | Parisotoma    |
-  +------------+-----+------------+------------------+-----------------+---------------+
-  | **OTU_04** | ... | Collembola | Entomobryomorpha | **Family_0032** | **Genus_022** |
-  +------------+-----+------------+------------------+-----------------+---------------+
 
 
 .. admonition:: sample metadata
@@ -116,10 +100,7 @@ Input data
 
     # OTU table
     OTU.table = file.path(wd, "OTU_table.csv")
-
-    # OTU taxonomy
-    OTU.tax = file.path(wd, "OTU_taxonomy.csv")
-    
+  
     # Sample metadata
     sampleMetadata = file.path(wd, "metadata.csv")
 
@@ -309,9 +290,8 @@ we will remove it from the analysis.
       # ->  5834 OTUs (after removing OTUs with zero sequences)
 
     ## Beause we removed a sample and OTUs with zero sequences, 
-    ## we need to update the sample metadata and the OTU taxonomy table
+     ## we need to update the sample metadata
     sample_metadata = sample_metadata[colnames(OTU_table), ]
-    OTU_tax = OTU_tax[rownames(OTU_table), ]
 
     #-------------------------------#
     ## Sequence summary statistics ##

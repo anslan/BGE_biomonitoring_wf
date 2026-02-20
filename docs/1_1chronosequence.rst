@@ -41,4 +41,17 @@ Najera-Cortazar, L., Beja-Pereira, A., & Beja, P. (2024). Biodiversity Genomics 
 
 ____________________________________________________
 
+
+Data availability
+=================
+
+The samples were registered in 
+`PlutoF biodiversity data management platform <https://plutof.ut.ee/en>`_, 
+and through the PlutoF platform, 
+the data was :ref:`automatically submitted <publishing_samples_to_ENA>` to **European Nucleotide Archive** (ENA). 
+
+Raw sequences and BioSamples are available in ENA, under the project accession number PRJEBXXXX.
+
+__________________________________________________
+
 |logo_BGE_small| |eufund| |chfund| |ukrifund|

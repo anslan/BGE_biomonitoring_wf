@@ -37,6 +37,19 @@ This is mirror for the workflow hosted in `WorkflowHub <https://doi.org/10.48546
 
 **Citation:**
 Najera Cortazar, L., Ferreira, S., Mata, V., & Beja, P. (2024). Biodiversity Genomics Europe | High Mountain Systems - Arthropod sampling with Malaise traps. WorkflowHub. https://doi.org/10.48546/WORKFLOWHUB.SOP.17.2
-____________________________________________________
+
+__________________________
+
+Data availability
+=================
+
+The samples were registered in 
+`PlutoF biodiversity data management platform <https://plutof.ut.ee/en>`_, 
+and through the PlutoF platform, 
+the data was :ref:`automatically submitted <publishing_samples_to_ENA>` to **European Nucleotide Archive** (ENA). 
+
+Raw sequences and BioSamples are available in ENA, under the project accession number PRJEBXXXX.
+
+__________________________________________________
 
 |logo_BGE_small| |eufund| |chfund| |ukrifund|

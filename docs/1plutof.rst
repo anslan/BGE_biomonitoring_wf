@@ -193,6 +193,8 @@ All records can be updated individually or in bulk (via functionality in Clipboa
 
 ___________________________________________________
 
+.. _publishing_samples_to_ENA:
+
 Uploading sample records to ENA
 -------------------------------
 
