@@ -117,7 +117,7 @@ The documentation includes the following sections:
 
         |search_insights|
           
-        **Interpretations**
+        **Examine metabarcoding outputs**
 
     
 
@@ -128,6 +128,7 @@ Contents
    :maxdepth: 2
 
    0what_is_metabarcoding
+   1_case_studies
    1sampling
    2sample_prep
    3DNA_extraction
